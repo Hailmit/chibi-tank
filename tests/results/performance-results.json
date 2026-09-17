@@ -1,0 +1,19 @@
+{
+  "pass": true,
+  "dayCalls": 75,
+  "nightCalls": 86,
+  "enemyMeshes": 48,
+  "particleInstances": 96,
+  "quality": "high",
+  "uiOptionRemoved": true,
+  "fixedHighScale": true,
+  "circularHUD": true,
+  "pixelRatio": 1,
+  "expectedRatio": 1,
+  "hardwareFPS": 60,
+  "softwareFPS": 24,
+  "simulationFPS": 30,
+  "idleFPS": 4,
+  "shadows": false,
+  "softwareRenderer": true
+}

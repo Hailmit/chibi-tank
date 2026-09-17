@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Seed determinism and variation",
+    "pass": true
+  },
+  {
+    "name": "100 irregular seeds: connected roads, clear spawn, no periodic avenues",
+    "pass": true
+  },
+  {
+    "name": "40 urban seeds use a downtown, commercial buffer and compact parks",
+    "pass": true
+  },
+  {
+    "name": "Normalized camera-relative movement",
+    "pass": true
+  },
+  {
+    "name": "Swept collision catches thin walls and earliest entry",
+    "pass": true
+  },
+  {
+    "name": "Dash substeps cannot tunnel through wall or world boundary",
+    "pass": true
+  },
+  {
+    "name": "Destroyed wall becomes traversable rubble and updates navigation immediately",
+    "pass": true
+  },
+  {
+    "name": "Urban structures have durability and collapse into walkable terrain",
+    "pass": true
+  },
+  {
+    "name": "Moving entity invalidates its warned terrain cell",
+    "pass": true
+  },
+  {
+    "name": "10 seeds × 12 irregular changes always alter topology and stay connected",
+    "pass": true
+  },
+  {
+    "name": "Pathfinding changes route after topology changes",
+    "pass": true
+  }
+]

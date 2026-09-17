@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#edf0e4">
+  <meta name="description" content="Thành phố tí hon. Trận chiến bất tận. Game xe tăng 3D sinh tồn với địa hình biến đổi, chạy ngay trong trình duyệt.">
+  <title>Chibi Tank City — Endless</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
+</head>
+<body>
+  <canvas id="game" aria-label="Đấu trường xe tăng 3D"></canvas>
+  <div class="vignette"></div>
+  <main id="menu" class="menu-screen">
+    <div class="intro">
+      <div class="eyebrow"><span></span> MỘT THÀNH PHỐ. VÔ HẠN THỬ THÁCH.</div>
+      <h1>CHIBI<br>TANK <span class="title-star">✳</span><br>CITY<span class="title-dot">.</span></h1>
+      <div class="endless-label"><span>ENDLESS</span><i></i><span class="infinity">∞</span></div>
+      <p class="intro-description">Lái xe tí hon. Đương đầu hỗn loạn.<br>Sống sót trong thành phố luôn đổi thay.</p>
+      <button id="play" class="primary-button"><span>CHƠI NGAY</span><span class="button-arrow">↗</span></button>
+      <div class="play-note"><span class="live-dot"></span> Không tải xuống · Không đăng nhập</div>
+      <div class="best-card"><div class="trophy">♜</div><div><span>KỶ LỤC CỦA BẠN</span><strong id="menu-best">000000</strong></div><span class="local-tag">CỤC BỘ</span></div>
+    </div>
+    <div class="scene-label"><span class="live-dot"></span> KHU PHỐ 01 <span>—</span> <span id="seed-label">MINT DISTRICT</span></div>
+    <div class="scene-note"><span class="note-icon">↻</span><div><strong>Thành phố không bao giờ đứng yên.</strong><p>Đường mới, chiến thuật mới. Mỗi 35–50 giây.</p></div></div>
+    <div class="field-label">XE TĂNG CỦA BẠN <span>↙</span></div>
+  </main>
+
+  <section id="hud" hidden aria-label="Thông tin trận đấu">
+    <div class="status-panel" aria-label="Giáp, năng lượng và nhiệt nòng"><div class="status-orbs"><div id="hp-ring" class="status-orb hp-orb"><span>GIÁP</span><strong id="hp-value">100</strong></div><div id="stamina-ring" class="status-orb stamina-orb"><span>NL</span><strong id="stamina-value">100</strong></div><div id="heat-ring" class="status-orb heat-orb"><span>NHIỆT</span><strong id="heat-value">0%</strong></div></div></div>
+    <div class="score-panel" aria-label="Điểm, combo và thời gian"><strong id="score" title="Điểm">000000</strong><span id="combo" title="Combo">×1</span><span id="time" title="Thời gian">00:00</span></div>
+    <div id="elite" class="elite-panel" hidden><div id="elite-ring" class="elite-orb"><span>ĐẠI ÚY</span><b id="elite-value">100%</b></div></div>
+    <div class="hud-center"><div id="day-cycle" class="day-cycle"><span id="day-icon">☀</span><div><small id="day-label">BAN NGÀY</small><b id="day-timer">01:00</b></div></div><div class="world-status"><span class="live-dot"></span><span id="world-status">TÁI CẤU TRÚC</span><b id="shift-timer">00:40</b></div></div>
+    <div id="crosshair">+</div>
+    <div id="touch-controls" class="touch-controls" hidden aria-label="Điều khiển cảm ứng">
+      <button id="move-stick" class="touch-stick move-stick" type="button" aria-label="Kéo để di chuyển">
+        <span class="stick-knob"></span><b>DI CHUYỂN</b>
+      </button>
+      <button id="dash-button" class="dash-button" type="button" aria-label="Lướt né"><span>↯</span><b>LƯỚT</b></button>
+      <button id="aim-stick" class="touch-stick aim-stick" type="button" aria-label="Kéo để ngắm và bắn">
+        <span class="stick-knob"></span><b id="aim-label">NGẮM · BẮN</b>
+      </button>
+    </div>
+  </section>
+
+  <footer class="control-bar"><div class="control"><span class="key-group"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span><span>Di chuyển <small>/ Phím mũi tên</small></span></div><div class="control"><span class="mouse-icon"></span><span>Ngắm & bắn</span></div><div class="control"><kbd class="wide-key">SPACE</kbd><span>Lướt né</span></div><div class="control"><kbd>ESC</kbd><span>Tạm dừng</span></div><div class="footer-note">CỨ TIẾP TỤC. <span>THÊM MỘT CHÚT NỮA.</span> ↗</div></footer>
+
+  <button id="fullscreen-button" class="fullscreen-button" type="button" aria-label="Bật toàn màn hình" title="Toàn màn hình">
+    <svg class="fullscreen-enter" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>
+    <svg class="fullscreen-exit" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5"/></svg>
+  </button>
+
+  <div id="overlay" class="overlay" hidden>
+    <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+      <div class="eyebrow" id="dialog-eyebrow">HÍT THỞ MỘT CHÚT</div>
+      <h2 id="dialog-title">Tạm dừng<span>.</span></h2>
+      <p id="dialog-description">Thành phố có thể đợi bạn.</p>
+      <div id="results" hidden><div class="result-score"><span>ĐIỂM CỦA BẠN</span><strong id="final-score">0</strong></div><div class="result-grid"><div><span>Kỷ lục</span><b id="final-best"></b></div><div><span>Sống sót</span><b id="final-time"></b></div><div><span>Hạ gục</span><b id="final-kills"></b></div><div><span>Combo cao nhất</span><b id="final-combo"></b></div></div></div>
+      <button id="resume" class="primary-button"><span>TIẾP TỤC</span><span>→</span></button>
+      <button id="restart" class="primary-button" hidden><span>THỬ LẠI NÀO</span><span>↻</span></button>
+      <button id="home" class="text-button">Về màn hình chính</button>
+    </section>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <div class="rotate-notice" role="status"><span>↻</span><strong>Xoay ngang thiết bị để chơi</strong></div>
+  <div id="popups" aria-hidden="true"></div><div id="hit-flash"></div>
+  <div id="loading"><span class="loader-tank">▰</span><span>ĐANG LẮP RÁP THÀNH PHỐ…</span></div>
+  <div id="error" hidden><h2>Chưa thể khởi động game</h2><p id="error-message"></p><p>Hãy mở bằng máy chủ HTTP và dùng trình duyệt có WebGL 2.</p><button onclick="location.reload()">Thử lại</button></div>
+  <script type="module" src="./src/main.js"></script>
+  <script>window.addEventListener('error',e=>{if(!document.getElementById('loading').hidden){document.getElementById('loading').hidden=true;document.getElementById('error').hidden=false;document.getElementById('error-message').textContent=e.message||'Không tải được tài nguyên. Kiểm tra máy chủ và đường dẫn.';}});</script>
+</body>
+</html>

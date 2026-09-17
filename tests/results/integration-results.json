@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Muzzle inside cover cannot fire through it; cover destruction opens line of fire",
+    "pass": true
+  },
+  {
+    "name": "Barrels chain-react once without awarding obstacle points",
+    "pass": true
+  },
+  {
+    "name": "Mortar warning precedes delayed area damage",
+    "pass": true
+  },
+  {
+    "name": "Elite alternates five-shot fan and three mortar targets",
+    "pass": true
+  },
+  {
+    "name": "Night turns active and newly spawned enemies into double-HP zombies",
+    "pass": true
+  },
+  {
+    "name": "Day and night alternate every sixty gameplay seconds",
+    "pass": true
+  },
+  {
+    "name": "Elite can enter a saturated regular enemy population",
+    "pass": true
+  },
+  {
+    "name": "Spawn cancelled if player enters its safety radius during warning",
+    "pass": true
+  },
+  {
+    "name": "Spawn selection uses one reachability flood instead of per-cell paths",
+    "pass": true
+  },
+  {
+    "name": "Assault director schedules a rapid reinforcement wave without exceeding the cap",
+    "pass": true
+  },
+  {
+    "name": "High-rises and shops absorb shots, collapse to rubble and open a lane",
+    "pass": true
+  },
+  {
+    "name": "Combo caps at five, expires, and damage resets it",
+    "pass": true
+  },
+  {
+    "name": "Sustained fire overheats, requires trigger release, cools, and fires again",
+    "pass": true
+  },
+  {
+    "name": "All four pickup effects apply and expire",
+    "pass": true
+  },
+  {
+    "name": "Terrain warning commits real topology and preserves unrelated destroyed cover",
+    "pass": true
+  },
+  {
+    "name": "A reconstruction still commits if a vehicle enters the warned region",
+    "pass": true
+  },
+  {
+    "name": "Active enemies invalidate cached paths after topology changes",
+    "pass": true
+  },
+  {
+    "name": "Foreground house fades at full height and keeps collision",
+    "pass": true
+  }
+]

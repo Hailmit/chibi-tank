@@ -1,0 +1,1 @@
+{"name":"chibi-tank-city-endless","private":true,"type":"module","scripts":{"test":"node --test tests/core.test.js"}}

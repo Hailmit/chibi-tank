@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Start button enters live game",
+    "pass": true
+  },
+  {
+    "name": "No automatic fire",
+    "pass": true
+  },
+  {
+    "name": "W and up arrow equivalent",
+    "pass": true
+  },
+  {
+    "name": "Diagonal normalized",
+    "pass": true
+  },
+  {
+    "name": "Dash consumes stamina, grants invulnerability",
+    "pass": true
+  },
+  {
+    "name": "Dash stays outside solids",
+    "pass": true
+  },
+  {
+    "name": "Pause freezes simulation",
+    "pass": true
+  },
+  {
+    "name": "Blur pauses and clears held input",
+    "pass": true
+  },
+  {
+    "name": "Raycast maps cursor to ground",
+    "pass": true
+  },
+  {
+    "name": "Player firing uses muzzle direction",
+    "pass": true
+  },
+  {
+    "name": "Damage grace prevents stacked hits",
+    "pass": true
+  },
+  {
+    "name": "Kill rewarded exactly once",
+    "pass": true
+  },
+  {
+    "name": "Game over captures run stats",
+    "pass": true
+  },
+  {
+    "name": "R starts clean new run",
+    "pass": true
+  },
+  {
+    "name": "Repeated restart clears entities",
+    "pass": true
+  },
+  {
+    "name": "Fixed pool caps",
+    "pass": true
+  },
+  {
+    "name": "Minimal HUD removes minimap, game header, audio and settings controls",
+    "pass": true
+  },
+  {
+    "name": "Fullscreen control is available on desktop and mobile",
+    "pass": true
+  },
+  {
+    "name": "Lightweight contact shadows render without shadow maps",
+    "pass": true
+  },
+  {
+    "name": "Fullscreen button enters and exits browser fullscreen",
+    "pass": true
+  }
+]

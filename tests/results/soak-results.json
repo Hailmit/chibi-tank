@@ -1,0 +1,104 @@
+{
+  "pass": true,
+  "time": 600.0000000001116,
+  "elapsedMs": 2316.699999999255,
+  "shifts": 13,
+  "skipped": 0,
+  "maxEnemies": 16,
+  "maxBullets": 15,
+  "maxParticles": 96,
+  "eliteSeen": true,
+  "invalid": 0,
+  "samples": [
+    {
+      "second": 60,
+      "geometries": 25,
+      "textures": 1,
+      "drawCalls": 92,
+      "enemies": 15,
+      "shifts": 1,
+      "heap": 21906231
+    },
+    {
+      "second": 120,
+      "geometries": 27,
+      "textures": 2,
+      "drawCalls": 107,
+      "enemies": 16,
+      "shifts": 2,
+      "heap": 29394109
+    },
+    {
+      "second": 180,
+      "geometries": 27,
+      "textures": 2,
+      "drawCalls": 94,
+      "enemies": 16,
+      "shifts": 3,
+      "heap": 33602343
+    },
+    {
+      "second": 240,
+      "geometries": 27,
+      "textures": 2,
+      "drawCalls": 112,
+      "enemies": 16,
+      "shifts": 5,
+      "heap": 33446283
+    },
+    {
+      "second": 300,
+      "geometries": 27,
+      "textures": 2,
+      "drawCalls": 111,
+      "enemies": 16,
+      "shifts": 6,
+      "heap": 34473219
+    },
+    {
+      "second": 360,
+      "geometries": 27,
+      "textures": 2,
+      "drawCalls": 94,
+      "enemies": 16,
+      "shifts": 7,
+      "heap": 34796989
+    },
+    {
+      "second": 420,
+      "geometries": 27,
+      "textures": 2,
+      "drawCalls": 110,
+      "enemies": 16,
+      "shifts": 9,
+      "heap": 30970118
+    },
+    {
+      "second": 480,
+      "geometries": 27,
+      "textures": 2,
+      "drawCalls": 93,
+      "enemies": 16,
+      "shifts": 10,
+      "heap": 34118165
+    },
+    {
+      "second": 540,
+      "geometries": 27,
+      "textures": 2,
+      "drawCalls": 111,
+      "enemies": 16,
+      "shifts": 12,
+      "heap": 39482080
+    },
+    {
+      "second": 600,
+      "geometries": 27,
+      "textures": 2,
+      "drawCalls": 93,
+      "enemies": 16,
+      "shifts": 13,
+      "heap": 37829080
+    }
+  ]
+}
