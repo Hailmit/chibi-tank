@@ -1,7 +1,7 @@
 {
   "pass": true,
   "time": 600.0000000001116,
-  "elapsedMs": 2316.699999999255,
+  "elapsedMs": 2503.699999999255,
   "shifts": 13,
   "skipped": 0,
   "maxEnemies": 16,
@@ -17,7 +17,7 @@
       "drawCalls": 92,
       "enemies": 15,
       "shifts": 1,
-      "heap": 21906231
+      "heap": 52562644
     },
     {
       "second": 120,
@@ -26,7 +26,7 @@
       "drawCalls": 107,
       "enemies": 16,
       "shifts": 2,
-      "heap": 29394109
+      "heap": 64249816
     },
     {
       "second": 180,
@@ -35,7 +35,7 @@
       "drawCalls": 94,
       "enemies": 16,
       "shifts": 3,
-      "heap": 33602343
+      "heap": 66337237
     },
     {
       "second": 240,
@@ -44,7 +44,7 @@
       "drawCalls": 112,
       "enemies": 16,
       "shifts": 5,
-      "heap": 33446283
+      "heap": 60294047
     },
     {
       "second": 300,
@@ -53,7 +53,7 @@
       "drawCalls": 111,
       "enemies": 16,
       "shifts": 6,
-      "heap": 34473219
+      "heap": 55208163
     },
     {
       "second": 360,
@@ -62,7 +62,7 @@
       "drawCalls": 94,
       "enemies": 16,
       "shifts": 7,
-      "heap": 34796989
+      "heap": 49174235
     },
     {
       "second": 420,
@@ -71,7 +71,7 @@
       "drawCalls": 110,
       "enemies": 16,
       "shifts": 9,
-      "heap": 30970118
+      "heap": 72813202
     },
     {
       "second": 480,
@@ -80,7 +80,7 @@
       "drawCalls": 93,
       "enemies": 16,
       "shifts": 10,
-      "heap": 34118165
+      "heap": 68716764
     },
     {
       "second": 540,
@@ -89,7 +89,7 @@
       "drawCalls": 111,
       "enemies": 16,
       "shifts": 12,
-      "heap": 39482080
+      "heap": 68696598
     },
     {
       "second": 600,
@@ -98,7 +98,7 @@
       "drawCalls": 93,
       "enemies": 16,
       "shifts": 13,
-      "heap": 37829080
+      "heap": 60146936
     }
   ]
 }

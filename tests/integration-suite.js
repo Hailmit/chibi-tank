@@ -49,11 +49,9 @@ export function runIntegrationTests(g){
   test('Combo caps at five, expires, and damage resets it',()=>{
     for(let i=0;i<8;i++)g.onKill({points:100,x:0,z:0});assert(g.combo===5&&g.maxCombo===5);g.comboTime=.001;g.step(1/60);assert(g.combo===0);g.onKill({points:100,x:0,z:0});g.player.hurt(1,g);assert(g.combo===0&&g.comboTime===0);
   });
-  test('Sustained fire overheats, requires trigger release, cools, and fires again',()=>{
-    g.input.firing=true;for(let i=0;i<8;i++){g.player.fire=0;g.player.update(.01,g);}const shots=g.combat.bullets.filter(b=>b.active).length;assert(shots===8&&g.player.overheated&&g.player.heat===CONFIG.player.heatMax);
-    for(let i=0;i<90;i++)g.player.update(1/60,g);assert(g.player.heat===CONFIG.player.heatMax&&g.combat.bullets.filter(b=>b.active).length===shots,'Holding fire should neither cool nor shoot while locked');
-    g.input.firing=false;for(let i=0;i<150;i++)g.player.update(1/60,g);assert(!g.player.overheated&&g.player.heat<=CONFIG.player.heatUnlock);
-    g.input.firing=true;g.player.fire=0;g.player.update(.01,g);assert(g.combat.bullets.filter(b=>b.active).length===shots+1);
+  test('Sustained fire continues without heat or lockout state',()=>{
+    g.input.firing=true;for(let i=0;i<20;i++){g.player.fire=0;g.player.update(.01,g);}const shots=g.combat.bullets.filter(b=>b.active).length;
+    assert(shots===20);assert(!('heat' in g.player)&&!('overheated' in g.player));assert(!('heatMax' in CONFIG.player)&&!('heatPerShot' in CONFIG.player));
   });
   test('All four pickup effects apply and expire',()=>{
     const random=g.world.grid.random;for(let type=0;type<4;type++){let count=0;g.world.grid.random=()=>count++===0?0:(type+.1)/4;g.combat.drop(0,0);g.player.hp=50;g.player.stamina=20;g.combat.update(1/60);if(type===0)assert(g.player.hp===80);if(type===1)assert(g.player.stamina===100);if(type===2)assert(g.player.speedBuff===8);if(type===3)assert(g.player.fireBuff===8);}g.world.grid.random=random;g.input.clear();for(let i=0;i<481;i++)g.player.update(1/60,g);assert(g.player.speedBuff===0&&g.player.fireBuff===0&&g.combat.pickups.length===0);

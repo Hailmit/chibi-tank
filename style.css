@@ -132,22 +132,6 @@ body.night.playing #minimap{border-color:#d7e1d1}
   .rotate-notice{background:#edf0e4}
 }
 
-/* Cannon heat */
-.heat-label{margin-top:10px}.heat{height:5px}.heat i{background:#e1ad57}
-.status-panel.is-hot .heat i{background:#e87f54}
-.status-panel.is-hot #heat-value{color:#cf6847}
-.status-panel.is-overheated{border-color:#ef9a70;box-shadow:0 0 0 2px #ef9a7033,0 6px 25px #69392418}
-.status-panel.is-overheated .heat i{background:#e95e4f;animation:heat-pulse .55s ease-in-out infinite alternate}
-.status-panel.is-overheated #heat-value{color:#c34f43}
-.aim-stick.overheated{border-color:#ff9b79;background:#6d302c73;box-shadow:inset 0 0 0 14px #ff826529,0 0 0 5px #f16d5730}
-.aim-stick.overheated .stick-knob{background:#f2a184;box-shadow:0 0 0 7px #f16d5740}
-@keyframes heat-pulse{to{filter:brightness(1.35)}}
-
-@media (pointer:coarse){
-  body.touch .heat-label{margin-top:6px}
-  body.touch .status-panel .heat{height:4px}
-}
-
 /* Lightweight circular HUD */
 .status-panel{width:286px;padding:16px 18px}
 .pilot-heading{margin-bottom:12px}
@@ -157,14 +141,12 @@ body.night.playing #minimap{border-color:#d7e1d1}
 .status-orb:before,.elite-orb:before{content:'';position:absolute;inset:6px;z-index:-1;border-radius:50%;background:#f4f5e9}
 .status-orb span{font-size:6px;line-height:1;letter-spacing:.7px;color:#718074;font-weight:800;max-width:55px}
 .status-orb strong{font-size:14px;line-height:1.25;margin-top:3px}
-.stamina-orb{--ring:#d4ac5e}.heat-orb{--ring:#e1ad57}
-.status-panel.is-hot .heat-orb{--ring:#e87f54}.status-panel.is-hot #heat-value{color:#cf6847}
-.status-panel.is-overheated{border-color:#ef9a70;box-shadow:0 6px 25px #69392418}.status-panel.is-overheated .heat-orb{--ring:#e95e4f}.status-panel.is-overheated #heat-value{color:#c34f43;font-size:11px}
+.stamina-orb{--ring:#d4ac5e}
 .buffs{text-align:center;min-height:0}
 .elite-panel{width:82px;display:grid;place-items:center}.elite-orb{--ring:#d5647f;width:72px;height:72px;color:#76394d;background:conic-gradient(var(--ring) var(--angle),#d8d7cb 0)}
 .elite-orb span{font-size:7px;font-weight:900;letter-spacing:.8px}.elite-orb b{font-size:12px;margin-top:2px}
 .icon-button,.primary-button,.stick-knob,.vignette{transition:none}
-.dash-button.ready,.status-panel.is-overheated .heat-orb{animation:none}
+.dash-button.ready{animation:none}
 
 @media (pointer:coarse){
   body.touch .status-panel{width:176px;padding:9px 10px}
@@ -174,7 +156,6 @@ body.night.playing #minimap{border-color:#d7e1d1}
   body.touch .status-orb:before{inset:4px}
   body.touch .status-orb span{font-size:5px;letter-spacing:.3px;max-width:40px}
   body.touch .status-orb strong{font-size:10px;margin-top:1px}
-  body.touch .status-panel.is-overheated #heat-value{font-size:8px}
   body.touch .buffs{font-size:7px}
   body.touch .elite-panel{width:58px}
   body.touch .elite-orb{width:52px;height:52px}
@@ -191,7 +172,6 @@ body.night.playing #minimap{border-color:#d7e1d1}
 .status-orb:before{inset:4px}
 .status-orb span{font-size:5px;letter-spacing:.35px;max-width:34px}
 .status-orb strong{font-size:10px;line-height:1.1;margin-top:1px}
-.status-panel.is-overheated #heat-value{font-size:8px}
 body.touch .status-panel{top:max(8px,env(safe-area-inset-top));left:max(8px,env(safe-area-inset-left));width:auto;padding:4px}
 body.touch .status-orbs{gap:3px}
 body.touch .status-orb{width:40px;height:40px}
@@ -228,6 +208,7 @@ body.touch .elite-panel{top:max(66px,calc(env(safe-area-inset-top) + 58px))}
 .fullscreen-button .fullscreen-exit,.fullscreen-button.is-fullscreen .fullscreen-enter{display:none}
 .fullscreen-button.is-fullscreen .fullscreen-exit{display:block}
 .fullscreen-button:hover{background:#fff9e8}
+html:fullscreen,html:-webkit-full-screen{width:100%;height:100%;background:#e5ecdb}
 body.playing .fullscreen-button{top:24px;right:190px}
 body.night.playing .fullscreen-button{color:#e7efdd;border-color:#a5b9ae77;background:#233c3ae8}
 @media (pointer:coarse){

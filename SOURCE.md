@@ -12,6 +12,9 @@ Toàn bộ mã nguồn tự viết, theo đường dẫn. Bản Three.js 0.170.0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#edf0e4">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="description" content="Thành phố tí hon. Trận chiến bất tận. Game xe tăng 3D sinh tồn với địa hình biến đổi, chạy ngay trong trình duyệt.">
   <title>Chibi Tank City — Endless</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
@@ -37,7 +40,7 @@ Toàn bộ mã nguồn tự viết, theo đường dẫn. Bản Three.js 0.170.0
   </main>
 
   <section id="hud" hidden aria-label="Thông tin trận đấu">
-    <div class="status-panel" aria-label="Giáp, năng lượng và nhiệt nòng"><div class="status-orbs"><div id="hp-ring" class="status-orb hp-orb"><span>GIÁP</span><strong id="hp-value">100</strong></div><div id="stamina-ring" class="status-orb stamina-orb"><span>NL</span><strong id="stamina-value">100</strong></div><div id="heat-ring" class="status-orb heat-orb"><span>NHIỆT</span><strong id="heat-value">0%</strong></div></div></div>
+    <div class="status-panel" aria-label="Giáp và năng lượng"><div class="status-orbs"><div id="hp-ring" class="status-orb hp-orb"><span>GIÁP</span><strong id="hp-value">100</strong></div><div id="stamina-ring" class="status-orb stamina-orb"><span>NL</span><strong id="stamina-value">100</strong></div></div></div>
     <div class="score-panel" aria-label="Điểm, combo và thời gian"><strong id="score" title="Điểm">000000</strong><span id="combo" title="Combo">×1</span><span id="time" title="Thời gian">00:00</span></div>
     <div id="elite" class="elite-panel" hidden><div id="elite-ring" class="elite-orb"><span>ĐẠI ÚY</span><b id="elite-value">100%</b></div></div>
     <div class="hud-center"><div id="day-cycle" class="day-cycle"><span id="day-icon">☀</span><div><small id="day-label">BAN NGÀY</small><b id="day-timer">01:00</b></div></div><div class="world-status"><span class="live-dot"></span><span id="world-status">TÁI CẤU TRÚC</span><b id="shift-timer">00:40</b></div></div>
@@ -220,22 +223,6 @@ body.night.playing #minimap{border-color:#d7e1d1}
   .rotate-notice{background:#edf0e4}
 }
 
-/* Cannon heat */
-.heat-label{margin-top:10px}.heat{height:5px}.heat i{background:#e1ad57}
-.status-panel.is-hot .heat i{background:#e87f54}
-.status-panel.is-hot #heat-value{color:#cf6847}
-.status-panel.is-overheated{border-color:#ef9a70;box-shadow:0 0 0 2px #ef9a7033,0 6px 25px #69392418}
-.status-panel.is-overheated .heat i{background:#e95e4f;animation:heat-pulse .55s ease-in-out infinite alternate}
-.status-panel.is-overheated #heat-value{color:#c34f43}
-.aim-stick.overheated{border-color:#ff9b79;background:#6d302c73;box-shadow:inset 0 0 0 14px #ff826529,0 0 0 5px #f16d5730}
-.aim-stick.overheated .stick-knob{background:#f2a184;box-shadow:0 0 0 7px #f16d5740}
-@keyframes heat-pulse{to{filter:brightness(1.35)}}
-
-@media (pointer:coarse){
-  body.touch .heat-label{margin-top:6px}
-  body.touch .status-panel .heat{height:4px}
-}
-
 /* Lightweight circular HUD */
 .status-panel{width:286px;padding:16px 18px}
 .pilot-heading{margin-bottom:12px}
@@ -245,14 +232,12 @@ body.night.playing #minimap{border-color:#d7e1d1}
 .status-orb:before,.elite-orb:before{content:'';position:absolute;inset:6px;z-index:-1;border-radius:50%;background:#f4f5e9}
 .status-orb span{font-size:6px;line-height:1;letter-spacing:.7px;color:#718074;font-weight:800;max-width:55px}
 .status-orb strong{font-size:14px;line-height:1.25;margin-top:3px}
-.stamina-orb{--ring:#d4ac5e}.heat-orb{--ring:#e1ad57}
-.status-panel.is-hot .heat-orb{--ring:#e87f54}.status-panel.is-hot #heat-value{color:#cf6847}
-.status-panel.is-overheated{border-color:#ef9a70;box-shadow:0 6px 25px #69392418}.status-panel.is-overheated .heat-orb{--ring:#e95e4f}.status-panel.is-overheated #heat-value{color:#c34f43;font-size:11px}
+.stamina-orb{--ring:#d4ac5e}
 .buffs{text-align:center;min-height:0}
 .elite-panel{width:82px;display:grid;place-items:center}.elite-orb{--ring:#d5647f;width:72px;height:72px;color:#76394d;background:conic-gradient(var(--ring) var(--angle),#d8d7cb 0)}
 .elite-orb span{font-size:7px;font-weight:900;letter-spacing:.8px}.elite-orb b{font-size:12px;margin-top:2px}
 .icon-button,.primary-button,.stick-knob,.vignette{transition:none}
-.dash-button.ready,.status-panel.is-overheated .heat-orb{animation:none}
+.dash-button.ready{animation:none}
 
 @media (pointer:coarse){
   body.touch .status-panel{width:176px;padding:9px 10px}
@@ -262,7 +247,6 @@ body.night.playing #minimap{border-color:#d7e1d1}
   body.touch .status-orb:before{inset:4px}
   body.touch .status-orb span{font-size:5px;letter-spacing:.3px;max-width:40px}
   body.touch .status-orb strong{font-size:10px;margin-top:1px}
-  body.touch .status-panel.is-overheated #heat-value{font-size:8px}
   body.touch .buffs{font-size:7px}
   body.touch .elite-panel{width:58px}
   body.touch .elite-orb{width:52px;height:52px}
@@ -279,7 +263,6 @@ body.night.playing #minimap{border-color:#d7e1d1}
 .status-orb:before{inset:4px}
 .status-orb span{font-size:5px;letter-spacing:.35px;max-width:34px}
 .status-orb strong{font-size:10px;line-height:1.1;margin-top:1px}
-.status-panel.is-overheated #heat-value{font-size:8px}
 body.touch .status-panel{top:max(8px,env(safe-area-inset-top));left:max(8px,env(safe-area-inset-left));width:auto;padding:4px}
 body.touch .status-orbs{gap:3px}
 body.touch .status-orb{width:40px;height:40px}
@@ -316,6 +299,7 @@ body.touch .elite-panel{top:max(66px,calc(env(safe-area-inset-top) + 58px))}
 .fullscreen-button .fullscreen-exit,.fullscreen-button.is-fullscreen .fullscreen-enter{display:none}
 .fullscreen-button.is-fullscreen .fullscreen-exit{display:block}
 .fullscreen-button:hover{background:#fff9e8}
+html:fullscreen,html:-webkit-full-screen{width:100%;height:100%;background:#e5ecdb}
 body.playing .fullscreen-button{top:24px;right:190px}
 body.night.playing .fullscreen-button{color:#e7efdd;border-color:#a5b9ae77;background:#233c3ae8}
 @media (pointer:coarse){
@@ -385,7 +369,7 @@ Mở **http://127.0.0.1:8000/**. Không mở `index.html` bằng `file://` vì E
 | Chơi lại sau khi bị hạ | R |
 | Toàn màn hình | Nút bốn góc ở góc phải; bấm lại hoặc dùng Esc để thoát |
 
-Thân xe xoay theo di chuyển; tháp pháo xoay riêng theo điểm chuột chiếu xuống mặt đất. Bắn liên tục tám phát sẽ làm nòng pháo quá nhiệt và khóa cò; phải nhả cò hoặc nhả cần ngắm để tản nhiệt, nòng mở lại khi xuống 40%. Các loạt bắn ngắn tự hạ nhiệt sau 0,25 giây. Vật phẩm Bắn nhanh tạo ít nhiệt hơn mỗi phát để vẫn giữ giá trị nâng cấp. Dash có 0,12 giây bất tử trong 0,18 giây di chuyển. Nhận sát thương có 0,65 giây bảo vệ. Dùng vật cản để cắt đường đạn. Nút toàn màn hình dùng Fullscreen API trên desktop và điện thoại; khi đang chơi bằng cảm ứng, game cũng thử khóa ngang màn hình. Trình duyệt không cung cấp API sẽ hiện thông báo ngắn. Mất focus hoặc đổi tab sẽ xóa phím đang giữ và tạm dừng; trở lại bằng Esc hoặc nút Tiếp tục.
+Thân xe xoay theo di chuyển; tháp pháo xoay riêng theo điểm chuột chiếu xuống mặt đất. Người chơi có thể giữ cò để bắn liên tục theo tốc độ bắn hiện tại, không có nhiệt nòng hoặc khóa cò. Dash có 0,12 giây bất tử trong 0,18 giây di chuyển. Nhận sát thương có 0,65 giây bảo vệ. Dùng vật cản để cắt đường đạn. Nút toàn màn hình hỗ trợ API chuẩn của Chrome, Edge và Safari mới, đồng thời có nhánh WebKit/Microsoft cho trình duyệt cũ; khi chơi bằng cảm ứng, game cũng thử khóa ngang màn hình. Safari trên iPhone không cung cấp fullscreen cho trang HTML tùy ý, vì vậy nút sẽ hướng dẫn dùng Chia sẻ → Thêm vào Màn hình chính. Mất focus hoặc đổi tab sẽ xóa phím đang giữ và tạm dừng; trở lại bằng Esc hoặc nút Tiếp tục.
 
 ## Triển khai GitHub Pages
 
@@ -451,8 +435,6 @@ Chỉnh trực tiếp tại `src/config.js`; tải lại trang sau khi sửa.
 | `player.hp / stamina` | 100 / 100 | Giáp và năng lượng tối đa |
 | `player.speed / radius` | 6 / 0,62 | Tốc độ, bán kính va chạm |
 | `player.fireInterval / damage` | 0,25 s / 28 | Tốc độ bắn, sát thương |
-| `player.heatMax / heatPerShot` | 100 / 14 | Ngưỡng quá nhiệt và nhiệt mỗi phát; tám phát liên tục sẽ khóa nòng |
-| `player.heatCoolRate / heatCoolDelay / heatUnlock` | 45/s / 0,25 s / 40 | Tốc độ, độ trễ tản nhiệt và ngưỡng mở khóa nòng |
 | `player.dashCost / dashDuration` | 30 / 0,18 s | Chi phí và thời lượng dash |
 | `player.dashInvulnerability` | 0,12 s | Thời gian bất tử khi dash |
 | `player.dashSpeed / dashCooldown` | 22 / 0,5 s | Tốc độ, hồi chiêu dash |
@@ -479,7 +461,7 @@ Trên thiết bị cảm ứng, game vẫn dùng cấu hình đồ họa cao, ph
 
 Game dùng một cấu hình hình ảnh cao cố định. WebGL phần cứng dùng mật độ điểm ảnh `min(devicePixelRatio, 1.25)` và hướng tới 60 FPS; SwiftShader dùng độ phân giải native, 24 FPS và bỏ tone mapping nặng. MSAA, shadow map thời gian thực và nguồn sáng điểm động được tắt; vật liệu Lambert, bảng màu và silhouette giữ hình ảnh rõ với shader nhẹ. Bóng tiếp xúc mềm của công trình/xe được gộp trong hai `InstancedMesh`; quầng sáng xanh dưới xe người chơi chỉ hiện ban đêm. Hai texture radial 64×64 được tạo tại runtime, không tải tài nguyên ngoài. Mô phỏng chạy 30 tick/giây. Menu, pause và Game Over chỉ render 4 FPS; tab ẩn không render. Particle, đạn và pháo cối chỉ cập nhật các slot đang sống; AI quét tầm nhìn theo nhịp chia đều; minimap và vòng cập nhật canvas phụ đã được loại bỏ; cảnh báo địa hình dùng một `InstancedMesh`. Các animation trang trí ở địa hình, điểm spawn, vòng ngắm địch, độ giật nòng và HUD đã được bỏ.
 
-Hình xe tăng vẫn giữ bánh, xích, đèn, ăng-ten, tháp pháo và màu riêng của từng bộ phận. Nòng pháo được gộp vào mesh tháp pháo; các phần còn lại được ghép trước khi gửi sang GPU. Nhà cao tầng, hàng quán và cây giữ silhouette nhưng giảm chi tiết hình học nhỏ; bản sao trong suốt của nhà che khuất xe dùng silhouette gọn hơn. HUD giáp, năng lượng và nhiệt nòng chỉ còn một cụm ba vòng 150 px trên desktop và 136 px trên mobile. Khung điểm chỉ giữ điểm, combo và thời gian. Đồng hồ ngày–đêm cùng bộ đếm tái cấu trúc được rút gọn thành hai pill ở giữa; cả bốn cụm HUD nằm trên một hàng cùng chiều cao. Thanh tên game, minimap và nút audio/settings không xuất hiện trong gameplay.
+Hình xe tăng vẫn giữ bánh, xích, đèn, ăng-ten, tháp pháo và màu riêng của từng bộ phận. Nòng pháo được gộp vào mesh tháp pháo; các phần còn lại được ghép trước khi gửi sang GPU. Nhà cao tầng, hàng quán và cây giữ silhouette nhưng giảm chi tiết hình học nhỏ; bản sao trong suốt của nhà che khuất xe dùng silhouette gọn hơn. HUD chỉ còn hai vòng Giáp và Năng lượng; vòng nhiệt đã được loại bỏ. Khung điểm chỉ giữ điểm, combo và thời gian. Đồng hồ ngày–đêm cùng bộ đếm tái cấu trúc được rút gọn thành hai pill ở giữa; nút fullscreen nằm trước khung điểm. Thanh tên game, minimap và nút audio/settings không xuất hiện trong gameplay.
 
 Mỗi trận bắt đầu vào ban ngày. Sau 60 giây, ánh sáng chuyển dần sang đêm và mọi địch đang sống hoặc xuất hiện mới trở thành zombie: mắt xanh, gai xanh và vòng sáng xanh; `maxHP` tăng ×2 nhưng giữ nguyên phần trăm máu hiện tại. Sau 60 giây đêm, bình minh đưa chúng về chỉ số thường theo cùng nguyên tắc. Đồng hồ HUD luôn hiển thị thời gian còn lại của pha hiện tại.
 
@@ -545,7 +527,7 @@ Kết quả chức năng gần nhất: **exit code 0**, 11 bài core + 20 bài s
 | Dash | Đạt. Tốn 30 stamina, có invulnerability; kiểm tra di chuyển nhiều bước không vượt tường hoặc biên, vị trí cuối hợp lệ. |
 | Chuột, raycast, resize | Đạt ở 1440×1000 và 1024×768. Chiếu ngược điểm ngắm về đúng tọa độ chuột; hướng đạn khớp hướng tháp pháo. |
 | Cảm ứng landscape | Đạt ở viewport 844×390, DPR 2. Hai cần 100×100 CSS px và nút lướt 60×60 CSS px nằm trong màn hình; kéo cần trái tạo vector di chuyển, cần phải vừa ngắm vừa bắn. Cấu hình đồ họa luôn là High. |
-| Toàn màn hình | Đạt bằng click thật qua Chrome CDP: nút vào và thoát Fullscreen API thành công, cập nhật nhãn/biểu tượng. Vùng chạm 44×44 px nằm trọn viewport desktop và mobile 667×375, không chồng bốn cụm HUD. |
+| Toàn màn hình | Đạt bằng click thật qua Chrome CDP: nút vào và thoát Fullscreen API thành công, cập nhật nhãn/biểu tượng. Kiểm thử adapter xác nhận các nhánh chuẩn Chrome/Edge, WebKit Safari mới/cũ và Microsoft cũ. Vùng chạm 44×44 px nằm trọn viewport desktop và mobile 667×375, không chồng bốn cụm HUD. |
 | Chu kỳ ngày–đêm | Đạt. Chuyển sang đêm tại 60 giây và trở lại ngày tại 120 giây gameplay. Pause vẫn đóng băng đồng hồ vì chu kỳ dùng `game.time`. |
 | Zombie ban đêm | Đạt. Địch đang sống và địch sinh mới đều có `maxHP = baseMaxHP × 2`, giữ phần trăm máu khi chuyển pha, hiện mắt/gai xanh và trở lại HP thường lúc bình minh. |
 | Bắn có chủ đích | Đạt. Bắt đầu trận không có đạn tự bắn; tạo đạn khi giữ trạng thái chuột trái. Listener pointerdown chỉ nằm trên canvas, tách khỏi nút UI. |
@@ -568,7 +550,7 @@ Kết quả chức năng gần nhất: **exit code 0**, 11 bài core + 20 bài s
 | Game Over / R / restart | Đạt. Hiện thống kê, phím R tạo trận mới. Năm restart liên tiếp không giữ enemy, projectile, pickup từ trận trước. Các listener và RAF chỉ được tạo trong constructor, không tạo ở restart. |
 | Pool | Đạt. 180 đạn, 12 pháo cối, 96 particle/debris và 16 popup; particle chết không còn được cập nhật mỗi tick. |
 | Ngân sách render | Đạt với 16 xe địch. 75 draw call ban ngày, 86 ban đêm; tối đa 48 enemy mesh và 96 particle instance. Shadow map tắt; bóng tiếp xúc instanced và quầng sáng đêm hoạt động. SwiftShader dùng pixel ratio 1 và 24 FPS, WebGL phần cứng hướng tới 60 FPS. |
-| HUD tối giản | Đạt. Không còn minimap, header tên game, nút audio/settings hay các điều khiển tương ứng trong DOM. Cụm status rộng dưới 160 px trên desktop và đo được 136×50 px ở viewport mobile 667×375. Khung điểm chỉ giữ điểm, combo, thời gian. Đồng hồ ngày–đêm và tái cấu trúc nằm giữa; cả bốn khối cùng hàng, cao 56 px desktop và 50 px mobile, không giao nhau. |
+| HUD tối giản | Đạt. Không còn minimap, header tên game, nút audio/settings hay các điều khiển tương ứng trong DOM. Cụm status chỉ còn Giáp và Năng lượng, đo được 93×50 px ở viewport mobile 667×375. Khung điểm chỉ giữ điểm, combo, thời gian. Đồng hồ ngày–đêm, tái cấu trúc và nút fullscreen nằm cùng hàng, không giao nhau. |
 
 ## Bài soak 600 giây mô phỏng
 
@@ -582,8 +564,8 @@ Kết quả của lần cuối:
 - Tối đa 15 đạn trực tiếp và 96 particle hoạt động trong kịch bản này; các pool luôn hữu hạn.
 - **0** lần phát hiện player/enemy nằm trong ô cấm hoặc grid mất liên thông khi lấy mẫu mỗi giây.
 - Ở 10 mốc render: **25–27 geometries, 1–2 texture** trong `renderer.info.memory`; draw call dao động **92–112**. Hai texture nhỏ tạo bóng mềm và quầng sáng, không tải từ mạng; cảnh báo tái cấu trúc vẫn được gộp thành một lệnh vẽ.
-- JS heap tại các mốc dao động khoảng **21,9–39,5 MB**, cuối bài khoảng **37,8 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
-- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,32 giây** đồng hồ ở lượt test này, so với 7,82 giây của kiến trúc 60 Hz trước lượt tối ưu. Đây là phép so sánh logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
+- JS heap tại các mốc dao động khoảng **49,2–72,8 MB**, cuối bài khoảng **60,1 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
+- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,50 giây** đồng hồ ở lượt test này, so với 7,82 giây của kiến trúc 60 Hz trước lượt tối ưu. Đây là phép so sánh logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
 
 ## Giới hạn và kiểm tra thủ công còn lại
 
@@ -603,15 +585,15 @@ Kết quả của lần cuối:
 Lần kiểm tra giao diện di động gần nhất dùng Chrome 152 headless với mô phỏng cảm ứng và DPR 2. Kết quả đều đạt ở các trạng thái sau:
 
 - Gameplay ngang 844×390 và 667×375: HUD, thông báo, hai cần điều khiển và nút lướt nằm trọn trong viewport, không chồng lấn; thao tác đi, ngắm và bắn hoạt động.
-- Trạng thái quá nhiệt 667×375: thanh nhiệt đạt 100%, HUD đổi màu, hiển thị Khóa nòng và cần ngắm đổi thành Đang hạ nhiệt mà không vượt khỏi viewport.
+- Cụm trạng thái 667×375: chỉ còn hai vòng Giáp và Năng lượng, rộng 93×50 px; không còn phần tử nhiệt nòng hay trạng thái khóa cò.
 - Hộp tạm dừng 667×375: chỉ còn Tiếp tục và Về màn hình chính, không có audio/settings, không cần cuộn; các vùng chạm cao ít nhất 44 CSS px.
 - Hộp kết thúc 667×375: tiêu đề, thống kê, Thử lại và Về màn hình chính hiện đầy đủ; vị trí cuộn luôn trở về đầu khi đổi trạng thái.
 - Gameplay dọc 390×844: lớp nhắc xoay ngang phủ kín màn hình. Menu dọc vẫn dùng được và không hiện lớp nhắc xoay.
-- Chất lượng trên thiết bị cảm ứng luôn là High; cụm status 136×50 px không chồng vùng điều khiển. Không ghi nhận JavaScript exception hoặc HTTP response lỗi.
+- Chất lượng trên thiết bị cảm ứng luôn là High; cụm status 93×50 px không chồng vùng điều khiển. Không ghi nhận JavaScript exception hoặc HTTP response lỗi.
 
 Kết quả đo nằm trong `tests/results/mobile-*.json`; ảnh đối chiếu nằm trong `artifacts/` và không được đưa vào gói phát hành.
 
-Bài integration xác nhận tám phát liên tục khóa nòng, giữ cò không làm nguội hoặc bắn thêm, nhả cò làm nhiệt giảm tới ngưỡng mở khóa và xe có thể bắn lại.
+Bài integration xác nhận 20 lần bắn liên tục vẫn tạo đủ 20 viên đạn và đối tượng người chơi không còn thuộc tính nhiệt hoặc khóa cò.
 
 ## Kiểm tra nhanh khi triển khai
 
@@ -695,7 +677,6 @@ export const CONFIG = {
   step: 1 / 30,
   world: { size: 25, cell: 2.4, shiftMin: 35, shiftMax: 50, warning: 2, protectRadius: 5.5, phaseDuration: 60 },
   player: { hp: 100, stamina: 100, speed: 6, radius: .62, fireInterval: .25, damage: 28,
-    heatMax: 100, heatPerShot: 14, heatCoolRate: 45, heatCoolDelay: .25, heatUnlock: 40,
     dashCost: 30, dashDuration: .18, dashInvulnerability: .12, dashSpeed: 22, dashCooldown: .5, staminaRegen: 23, hurtGrace: .65 },
   director: { maxEnemies: 16, spawnStart: 4.2, spawnMin: 1.35, spawnWarning: 1.5, safeRadius: 11, eliteEvery: 90, assaultFirst: 24, assaultBase: 38, assaultMin: 28, assaultGap: .6 },
   combat: { maxBullets: 180, maxMortars: 12, bulletSpeed: 25, enemyBulletSpeed: 10, comboWindow: 4, maxCombo: 5, survivalScore: 5, maxPickups: 16 },
@@ -1136,7 +1117,7 @@ export class Game {
   makePreview(){for(const [x,z,color,type] of [[12,0,0xe8836d,'scout'],[0,-12,0xe2ae59,'mortar'],[-12,12,0xb68abf,'heavy']]){const m=tankModel(color,type);m.root.position.set(x,0,z);m.turret.rotation.y=Math.PI*.7;m.body.rotation.y=Math.PI*.65;this.scene.add(m.root);this.previewTanks.push(m);}this.player.aim=-1.1;this.player.angle=-.6;this.player.sync(0);}
   removePreview(){for(const m of this.previewTanks)m.root.removeFromParent();this.previewTanks=[];}
   reset(seed){this.input.clear();this.enemies.clear();this.combat.clear();this.effects.clear();this.player?.dispose();this.world?.dispose();this.world=new World(this.scene,seed);this.player=new Player(this.scene);this.time=0;this.score=0;this.kills=0;this.combo=0;this.maxCombo=1;this.comboTime=0;this.newBest=false;this.milestones=new Set();this.enemies.spawnTimer=3;this.enemies.eliteTimer=CONFIG.director.eliteEvery;this.enemies.assaultTimer=CONFIG.director.assaultFirst;this.enemies.assaultRemaining=0;this.enemies.serial=0;this.accumulator=0;this.uiAccumulator=0;this.focus.set(0,0,0);this.setNight(false,true,true);this.ui?.clear();}
-  start(){this.audio.unlock();this.removePreview();const seed=new URLSearchParams(location.search).get('seed');this.reset(seed!==null?Number(seed)>>>0:crypto.getRandomValues(new Uint32Array(1))[0]);this.state='playing';this.ui.show(this.state);this.last=performance.now();this.resize();this.ui.toast(this.input.touchCapable?'Kéo trái để đi · Kéo phải để bắn · Nhả cần để hạ nhiệt':'Giữ chuột để bắn · Nhả cò để hạ nhiệt · Space để lướt né');document.activeElement?.blur();}
+  start(){this.audio.unlock();this.removePreview();const seed=new URLSearchParams(location.search).get('seed');this.reset(seed!==null?Number(seed)>>>0:crypto.getRandomValues(new Uint32Array(1))[0]);this.state='playing';this.ui.show(this.state);this.last=performance.now();this.resize();this.ui.toast(this.input.touchCapable?'Kéo trái để đi · Kéo phải để ngắm và bắn':'Giữ chuột để bắn · Space để lướt né');document.activeElement?.blur();}
   home(){this.input.clear();this.removePreview();this.reset(1709);this.state='menu';this.makePreview();this.ui.show('menu');this.resize();}
   togglePause(force=false){if(force&&this.state!=='playing')return;if(this.state==='over'||this.state==='menu')return;this.state=this.state==='playing'?'paused':'playing';this.input.clear();this.accumulator=0;this.last=performance.now();this.ui.show(this.state);if(this.state==='playing'){this.audio.unlock();document.activeElement?.blur();}}
   end(){if(this.state!=='playing')return;this.state='over';this.input.clear();this.effects.explosion(this.player.x,this.player.z,2);this.audio.play('explosion');const score=Math.floor(this.score);this.newBest=score>this.best;this.best=Math.max(this.best,score);writeStorage('chibi-best',this.best);this.ui.show('over');}
@@ -1256,12 +1237,10 @@ import { CONFIG } from './config.js';
 import { turn } from './core.js';
 import { tankModel } from './models.js';
 export class Player {
-  constructor(scene){Object.assign(this,{x:0,z:0,radius:CONFIG.player.radius,hp:CONFIG.player.hp,stamina:CONFIG.player.stamina,heat:0,heatDelay:0,overheated:false,heatFx:0,angle:Math.PI,aim:Math.PI,fire:0,dash:0,dashCooldown:0,invulnerable:0,regenDelay:0,speedBuff:0,fireBuff:0,trail:0});this.model=tankModel(CONFIG.colors.mint);scene.add(this.model.root);}
+  constructor(scene){Object.assign(this,{x:0,z:0,radius:CONFIG.player.radius,hp:CONFIG.player.hp,stamina:CONFIG.player.stamina,angle:Math.PI,aim:Math.PI,fire:0,dash:0,dashCooldown:0,invulnerable:0,regenDelay:0,speedBuff:0,fireBuff:0,trail:0});this.model=tankModel(CONFIG.colors.mint);scene.add(this.model.root);}
   update(dt,game){
     const c=CONFIG.player,i=game.input,m=i.movement();
-    for(const key of ['fire','dashCooldown','invulnerable','regenDelay','speedBuff','fireBuff','heatDelay','heatFx'])this[key]=Math.max(0,this[key]-dt);
-    if(this.heatDelay===0&&this.heat>0&&!i.firing)this.heat=Math.max(0,this.heat-c.heatCoolRate*dt);
-    if(this.overheated&&this.heat<=c.heatUnlock)this.overheated=false;
+    for(const key of ['fire','dashCooldown','invulnerable','regenDelay','speedBuff','fireBuff'])this[key]=Math.max(0,this[key]-dt);
     if(this.regenDelay===0)this.stamina=Math.min(c.stamina,this.stamina+c.staminaRegen*dt);
     if(i.dash){i.dash=false;if(this.stamina>=c.dashCost&&this.dashCooldown<=0){this.stamina-=c.dashCost;this.dash=c.dashDuration;this.invulnerable=c.dashInvulnerability;this.dashCooldown=c.dashCooldown;this.regenDelay=.5;this.dashX=m.x||m.z?m.x:Math.sin(this.angle);this.dashZ=m.x||m.z?m.z:Math.cos(this.angle);game.audio.play('dash');}}
     if(m.x||m.z)this.angle=turn(this.angle,Math.atan2(m.x,m.z),1-Math.exp(-dt*14));
@@ -1272,8 +1251,7 @@ export class Player {
     if(i.touchCapable&&i.firing){let best=null,bestScore=Infinity;for(const enemy of game.enemies.list){if(enemy.dead)continue;const distance=Math.hypot(enemy.x-this.x,enemy.z-this.z),enemyAim=Math.atan2(enemy.x-this.x,enemy.z-this.z),difference=Math.abs(Math.atan2(Math.sin(enemyAim-aim),Math.cos(enemyAim-aim)));if(distance<=16&&difference<.26&&!game.world.grid.trace(this.x,this.z,enemy.x,enemy.z)){const score=difference*3+distance/24;if(score<bestScore){best=enemy;bestScore=score;}}}if(best)aim=Math.atan2(best.x-this.x,best.z-this.z);}
     this.aim=aim;
     this.sync(dt);
-    if(i.firing&&this.fire<=0&&!this.overheated){const fired=game.combat.shoot(this,'player',c.damage);if(fired){const shotHeat=c.heatPerShot*(this.fireBuff>0?.72:1);this.heat=Math.min(c.heatMax,this.heat+shotHeat);this.heatDelay=c.heatCoolDelay;if(this.heat>=c.heatMax){this.overheated=true;this.heatFx=0;game.ui.toast('NÒNG PHÁO QUÁ NHIỆT · NHẢ CÒ ĐỂ HẠ NHIỆT');game.audio.play('warning');}}this.fire=c.fireInterval*(this.fireBuff>0?.55:1);}
-    if(this.overheated&&this.heatFx<=0){this.heatFx=.25;game.effects.emit(this.x,.9,this.z,this.heat>70?0xff9b68:0xc6cbc1,1,.35);}
+    if(i.firing&&this.fire<=0){game.combat.shoot(this,'player',c.damage);this.fire=c.fireInterval*(this.fireBuff>0?.55:1);}
     this.trail-=dt;if(this.trail<=0&&(m.x||m.z||dashing||this.hp<30)){this.trail=.14;game.effects.emit(this.x,.2,this.z,dashing?0xc6fff0:this.hp<30?0x8e8e87:0xded5ba,dashing?2:1,.3);}
     this.model.halo.material=game.material(this.invulnerable>0?0xffffff:this.stamina>=c.dashCost?0xb6ffdf:0xf1af85,true);
   }
@@ -1292,17 +1270,19 @@ const $=id=>document.getElementById(id);
 export const formatTime=t=>`${String(Math.floor(t/60)).padStart(2,'0')}:${String(Math.floor(t%60)).padStart(2,'0')}`;
 export class UI {
   constructor(game){this.game=game;this.toastLife=0;this.hitLife=0;
-    $('play').onclick=()=>game.start();$('resume').onclick=()=>game.togglePause();$('restart').onclick=()=>game.start();$('home').onclick=()=>game.home();$('fullscreen-button').onclick=()=>this.toggleFullscreen();document.addEventListener('fullscreenchange',()=>this.syncFullscreen());document.addEventListener('webkitfullscreenchange',()=>this.syncFullscreen());this.syncFullscreen();this.show('menu');
+    $('play').onclick=()=>game.start();$('resume').onclick=()=>game.togglePause();$('restart').onclick=()=>game.start();$('home').onclick=()=>game.home();$('fullscreen-button').onclick=()=>this.toggleFullscreen();for(const event of ['fullscreenchange','webkitfullscreenchange','MSFullscreenChange'])document.addEventListener(event,()=>this.syncFullscreen());this.syncFullscreen();this.show('menu');
   }
-  fullscreenElement(){return document.fullscreenElement||document.webkitFullscreenElement;}
+  fullscreenElement(){return document.fullscreenElement||document.webkitFullscreenElement||document.msFullscreenElement;}
+  fullscreenRequest(root=document.documentElement){return root.requestFullscreen||root.webkitRequestFullscreen||root.webkitRequestFullScreen||root.msRequestFullscreen;}
+  fullscreenExit(){return document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen;}
   syncFullscreen(){const active=!!this.fullscreenElement(),button=$('fullscreen-button');button.classList.toggle('is-fullscreen',active);button.setAttribute('aria-label',active?'Thoát toàn màn hình':'Bật toàn màn hình');button.title=active?'Thoát toàn màn hình':'Toàn màn hình';}
   async toggleFullscreen(){
     try{
       if(this.fullscreenElement()){
-        const exit=document.exitFullscreen||document.webkitExitFullscreen;if(exit)await exit.call(document);screen.orientation?.unlock?.();
+        const exit=this.fullscreenExit();if(exit)await exit.call(document);screen.orientation?.unlock?.();
       }else{
-        const root=document.documentElement,enter=root.requestFullscreen||root.webkitRequestFullscreen;if(!enter){this.toast('Trình duyệt này chưa hỗ trợ toàn màn hình');return;}
-        await enter.call(root,{navigationUI:'hide'});if(this.game.touchDevice&&this.game.state==='playing')try{await screen.orientation?.lock?.('landscape');}catch{}
+        const root=document.documentElement,enter=this.fullscreenRequest(root);if(!enter){this.toast(/iPhone|iPod/.test(navigator.userAgent)?'iPhone: chọn Chia sẻ · Thêm vào Màn hình chính':'Trình duyệt này chưa hỗ trợ toàn màn hình');return;}
+        await enter.call(root);if(this.game.touchDevice&&this.game.state==='playing')try{await screen.orientation?.lock?.('landscape');}catch{}
       }
     }catch{this.toast('Không thể bật toàn màn hình trên trình duyệt này');}
     this.syncFullscreen();this.game.resize();
@@ -1311,7 +1291,7 @@ export class UI {
   toast(text){$('toast').textContent=text;$('toast').classList.add('visible');this.toastLife=3;}
   hit(){this.hitLife=.18;$('hit-flash').classList.add('active');}
   update(dt){const g=this.game,p=g.player;this.toastLife-=dt;this.hitLife-=dt;if(this.toastLife<=0)$('toast').classList.remove('visible');if(this.hitLife<=0)$('hit-flash').classList.remove('active');
-    const hp=Math.round(Math.max(0,p.hp/CONFIG.player.hp)*100),stamina=Math.round(p.stamina/CONFIG.player.stamina*100),heat=Math.round(p.heat/CONFIG.player.heatMax*100);$('hp-value').textContent=Math.ceil(p.hp);$('hp-ring').style.setProperty('--angle',`${hp*3.6}deg`);$('stamina-value').textContent=Math.floor(p.stamina);$('stamina-ring').style.setProperty('--angle',`${stamina*3.6}deg`);$('heat-value').textContent=p.overheated?'KHÓA':`${heat}%`;$('heat-ring').style.setProperty('--angle',`${heat*3.6}deg`);document.querySelector('.status-panel').classList.toggle('is-hot',p.heat>=CONFIG.player.heatMax*.7);document.querySelector('.status-panel').classList.toggle('is-overheated',p.overheated);$('aim-stick').classList.toggle('overheated',p.overheated);$('aim-stick').setAttribute('aria-label',p.overheated?'Kéo để ngắm; nhả cần để hạ nhiệt nòng pháo':'Kéo để ngắm và bắn');$('aim-label').textContent=p.overheated?'ĐANG HẠ NHIỆT':'NGẮM · BẮN';const dashReady=p.stamina>=CONFIG.player.dashCost&&p.dashCooldown<=0;$('dash-button').disabled=!dashReady;$('dash-button').classList.toggle('ready',dashReady);$('score').textContent=String(Math.floor(g.score)).padStart(6,'0');$('combo').textContent=`×${Math.max(1,g.combo)}`;$('time').textContent=formatTime(g.time);
+    const hp=Math.round(Math.max(0,p.hp/CONFIG.player.hp)*100),stamina=Math.round(p.stamina/CONFIG.player.stamina*100);$('hp-value').textContent=Math.ceil(p.hp);$('hp-ring').style.setProperty('--angle',`${hp*3.6}deg`);$('stamina-value').textContent=Math.floor(p.stamina);$('stamina-ring').style.setProperty('--angle',`${stamina*3.6}deg`);const dashReady=p.stamina>=CONFIG.player.dashCost&&p.dashCooldown<=0;$('dash-button').disabled=!dashReady;$('dash-button').classList.toggle('ready',dashReady);$('score').textContent=String(Math.floor(g.score)).padStart(6,'0');$('combo').textContent=`×${Math.max(1,g.combo)}`;$('time').textContent=formatTime(g.time);
     const elite=g.enemies.list.find(e=>e.type==='elite');$('elite').hidden=!elite;if(elite){const value=Math.round(Math.max(0,elite.hp/elite.maxHP)*100);$('elite-ring').style.setProperty('--angle',`${value*3.6}deg`);$('elite-value').textContent=`${value}%`;}
     const phaseRemaining=CONFIG.world.phaseDuration-g.time%CONFIG.world.phaseDuration;$('day-icon').textContent=g.isNight?'☾':'☀';$('day-label').textContent=g.isNight?'ĐÊM ZOMBIE':'BAN NGÀY';$('day-timer').textContent=formatTime(Math.ceil(phaseRemaining));$('day-cycle').classList.toggle('is-night',g.isNight);
     $('world-status').textContent=g.world.pending?'SẮP ĐỔI':'TÁI CẤU TRÚC';$('shift-timer').textContent=formatTime(Math.ceil(g.world.pending?.remaining??g.world.nextShift));
@@ -1541,7 +1521,7 @@ try:
       for(let i=0;i<5;i++){g.start();cancelAnimationFrame(g.frameId);}check('Repeated restart clears entities',g.enemies.list.length===0&&g.enemies.pending.length===0&&g.combat.pickups.length===0&&g.effects.popups.length===16);
       check('Fixed pool caps',g.combat.bullets.length===180&&g.combat.shells.length===12&&g.effects.particles.length===96&&g.effects.popups.length===16);
       const statusPanel=document.querySelector('.status-panel').getBoundingClientRect(),scorePanel=document.querySelector('.score-panel').getBoundingClientRect();check('Minimal HUD removes minimap, game header, audio and settings controls',!document.getElementById('minimap')&&!document.querySelector('.topbar')&&!document.getElementById('mute')&&!document.getElementById('pause-button')&&!document.getElementById('volume')&&!document.getElementById('shake')&&!document.getElementById('best')&&statusPanel.width<=160&&scorePanel.width<=190&&scorePanel.height<=60);
-      const fullscreen=document.getElementById('fullscreen-button'),fullscreenRect=fullscreen.getBoundingClientRect();check('Fullscreen control is available on desktop and mobile',typeof g.ui.toggleFullscreen==='function'&&fullscreenRect.width>=44&&fullscreenRect.height>=44&&fullscreen.getAttribute('aria-label')==='Bật toàn màn hình');
+      const fullscreen=document.getElementById('fullscreen-button'),fullscreenRect=fullscreen.getBoundingClientRect(),standard=()=>1,webkit=()=>2,webkitOld=()=>3,ms=()=>4,compat=g.ui.fullscreenRequest({requestFullscreen:standard})===standard&&g.ui.fullscreenRequest({webkitRequestFullscreen:webkit})===webkit&&g.ui.fullscreenRequest({webkitRequestFullScreen:webkitOld})===webkitOld&&g.ui.fullscreenRequest({msRequestFullscreen:ms})===ms;check('Fullscreen adapters cover Chrome, Edge and Safari',typeof g.ui.toggleFullscreen==='function'&&compat&&fullscreenRect.width>=44&&fullscreenRect.height>=44&&fullscreen.getAttribute('aria-label')==='Bật toàn màn hình');
       g.ui.update(0);g.updateCamera(1);g.world.fadeOccluders(g.player);g.world.updateGroundEffects(g.player,g.enemies.list,g.isNight);g.renderer.render(g.scene,g.camera);check('Lightweight contact shadows render without shadow maps',g.world.structureShadows.count>0&&g.world.vehicleShadows.count>=1&&!g.renderer.shadowMap.enabled);return results;
     })()""")
     smoke.append(fullscreen_result)
@@ -1550,7 +1530,7 @@ try:
     integration = evaluate("import('./tests/integration-suite.js').then(m=>m.runIntegrationTests(window.__game))")
     print('Integration: '+json.dumps(integration, ensure_ascii=False), flush=True)
     (ART / 'integration-results.json').write_text(json.dumps(integration, indent=2, ensure_ascii=False), encoding='utf-8')
-    performance_result = evaluate("""(async()=>{const g=__game,{CONFIG}=await import('./src/config.js');g.start();cancelAnimationFrame(g.frameId);g.setQuality();for(let i=0;i<16;i++)g.enemies.spawn({type:['scout','gunner','heavy','mortar'][i%4],x:-24+(i%6)*4.8,z:-24+Math.floor(i/6)*4.8});g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);const dayCalls=g.renderer.info.render.calls;g.setNight(true,true,true);g.renderer.render(g.scene,g.camera);const nightCalls=g.renderer.info.render.calls,pixelRatio=g.renderer.getPixelRatio(),expectedRatio=g.softwareRenderer?1:Math.min(devicePixelRatio,1.25);let enemyMeshes=0;for(const e of g.enemies.list)e.model.root.traverse(o=>{if(o.isMesh&&o.visible)enemyMeshes++;});const uiOptionRemoved=!document.getElementById('quality'),fixedHighScale=!('adjustRenderScale' in g)&&Math.abs(pixelRatio-expectedRatio)<1e-6,circularHUD=['hp-ring','stamina-ring','heat-ring'].every(id=>document.getElementById(id)),simulationFPS=Math.round(1/CONFIG.step);return {pass:dayCalls<110&&nightCalls<125&&!g.renderer.shadowMap.enabled&&g.effects.mesh.count===96&&enemyMeshes<=64&&g.settings.quality==='high'&&uiOptionRemoved&&fixedHighScale&&circularHUD&&simulationFPS===30,dayCalls,nightCalls,enemyMeshes,particleInstances:g.effects.mesh.count,quality:g.settings.quality,uiOptionRemoved,fixedHighScale,circularHUD,pixelRatio,expectedRatio,hardwareFPS:CONFIG.performance.highFPS,softwareFPS:CONFIG.performance.softwareFPS,simulationFPS,idleFPS:CONFIG.performance.idleFPS,shadows:g.renderer.shadowMap.enabled,softwareRenderer:g.softwareRenderer};})()""")
+    performance_result = evaluate("""(async()=>{const g=__game,{CONFIG}=await import('./src/config.js');g.start();cancelAnimationFrame(g.frameId);g.setQuality();for(let i=0;i<16;i++)g.enemies.spawn({type:['scout','gunner','heavy','mortar'][i%4],x:-24+(i%6)*4.8,z:-24+Math.floor(i/6)*4.8});g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);const dayCalls=g.renderer.info.render.calls;g.setNight(true,true,true);g.renderer.render(g.scene,g.camera);const nightCalls=g.renderer.info.render.calls,pixelRatio=g.renderer.getPixelRatio(),expectedRatio=g.softwareRenderer?1:Math.min(devicePixelRatio,1.25);let enemyMeshes=0;for(const e of g.enemies.list)e.model.root.traverse(o=>{if(o.isMesh&&o.visible)enemyMeshes++;});const uiOptionRemoved=!document.getElementById('quality'),fixedHighScale=!('adjustRenderScale' in g)&&Math.abs(pixelRatio-expectedRatio)<1e-6,circularHUD=['hp-ring','stamina-ring'].every(id=>document.getElementById(id))&&!document.getElementById('heat-ring'),simulationFPS=Math.round(1/CONFIG.step);return {pass:dayCalls<110&&nightCalls<125&&!g.renderer.shadowMap.enabled&&g.effects.mesh.count===96&&enemyMeshes<=64&&g.settings.quality==='high'&&uiOptionRemoved&&fixedHighScale&&circularHUD&&simulationFPS===30,dayCalls,nightCalls,enemyMeshes,particleInstances:g.effects.mesh.count,quality:g.settings.quality,uiOptionRemoved,fixedHighScale,circularHUD,pixelRatio,expectedRatio,hardwareFPS:CONFIG.performance.highFPS,softwareFPS:CONFIG.performance.softwareFPS,simulationFPS,idleFPS:CONFIG.performance.idleFPS,shadows:g.renderer.shadowMap.enabled,softwareRenderer:g.softwareRenderer};})()""")
     print('Performance budget: '+json.dumps(performance_result), flush=True)
     (ART / 'performance-results.json').write_text(json.dumps(performance_result, indent=2), encoding='utf-8')
     visual = evaluate("""(()=>{const g=__game,i=g.world.grid.index(13,12);g.world.grid.tiles[i]=3;g.world.grid.hp[i]=Infinity;g.world.rebuild(i);g.player.x=0;g.player.z=0;g.player.sync(0);g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);return {ghosts:g.world.ghosts.size,fullHeight:g.world.tiles[i].scale.y===1};})()""")
@@ -1616,11 +1596,10 @@ try:
     print('Mobile compact: '+json.dumps(compact), flush=True)
     (ART / 'mobile-compact-results.json').write_text(json.dumps(compact, indent=2), encoding='utf-8')
     screenshot('mobile-compact.png')
-    overheat = evaluate("""(()=>{const g=__game,p=g.player;p.heat=100;p.overheated=true;g.ui.update(0);const panel=document.querySelector('.status-panel'),ring=document.getElementById('heat-ring'),aim=document.getElementById('aim-stick'),label=document.getElementById('aim-label');const r=panel.getBoundingClientRect();return {pass:panel.classList.contains('is-overheated')&&ring.style.getPropertyValue('--angle')==='360deg'&&document.getElementById('heat-value').textContent==='KHÓA'&&aim.classList.contains('overheated')&&label.textContent==='ĐANG HẠ NHIỆT'&&r.left>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,panel:[r.x,r.y,r.width,r.height],heat:ring.style.getPropertyValue('--angle'),aimLabel:label.textContent};})()""")
-    print('Mobile overheat: '+json.dumps(overheat), flush=True)
-    (ART / 'mobile-overheat-results.json').write_text(json.dumps(overheat, indent=2, ensure_ascii=False), encoding='utf-8')
-    screenshot('mobile-overheat.png')
-    evaluate("__game.player.heat=0;__game.player.overheated=false;__game.ui.update(0)")
+    status = evaluate("""(()=>{const g=__game;g.ui.update(0);const panel=document.querySelector('.status-panel'),rings=[...panel.querySelectorAll('.status-orb')],aim=document.getElementById('aim-stick'),r=panel.getBoundingClientRect();return {pass:rings.length===2&&!document.getElementById('heat-ring')&&!('heat' in g.player)&&aim.getAttribute('aria-label')==='Kéo để ngắm và bắn'&&r.left>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,panel:[r.x,r.y,r.width,r.height],rings:rings.map(x=>x.id)};})()""")
+    print('Mobile status: '+json.dumps(status, ensure_ascii=False), flush=True)
+    (ART / 'mobile-status-results.json').write_text(json.dumps(status, indent=2, ensure_ascii=False), encoding='utf-8')
+    screenshot('mobile-status.png')
     pause = evaluate("""(()=>{const g=__game;g.togglePause(),el=document.querySelector('.dialog'),dialog=el.getBoundingClientRect(),resume=document.getElementById('resume').getBoundingClientRect(),home=document.getElementById('home').getBoundingClientRect(),labels=[...document.querySelectorAll('#settings label')].map(e=>e.getBoundingClientRect()),inside=r=>r.top>=dialog.top&&r.bottom<=dialog.bottom;return {pass:g.state==='paused'&&document.getElementById('touch-controls').hidden&&dialog.x>=0&&dialog.y>=0&&dialog.right<=innerWidth&&dialog.bottom<=innerHeight&&el.scrollHeight<=el.clientHeight&&el.scrollTop===0&&resume.height>=44&&home.height>=44&&inside(resume)&&inside(home)&&labels.every(r=>r.height>=44&&inside(r)),dialog,clientHeight:el.clientHeight,scrollHeight:el.scrollHeight,scrollTop:el.scrollTop,resumeHeight:resume.height,homeHeight:home.height,labelHeights:labels.map(r=>r.height)};})()""")
     print('Mobile pause: '+json.dumps(pause), flush=True)
     (ART / 'mobile-pause-results.json').write_text(json.dumps(pause, indent=2), encoding='utf-8')
@@ -1641,7 +1620,7 @@ try:
     errors = [e for e in events if e.get('method')=='Runtime.exceptionThrown' or (e.get('method')=='Network.responseReceived' and e['params']['response']['status']>=400)]
     print('Browser errors: '+json.dumps(errors), flush=True)
     (ART / 'browser-errors.json').write_text(json.dumps(errors, indent=2), encoding='utf-8')
-    if errors or not all(r['pass'] for r in core+smoke+integration) or not performance_result['pass'] or not visual['fullHeight'] or not resize['pass'] or not mobile['pass'] or not night['pass'] or not all(result['pass'] for result in [compact,overheat,pause,gameover,portrait,menuPortrait]) or ('--soak' in sys.argv and not soak['pass']):
+    if errors or not all(r['pass'] for r in core+smoke+integration) or not performance_result['pass'] or not visual['fullHeight'] or not resize['pass'] or not mobile['pass'] or not night['pass'] or not all(result['pass'] for result in [compact,status,pause,gameover,portrait,menuPortrait]) or ('--soak' in sys.argv and not soak['pass']):
         sys.exit(1)
 finally:
     if ws:
@@ -1756,11 +1735,9 @@ export function runIntegrationTests(g){
   test('Combo caps at five, expires, and damage resets it',()=>{
     for(let i=0;i<8;i++)g.onKill({points:100,x:0,z:0});assert(g.combo===5&&g.maxCombo===5);g.comboTime=.001;g.step(1/60);assert(g.combo===0);g.onKill({points:100,x:0,z:0});g.player.hurt(1,g);assert(g.combo===0&&g.comboTime===0);
   });
-  test('Sustained fire overheats, requires trigger release, cools, and fires again',()=>{
-    g.input.firing=true;for(let i=0;i<8;i++){g.player.fire=0;g.player.update(.01,g);}const shots=g.combat.bullets.filter(b=>b.active).length;assert(shots===8&&g.player.overheated&&g.player.heat===CONFIG.player.heatMax);
-    for(let i=0;i<90;i++)g.player.update(1/60,g);assert(g.player.heat===CONFIG.player.heatMax&&g.combat.bullets.filter(b=>b.active).length===shots,'Holding fire should neither cool nor shoot while locked');
-    g.input.firing=false;for(let i=0;i<150;i++)g.player.update(1/60,g);assert(!g.player.overheated&&g.player.heat<=CONFIG.player.heatUnlock);
-    g.input.firing=true;g.player.fire=0;g.player.update(.01,g);assert(g.combat.bullets.filter(b=>b.active).length===shots+1);
+  test('Sustained fire continues without heat or lockout state',()=>{
+    g.input.firing=true;for(let i=0;i<20;i++){g.player.fire=0;g.player.update(.01,g);}const shots=g.combat.bullets.filter(b=>b.active).length;
+    assert(shots===20);assert(!('heat' in g.player)&&!('overheated' in g.player));assert(!('heatMax' in CONFIG.player)&&!('heatPerShot' in CONFIG.player));
   });
   test('All four pickup effects apply and expire',()=>{
     const random=g.world.grid.random;for(let type=0;type<4;type++){let count=0;g.world.grid.random=()=>count++===0?0:(type+.1)/4;g.combat.drop(0,0);g.player.hp=50;g.player.stamina=20;g.combat.update(1/60);if(type===0)assert(g.player.hp===80);if(type===1)assert(g.player.stamina===100);if(type===2)assert(g.player.speedBuff===8);if(type===3)assert(g.player.fireBuff===8);}g.world.grid.random=random;g.input.clear();for(let i=0;i<481;i++)g.player.update(1/60,g);assert(g.player.speedBuff===0&&g.player.fireBuff===0&&g.combat.pickups.length===0);

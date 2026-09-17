@@ -48,7 +48,7 @@
     "pass": true
   },
   {
-    "name": "Sustained fire overheats, requires trigger release, cools, and fires again",
+    "name": "Sustained fire continues without heat or lockout state",
     "pass": true
   },
   {

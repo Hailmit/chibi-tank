@@ -1,0 +1,13 @@
+{
+  "pass": true,
+  "panel": [
+    8,
+    8,
+    93,
+    50
+  ],
+  "rings": [
+    "hp-ring",
+    "stamina-ring"
+  ]
+}

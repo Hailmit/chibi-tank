@@ -68,7 +68,7 @@
     "pass": true
   },
   {
-    "name": "Fullscreen control is available on desktop and mobile",
+    "name": "Fullscreen adapters cover Chrome, Edge and Safari",
     "pass": true
   },
   {

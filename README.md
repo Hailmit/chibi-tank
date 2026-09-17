@@ -24,7 +24,7 @@ Mở **http://127.0.0.1:8000/**. Không mở `index.html` bằng `file://` vì E
 | Chơi lại sau khi bị hạ | R |
 | Toàn màn hình | Nút bốn góc ở góc phải; bấm lại hoặc dùng Esc để thoát |
 
-Thân xe xoay theo di chuyển; tháp pháo xoay riêng theo điểm chuột chiếu xuống mặt đất. Bắn liên tục tám phát sẽ làm nòng pháo quá nhiệt và khóa cò; phải nhả cò hoặc nhả cần ngắm để tản nhiệt, nòng mở lại khi xuống 40%. Các loạt bắn ngắn tự hạ nhiệt sau 0,25 giây. Vật phẩm Bắn nhanh tạo ít nhiệt hơn mỗi phát để vẫn giữ giá trị nâng cấp. Dash có 0,12 giây bất tử trong 0,18 giây di chuyển. Nhận sát thương có 0,65 giây bảo vệ. Dùng vật cản để cắt đường đạn. Nút toàn màn hình dùng Fullscreen API trên desktop và điện thoại; khi đang chơi bằng cảm ứng, game cũng thử khóa ngang màn hình. Trình duyệt không cung cấp API sẽ hiện thông báo ngắn. Mất focus hoặc đổi tab sẽ xóa phím đang giữ và tạm dừng; trở lại bằng Esc hoặc nút Tiếp tục.
+Thân xe xoay theo di chuyển; tháp pháo xoay riêng theo điểm chuột chiếu xuống mặt đất. Người chơi có thể giữ cò để bắn liên tục theo tốc độ bắn hiện tại, không có nhiệt nòng hoặc khóa cò. Dash có 0,12 giây bất tử trong 0,18 giây di chuyển. Nhận sát thương có 0,65 giây bảo vệ. Dùng vật cản để cắt đường đạn. Nút toàn màn hình hỗ trợ API chuẩn của Chrome, Edge và Safari mới, đồng thời có nhánh WebKit/Microsoft cho trình duyệt cũ; khi chơi bằng cảm ứng, game cũng thử khóa ngang màn hình. Safari trên iPhone không cung cấp fullscreen cho trang HTML tùy ý, vì vậy nút sẽ hướng dẫn dùng Chia sẻ → Thêm vào Màn hình chính. Mất focus hoặc đổi tab sẽ xóa phím đang giữ và tạm dừng; trở lại bằng Esc hoặc nút Tiếp tục.
 
 ## Triển khai GitHub Pages
 
@@ -90,8 +90,6 @@ Chỉnh trực tiếp tại `src/config.js`; tải lại trang sau khi sửa.
 | `player.hp / stamina` | 100 / 100 | Giáp và năng lượng tối đa |
 | `player.speed / radius` | 6 / 0,62 | Tốc độ, bán kính va chạm |
 | `player.fireInterval / damage` | 0,25 s / 28 | Tốc độ bắn, sát thương |
-| `player.heatMax / heatPerShot` | 100 / 14 | Ngưỡng quá nhiệt và nhiệt mỗi phát; tám phát liên tục sẽ khóa nòng |
-| `player.heatCoolRate / heatCoolDelay / heatUnlock` | 45/s / 0,25 s / 40 | Tốc độ, độ trễ tản nhiệt và ngưỡng mở khóa nòng |
 | `player.dashCost / dashDuration` | 30 / 0,18 s | Chi phí và thời lượng dash |
 | `player.dashInvulnerability` | 0,12 s | Thời gian bất tử khi dash |
 | `player.dashSpeed / dashCooldown` | 22 / 0,5 s | Tốc độ, hồi chiêu dash |
@@ -118,7 +116,7 @@ Trên thiết bị cảm ứng, game vẫn dùng cấu hình đồ họa cao, ph
 
 Game dùng một cấu hình hình ảnh cao cố định. WebGL phần cứng dùng mật độ điểm ảnh `min(devicePixelRatio, 1.25)` và hướng tới 60 FPS; SwiftShader dùng độ phân giải native, 24 FPS và bỏ tone mapping nặng. MSAA, shadow map thời gian thực và nguồn sáng điểm động được tắt; vật liệu Lambert, bảng màu và silhouette giữ hình ảnh rõ với shader nhẹ. Bóng tiếp xúc mềm của công trình/xe được gộp trong hai `InstancedMesh`; quầng sáng xanh dưới xe người chơi chỉ hiện ban đêm. Hai texture radial 64×64 được tạo tại runtime, không tải tài nguyên ngoài. Mô phỏng chạy 30 tick/giây. Menu, pause và Game Over chỉ render 4 FPS; tab ẩn không render. Particle, đạn và pháo cối chỉ cập nhật các slot đang sống; AI quét tầm nhìn theo nhịp chia đều; minimap và vòng cập nhật canvas phụ đã được loại bỏ; cảnh báo địa hình dùng một `InstancedMesh`. Các animation trang trí ở địa hình, điểm spawn, vòng ngắm địch, độ giật nòng và HUD đã được bỏ.
 
-Hình xe tăng vẫn giữ bánh, xích, đèn, ăng-ten, tháp pháo và màu riêng của từng bộ phận. Nòng pháo được gộp vào mesh tháp pháo; các phần còn lại được ghép trước khi gửi sang GPU. Nhà cao tầng, hàng quán và cây giữ silhouette nhưng giảm chi tiết hình học nhỏ; bản sao trong suốt của nhà che khuất xe dùng silhouette gọn hơn. HUD giáp, năng lượng và nhiệt nòng chỉ còn một cụm ba vòng 150 px trên desktop và 136 px trên mobile. Khung điểm chỉ giữ điểm, combo và thời gian. Đồng hồ ngày–đêm cùng bộ đếm tái cấu trúc được rút gọn thành hai pill ở giữa; cả bốn cụm HUD nằm trên một hàng cùng chiều cao. Thanh tên game, minimap và nút audio/settings không xuất hiện trong gameplay.
+Hình xe tăng vẫn giữ bánh, xích, đèn, ăng-ten, tháp pháo và màu riêng của từng bộ phận. Nòng pháo được gộp vào mesh tháp pháo; các phần còn lại được ghép trước khi gửi sang GPU. Nhà cao tầng, hàng quán và cây giữ silhouette nhưng giảm chi tiết hình học nhỏ; bản sao trong suốt của nhà che khuất xe dùng silhouette gọn hơn. HUD chỉ còn hai vòng Giáp và Năng lượng; vòng nhiệt đã được loại bỏ. Khung điểm chỉ giữ điểm, combo và thời gian. Đồng hồ ngày–đêm cùng bộ đếm tái cấu trúc được rút gọn thành hai pill ở giữa; nút fullscreen nằm trước khung điểm. Thanh tên game, minimap và nút audio/settings không xuất hiện trong gameplay.
 
 Mỗi trận bắt đầu vào ban ngày. Sau 60 giây, ánh sáng chuyển dần sang đêm và mọi địch đang sống hoặc xuất hiện mới trở thành zombie: mắt xanh, gai xanh và vòng sáng xanh; `maxHP` tăng ×2 nhưng giữ nguyên phần trăm máu hiện tại. Sau 60 giây đêm, bình minh đưa chúng về chỉ số thường theo cùng nguyên tắc. Đồng hồ HUD luôn hiển thị thời gian còn lại của pha hiện tại.
 

@@ -21,7 +21,7 @@ Kết quả chức năng gần nhất: **exit code 0**, 11 bài core + 20 bài s
 | Dash | Đạt. Tốn 30 stamina, có invulnerability; kiểm tra di chuyển nhiều bước không vượt tường hoặc biên, vị trí cuối hợp lệ. |
 | Chuột, raycast, resize | Đạt ở 1440×1000 và 1024×768. Chiếu ngược điểm ngắm về đúng tọa độ chuột; hướng đạn khớp hướng tháp pháo. |
 | Cảm ứng landscape | Đạt ở viewport 844×390, DPR 2. Hai cần 100×100 CSS px và nút lướt 60×60 CSS px nằm trong màn hình; kéo cần trái tạo vector di chuyển, cần phải vừa ngắm vừa bắn. Cấu hình đồ họa luôn là High. |
-| Toàn màn hình | Đạt bằng click thật qua Chrome CDP: nút vào và thoát Fullscreen API thành công, cập nhật nhãn/biểu tượng. Vùng chạm 44×44 px nằm trọn viewport desktop và mobile 667×375, không chồng bốn cụm HUD. |
+| Toàn màn hình | Đạt bằng click thật qua Chrome CDP: nút vào và thoát Fullscreen API thành công, cập nhật nhãn/biểu tượng. Kiểm thử adapter xác nhận các nhánh chuẩn Chrome/Edge, WebKit Safari mới/cũ và Microsoft cũ. Vùng chạm 44×44 px nằm trọn viewport desktop và mobile 667×375, không chồng bốn cụm HUD. |
 | Chu kỳ ngày–đêm | Đạt. Chuyển sang đêm tại 60 giây và trở lại ngày tại 120 giây gameplay. Pause vẫn đóng băng đồng hồ vì chu kỳ dùng `game.time`. |
 | Zombie ban đêm | Đạt. Địch đang sống và địch sinh mới đều có `maxHP = baseMaxHP × 2`, giữ phần trăm máu khi chuyển pha, hiện mắt/gai xanh và trở lại HP thường lúc bình minh. |
 | Bắn có chủ đích | Đạt. Bắt đầu trận không có đạn tự bắn; tạo đạn khi giữ trạng thái chuột trái. Listener pointerdown chỉ nằm trên canvas, tách khỏi nút UI. |
@@ -44,7 +44,7 @@ Kết quả chức năng gần nhất: **exit code 0**, 11 bài core + 20 bài s
 | Game Over / R / restart | Đạt. Hiện thống kê, phím R tạo trận mới. Năm restart liên tiếp không giữ enemy, projectile, pickup từ trận trước. Các listener và RAF chỉ được tạo trong constructor, không tạo ở restart. |
 | Pool | Đạt. 180 đạn, 12 pháo cối, 96 particle/debris và 16 popup; particle chết không còn được cập nhật mỗi tick. |
 | Ngân sách render | Đạt với 16 xe địch. 75 draw call ban ngày, 86 ban đêm; tối đa 48 enemy mesh và 96 particle instance. Shadow map tắt; bóng tiếp xúc instanced và quầng sáng đêm hoạt động. SwiftShader dùng pixel ratio 1 và 24 FPS, WebGL phần cứng hướng tới 60 FPS. |
-| HUD tối giản | Đạt. Không còn minimap, header tên game, nút audio/settings hay các điều khiển tương ứng trong DOM. Cụm status rộng dưới 160 px trên desktop và đo được 136×50 px ở viewport mobile 667×375. Khung điểm chỉ giữ điểm, combo, thời gian. Đồng hồ ngày–đêm và tái cấu trúc nằm giữa; cả bốn khối cùng hàng, cao 56 px desktop và 50 px mobile, không giao nhau. |
+| HUD tối giản | Đạt. Không còn minimap, header tên game, nút audio/settings hay các điều khiển tương ứng trong DOM. Cụm status chỉ còn Giáp và Năng lượng, đo được 93×50 px ở viewport mobile 667×375. Khung điểm chỉ giữ điểm, combo, thời gian. Đồng hồ ngày–đêm, tái cấu trúc và nút fullscreen nằm cùng hàng, không giao nhau. |
 
 ## Bài soak 600 giây mô phỏng
 
@@ -58,8 +58,8 @@ Kết quả của lần cuối:
 - Tối đa 15 đạn trực tiếp và 96 particle hoạt động trong kịch bản này; các pool luôn hữu hạn.
 - **0** lần phát hiện player/enemy nằm trong ô cấm hoặc grid mất liên thông khi lấy mẫu mỗi giây.
 - Ở 10 mốc render: **25–27 geometries, 1–2 texture** trong `renderer.info.memory`; draw call dao động **92–112**. Hai texture nhỏ tạo bóng mềm và quầng sáng, không tải từ mạng; cảnh báo tái cấu trúc vẫn được gộp thành một lệnh vẽ.
-- JS heap tại các mốc dao động khoảng **21,9–39,5 MB**, cuối bài khoảng **37,8 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
-- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,32 giây** đồng hồ ở lượt test này, so với 7,82 giây của kiến trúc 60 Hz trước lượt tối ưu. Đây là phép so sánh logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
+- JS heap tại các mốc dao động khoảng **49,2–72,8 MB**, cuối bài khoảng **60,1 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
+- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,50 giây** đồng hồ ở lượt test này, so với 7,82 giây của kiến trúc 60 Hz trước lượt tối ưu. Đây là phép so sánh logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
 
 ## Giới hạn và kiểm tra thủ công còn lại
 
@@ -79,15 +79,15 @@ Kết quả của lần cuối:
 Lần kiểm tra giao diện di động gần nhất dùng Chrome 152 headless với mô phỏng cảm ứng và DPR 2. Kết quả đều đạt ở các trạng thái sau:
 
 - Gameplay ngang 844×390 và 667×375: HUD, thông báo, hai cần điều khiển và nút lướt nằm trọn trong viewport, không chồng lấn; thao tác đi, ngắm và bắn hoạt động.
-- Trạng thái quá nhiệt 667×375: thanh nhiệt đạt 100%, HUD đổi màu, hiển thị Khóa nòng và cần ngắm đổi thành Đang hạ nhiệt mà không vượt khỏi viewport.
+- Cụm trạng thái 667×375: chỉ còn hai vòng Giáp và Năng lượng, rộng 93×50 px; không còn phần tử nhiệt nòng hay trạng thái khóa cò.
 - Hộp tạm dừng 667×375: chỉ còn Tiếp tục và Về màn hình chính, không có audio/settings, không cần cuộn; các vùng chạm cao ít nhất 44 CSS px.
 - Hộp kết thúc 667×375: tiêu đề, thống kê, Thử lại và Về màn hình chính hiện đầy đủ; vị trí cuộn luôn trở về đầu khi đổi trạng thái.
 - Gameplay dọc 390×844: lớp nhắc xoay ngang phủ kín màn hình. Menu dọc vẫn dùng được và không hiện lớp nhắc xoay.
-- Chất lượng trên thiết bị cảm ứng luôn là High; cụm status 136×50 px không chồng vùng điều khiển. Không ghi nhận JavaScript exception hoặc HTTP response lỗi.
+- Chất lượng trên thiết bị cảm ứng luôn là High; cụm status 93×50 px không chồng vùng điều khiển. Không ghi nhận JavaScript exception hoặc HTTP response lỗi.
 
 Kết quả đo nằm trong `tests/results/mobile-*.json`; ảnh đối chiếu nằm trong `artifacts/` và không được đưa vào gói phát hành.
 
-Bài integration xác nhận tám phát liên tục khóa nòng, giữ cò không làm nguội hoặc bắn thêm, nhả cò làm nhiệt giảm tới ngưỡng mở khóa và xe có thể bắn lại.
+Bài integration xác nhận 20 lần bắn liên tục vẫn tạo đủ 20 viên đạn và đối tượng người chơi không còn thuộc tính nhiệt hoặc khóa cò.
 
 ## Kiểm tra nhanh khi triển khai
 
