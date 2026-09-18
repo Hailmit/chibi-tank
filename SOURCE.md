@@ -44,6 +44,7 @@ Toàn bộ mã nguồn tự viết, theo đường dẫn. Bản Three.js 0.170.0
 
   <section id="hud" hidden aria-label="Thông tin trận đấu">
     <div class="status-panel" aria-label="Giáp và năng lượng"><div class="status-orbs"><div id="hp-ring" class="status-orb hp-orb"><span>GIÁP</span><strong id="hp-value">100</strong></div><div id="stamina-ring" class="status-orb stamina-orb"><span>NL</span><strong id="stamina-value">100</strong></div></div></div>
+    <div id="weapon-status" class="weapon-status" hidden aria-live="polite"><span id="weapon-symbol">R</span><b id="weapon-name">ROCKET</b><strong id="weapon-ammo">8</strong></div>
     <div class="score-panel" aria-label="Điểm, combo và thời gian"><strong id="score" title="Điểm">000000</strong><span id="combo" title="Combo">×1</span><span id="time" title="Thời gian">00:00</span></div>
     <div id="elite" class="elite-panel" hidden><div id="elite-ring" class="elite-orb"><span>ĐẠI ÚY</span><b id="elite-value">100%</b></div></div>
     <div class="hud-center"><div id="day-cycle" class="day-cycle"><span id="day-icon">☀</span><div><small id="day-label">BAN NGÀY</small><b id="day-timer">01:00</b></div></div></div>
@@ -290,6 +291,10 @@ body.touch .hud-center .day-cycle{min-width:98px;padding:0 8px;gap:5px}
 body.touch .hud-center .day-cycle>span{font-size:18px}
 body.touch .hud-center .day-cycle small{font-size:6px;letter-spacing:.7px}
 body.touch .hud-center .day-cycle b{font-size:9px}
+.weapon-status{--weapon-color:#e88d5e;position:fixed;z-index:6;top:78px;left:18px;height:31px;padding:3px 9px 3px 4px;display:flex;align-items:center;gap:7px;border:1px solid #faffec;border-radius:999px;background:#f4f5e9ed;color:var(--ink);box-shadow:0 4px 14px #25443714;pointer-events:none;font-variant-numeric:tabular-nums}
+.weapon-status span{width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:var(--weapon-color);color:white;font-size:11px;font-weight:900}.weapon-status b{font-size:9px;letter-spacing:.6px}.weapon-status strong{font-size:12px;color:var(--weapon-color)}
+.weapon-status[data-weapon="shotgun"]{--weapon-color:#c69139}.weapon-status[data-weapon="flame"]{--weapon-color:#e06e43}.weapon-status[data-weapon="electric"]{--weapon-color:#398eaa}
+body.touch .weapon-status{top:max(62px,calc(env(safe-area-inset-top) + 54px));left:max(8px,env(safe-area-inset-left));height:27px;gap:5px;padding:2px 7px 2px 3px}.weapon-status span{flex:none}body.touch .weapon-status span{width:20px;height:20px;font-size:10px}body.touch .weapon-status b{font-size:8px}body.touch .weapon-status strong{font-size:10px}
 
 
 
@@ -367,7 +372,7 @@ artifacts/
 ````markdown
 # CHIBI TANK CITY: ENDLESS
 
-Game xe tăng 3D sinh tồn, giao diện tiếng Việt, bản đồ ngẫu nhiên mỗi trận và không tái cấu trúc giữa trận. Bản đồ tập trung vào khu đô thị với nhà ở, cao tầng và dãy hàng quán; công trình bị bắn sập sẽ thành đống đổ nát mở lối mới. Ngày và đêm luân phiên mỗi 60 giây; ban đêm biến địch thành xe tăng zombie có lượng máu ×2. HTML/CSS/JavaScript ES Modules, Three.js **0.170.0** đóng gói tại `vendor/`. Không build, backend, tài khoản, CDN, model, texture hay audio tải ngoài. Nhạc và hiệu ứng âm thanh gốc được tổng hợp bằng Web Audio sau thao tác người chơi.
+Game xe tăng 3D sinh tồn, giao diện tiếng Việt, bản đồ ngẫu nhiên mỗi trận và không tái cấu trúc giữa trận. Bản đồ tập trung vào khu đô thị với nhà ở, cao tầng và dãy hàng quán; công trình bị bắn sập sẽ thành đống đổ nát mở lối mới. Ngày và đêm luân phiên mỗi 60 giây; ban đêm biến địch thành xe tăng zombie có lượng máu ×2. Nhặt rocket, shotgun, lửa hoặc điện để đổi lối đánh trong thời gian ngắn. HTML/CSS/JavaScript ES Modules, Three.js **0.170.0** đóng gói tại `vendor/`. Không build, backend, tài khoản, CDN, model, texture hay audio tải ngoài. Nhạc và hiệu ứng âm thanh gốc được tổng hợp bằng Web Audio sau thao tác người chơi.
 
 ## Chạy tại máy
 
@@ -394,6 +399,8 @@ Mở **http://127.0.0.1:8000/**. Không mở `index.html` bằng `file://` vì E
 Thân xe xoay theo di chuyển; tháp pháo xoay riêng theo điểm chuột chiếu xuống mặt đất. Người chơi có thể giữ cò để bắn liên tục theo tốc độ bắn hiện tại, không có nhiệt nòng hoặc khóa cò. Đạn người chơi có lõi xanh sáng và viền tối, khác đạn hồng của địch. Tâm ngắm desktop dùng cursor gốc của trình duyệt, không còn bị giới hạn bởi nhịp cập nhật HUD 5 Hz; phép chiếu điểm ngắm không đọc layout mỗi tick. Dash có 0,12 giây bất tử trong 0,18 giây di chuyển. Nhận sát thương có 0,65 giây bảo vệ. Dùng vật cản để cắt đường đạn. Nút toàn màn hình hỗ trợ API chuẩn của Chrome, Edge và Safari mới, đồng thời có nhánh WebKit/Microsoft cho trình duyệt cũ; khi chơi bằng cảm ứng, game cũng thử khóa ngang màn hình. Mất focus hoặc đổi tab sẽ xóa phím đang giữ và tạm dừng; trở lại bằng Esc hoặc nút Tiếp tục.
 
 Nhạc theme ở menu và nhạc chiến đấu là hai bản gốc khác nhau, được tổng hợp một lần vào bộ nhớ rồi phát lặp bằng Web Audio; chuyển trạng thái có fade ngắn, tạm dừng thì nhạc dừng. Tiếng pháo gồm tiếng nổ đầu nòng, thân trầm và đuôi vang nhẹ; tiếng bắn của địch nhỏ dần theo khoảng cách và giới hạn tần suất để tránh chồng âm. Trình duyệt chỉ cho phát âm thanh sau thao tác đầu tiên, nên menu ban đầu im lặng cho đến khi người chơi chạm, bấm phím hoặc click.
+
+Vũ khí đặc biệt rơi từ địch và tự trang bị khi nhặt. **Rocket** bay chậm, nổ diện rộng và phá công trình; **shotgun** bắn sáu viên tỏa quạt, hiệu quả ở gần; **lửa** quét hình nón ngắn và đốt mục tiêu; **điện** giật lan tối đa bốn mục tiêu gần nhau, làm chúng khựng lại. Rocket có đầu đạn hai màu, khói và vòng nổ cam riêng; shotgun có viên sáng và lóe nòng hình quạt; lửa tạo luồng ba sắc độ; điện dùng tia răng cưa có lõi trắng, viền lam và chớp tại điểm trúng. Nhặt cùng loại sẽ nạp thêm đạn đến giới hạn; nhặt loại khác sẽ thay vũ khí hiện tại. Khi hết đạn đặc biệt, xe tự trở về pháo thường không giới hạn đạn. HUD chỉ hiện tên và số đạn khi đang dùng vũ khí đặc biệt.
 
 Trên iPhone, Safari trong tab không cho trang game gọi Fullscreen API. Game có manifest `display: standalone`, biểu tượng riêng và cấu hình Home Screen. Nếu đã thêm game, hãy **mở từ biểu tượng trên Màn hình chính**, không mở lại tab Safari; lúc đó game nhận biết chế độ ứng dụng và ẩn nút fullscreen vô tác dụng. Nếu biểu tượng cũ vẫn mở tab, hãy tạo lại biểu tượng và bật **Mở dưới dạng ứng dụng** khi iOS hiển thị tùy chọn đó. iOS có thể vẫn giữ thanh trạng thái/thanh điều hướng hệ thống; trang web không thể ép ẩn các phần này.
 
@@ -431,7 +438,7 @@ chibi-tank-city/
 │   ├── input.js            Bàn phím, chuột, raycast, focus
 │   ├── player.js           Di chuyển, dash, stamina, sát thương
 │   ├── enemies.js          AI, director, spawn, elite
-│   ├── combat.js           Pool đạn, pháo cối, vật phẩm, nổ dây chuyền
+│   ├── combat.js           Pool đạn, bốn vũ khí nhặt được, vật phẩm và nổ dây chuyền
 │   ├── world.js            Địa hình phá hủy được, bóng, instancing
 │   ├── models.js           Mô hình xe và thành phố từ geometry
 │   ├── effects.js          Pool particle/debris, shockwave, popup
@@ -473,6 +480,7 @@ Chỉnh trực tiếp tại `src/config.js`; tải lại trang sau khi sửa.
 | `director.assaultFirst / assaultBase / assaultMin` | 24 / 38 / 28 s | Đợt tấn công đầu, khoảng cơ sở và khoảng thấp nhất |
 | `director.assaultGap` | 0,6 s | Khoảng cách giữa từng xe trong một đợt dồn quân |
 | `combat.maxBullets / maxMortars` | 180 / 12 | Sức chứa pool |
+| `weapons` | Rocket 8, shotgun 20, lửa 50, điện 18 | Đạn mỗi lần nhặt, giới hạn nạp và nhịp bắn riêng từng loại |
 | `combat.bulletSpeed / enemyBulletSpeed` | 25 / 10 | Tốc độ đạn ban đầu |
 | `combat.comboWindow / maxCombo` | 4 s / ×5 | Combo hết khi quá hạn hoặc nhận sát thương |
 | `combat.survivalScore` | 5/giây | Điểm thời gian |
@@ -486,7 +494,7 @@ Director tăng HP tối đa 70%, tốc độ đạn tối đa 45%, tăng tỷ tr
 
 Trên thiết bị cảm ứng, game vẫn dùng cấu hình đồ họa cao, phóng camera gần hơn và dùng trợ ngắm nhẹ trong một góc hẹp theo hướng kéo; vật cản vẫn chặn khóa mục tiêu. Giao diện yêu cầu xoay ngang để giữ đủ không gian cho hai cần điều khiển.
 
-Game dùng một cấu hình hình ảnh cao cố định. WebGL phần cứng dùng mật độ điểm ảnh `min(devicePixelRatio, 1.25)` và hướng tới 60 FPS; SwiftShader dùng độ phân giải native, 24 FPS và bỏ tone mapping nặng. MSAA, shadow map thời gian thực và nguồn sáng điểm động được tắt; vật liệu Lambert, bảng màu và silhouette giữ hình ảnh rõ với shader nhẹ. Bóng tiếp xúc mềm của công trình/xe được gộp trong hai `InstancedMesh`; quầng sáng xanh dưới xe người chơi chỉ hiện ban đêm. Hai texture radial 64×64 được tạo tại runtime, không tải tài nguyên ngoài. Mô phỏng chạy 30 tick/giây. Menu, pause và Game Over chỉ render 4 FPS; tab ẩn không render. Particle, đạn và pháo cối chỉ cập nhật các slot đang sống; AI quét tầm nhìn theo nhịp chia đều. Tia lóe nòng, va chạm, bụi đổ nhà và vòng nổ đã rõ hơn; particle vẫn gộp trong một `InstancedMesh` tối đa 96 phần tử và vòng nổ tái dùng sáu mesh. Các animation trang trí ở địa hình, điểm spawn, vòng ngắm địch, độ giật nòng và HUD vẫn được bỏ.
+Game dùng một cấu hình hình ảnh cao cố định. WebGL phần cứng dùng mật độ điểm ảnh `min(devicePixelRatio, 1.25)` và hướng tới 60 FPS; SwiftShader dùng độ phân giải native, 24 FPS và bỏ tone mapping nặng. MSAA, shadow map thời gian thực và nguồn sáng điểm động được tắt; vật liệu Lambert, bảng màu và silhouette giữ hình ảnh rõ với shader nhẹ. Bóng tiếp xúc mềm của công trình/xe được gộp trong hai `InstancedMesh`; quầng sáng xanh dưới xe người chơi chỉ hiện ban đêm. Hai texture radial 64×64 được tạo tại runtime, không tải tài nguyên ngoài. Mô phỏng chạy 30 tick/giây. Menu, pause và Game Over chỉ render 4 FPS; tab ẩn không render. Particle, đạn và pháo cối chỉ cập nhật các slot đang sống; AI quét tầm nhìn theo nhịp chia đều. Tia lóe nòng, va chạm, bụi đổ nhà và vòng nổ đã rõ hơn; particle vẫn gộp trong một `InstancedMesh` tối đa 96 phần tử và vòng nổ tái dùng sáu mesh. Mỗi vật phẩm chỉ dùng một mesh gộp; tia điện dùng tám cặp dải răng cưa tái sử dụng và chỉ hiện khi bắn. Các animation trang trí ở địa hình, điểm spawn, vòng ngắm địch, độ giật nòng và HUD vẫn được bỏ.
 
 Hình xe tăng vẫn giữ bánh, xích, đèn, ăng-ten, tháp pháo và màu riêng của từng bộ phận. Nòng pháo được gộp vào mesh tháp pháo; các phần còn lại được ghép trước khi gửi sang GPU. Nhà cao tầng, hàng quán và cây giữ silhouette nhưng giảm chi tiết hình học nhỏ; bản sao trong suốt của nhà che khuất xe dùng silhouette gọn hơn. HUD chỉ còn hai vòng Giáp và Năng lượng; vòng nhiệt đã được loại bỏ. Khung điểm chỉ giữ điểm, combo và thời gian. Đồng hồ ngày–đêm nằm giữa hàng trên; đồng hồ tái cấu trúc đã bỏ. Nút fullscreen nằm trước khung điểm. Thanh tên game, minimap và nút audio/settings không xuất hiện trong gameplay.
 
@@ -532,7 +540,7 @@ Lệnh thực chạy:
 python tests/browser_runner.py --soak
 ```
 
-Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài smoke + 20 bài integration đều đạt; kiểm tra resize desktop, mô phỏng cảm ứng landscape 844×390 và giao diện đêm đều đạt; không có JavaScript exception hay HTTP response từ 400 trở lên. JSON và ảnh gần nhất nằm trong `artifacts/`.
+Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài smoke + 26 bài integration đều đạt; kiểm tra resize desktop, mô phỏng cảm ứng landscape 844×390 và giao diện đêm đều đạt; không có JavaScript exception hay HTTP response từ 400 trở lên. JSON và ảnh gần nhất nằm trong `artifacts/`.
 
 ## Checklist đã chạy
 
@@ -553,7 +561,7 @@ Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài sm
 | Va chạm đạn | Đạt. Segment/AABB và segment/circle; đạn bị chặn khi đầu nòng chạm cover; sau khi phá cover mới trúng địch phía sau. |
 | Tường và tìm đường | Đạt. Tường mất collision ngay; version tăng; đường BFS đổi và AI cập nhật cache theo version. |
 | Địa hình cố định trong trận | Đạt. Bố cục không tự tái cấu trúc sau nhiều phút sinh tồn; chỉ những công trình bị phá mới chuyển thành rubble và cập nhật đường đi. Đồng hồ và vùng cảnh báo tái cấu trúc đã được gỡ. |
-| Hiệu ứng chiến đấu | Đạt. Tia lóe, bụi và lõi sáng của vụ nổ rõ hơn; vòng xung kích mờ dần. Hạt hiệu ứng vẫn dùng một `InstancedMesh` với trần 96 phần tử. |
+| Hiệu ứng chiến đấu | Đạt. Rocket có khói và vòng nổ cam; shotgun có viên sáng và lóe hình quạt; lửa thành luồng ba màu; điện có lõi trắng, viền lam và tia răng cưa. Hạt hiệu ứng vẫn dùng một `InstancedMesh` với trần 96 phần tử. |
 | Vật thể che xe | Đạt. Nhà/cây phía trước được thay bằng bản sao mờ 18% opacity, giữ `scale.y = 1` và vẫn giữ collision; trở lại mô hình đặc khi xe rời vùng che. |
 | Spawn | Đạt. Spawn đang cảnh báo bị hủy nếu người chơi tiến vào bán kính an toàn. Tổng địch và spawn chờ bị giới hạn. |
 | Chi phí chọn điểm spawn | Đạt. Mỗi lần chọn dùng một flood-fill chung cho mọi ô ứng viên, không gọi BFS đường đi riêng cho từng ô. |
@@ -563,17 +571,18 @@ Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài sm
 | Phá hủy công trình | Đạt. Thép, nhà, cây, cao tầng và hàng quán có HP hữu hạn; cao tầng/hàng quán hấp thụ đạn rồi chuyển thành rubble đi được. |
 | Đợt tấn công | Đạt. Director tạo nhóm quân nhanh từ giây 24, giảm bộ đếm đúng khi schedule thành công và không vượt trần 16 địch + spawn chờ. |
 | Vật phẩm | Đạt. Hồi HP, hồi stamina, buff tốc độ, buff bắn nhanh; buff hết sau thời hạn. |
+| Vũ khí nhặt được | Đạt. Cả bốn loại đều có thể rơi và nhặt; cùng loại nạp thêm đến trần, hết đạn tự trở về pháo thường. Rocket gây nổ lan; shotgun bắn một chùm sáu viên tầm ngắn mỗi lần trừ một đạn; lửa gây cháy nhưng không xuyên cover; điện giật lan và làm địch khựng lại. Bắn shotgun liên tục đến trần 180 projectile không cấp phát thêm hoặc trừ đạn khi pool đầy. |
 | Điểm / combo | Đạt. Mỗi địch chỉ thưởng một lần, combo tối đa ×5, reset khi hết thời gian hoặc nhận sát thương. |
 | HP / grace | Đạt. Hai lần trúng liên tiếp trong khoảng bảo vệ chỉ nhận sát thương một lần. |
 | Pause / mất focus | Đạt. Timer và spawn đóng băng khi pause; blur tự pause và xóa held input. Handler visibilitychange cùng cơ chế đã được kiểm tra mã nguồn; chưa tự động chuyển tab thật. |
 | Game Over / R / restart | Đạt. Hiện thống kê, phím R tạo trận mới. Năm restart liên tiếp không giữ enemy, projectile, pickup từ trận trước. Các listener và RAF chỉ được tạo trong constructor, không tạo ở restart. |
-| Pool | Đạt. 180 đạn, 12 pháo cối, 96 particle/debris và 16 popup; particle chết không còn được cập nhật mỗi tick. |
-| Ngân sách render | Đạt với 16 xe địch. 75 draw call ban ngày, 86 ban đêm; tối đa 48 enemy mesh và 96 particle instance. Shadow map tắt; bóng tiếp xúc instanced và quầng sáng đêm hoạt động. SwiftShader dùng pixel ratio 1 và 24 FPS, WebGL phần cứng hướng tới 60 FPS. |
-| HUD tối giản | Đạt. Không còn minimap, header tên game, nút audio/settings hay các điều khiển tương ứng trong DOM. Cụm status chỉ còn Giáp và Năng lượng, đo được 93×50 px ở viewport mobile 667×375. Khung điểm chỉ giữ điểm, combo, thời gian. Đồng hồ ngày–đêm và nút fullscreen nằm cùng hàng, không giao nhau. |
+| Pool | Đạt. 180 đạn dùng chung cả đạn thường, rocket và shotgun; 12 pháo cối, 96 particle/debris, 8 cặp dải tia điện và 16 popup. Vật phẩm có tối đa 16 món, mỗi món một mesh gộp; particle chết không còn được cập nhật mỗi tick. |
+| Ngân sách render | Đạt với 16 xe địch. 75 draw call ban ngày, 86 ban đêm; thêm 16 vật phẩm chỉ lên 101 draw call ban đêm do mỗi vật phẩm có một mesh. Tối đa 48 enemy mesh và 96 particle instance. Shadow map tắt; bóng tiếp xúc instanced và quầng sáng đêm hoạt động. SwiftShader dùng pixel ratio 1 và 24 FPS, WebGL phần cứng hướng tới 60 FPS. |
+| HUD tối giản | Đạt. Không còn minimap, header tên game, nút audio/settings hay các điều khiển tương ứng trong DOM. Cụm status chỉ còn Giáp và Năng lượng, đo được 93×50 px ở viewport mobile 667×375. Nhãn vũ khí/đạn chỉ xuất hiện khi nhặt vũ khí đặc biệt; trên mobile nằm dưới status, không che cần điều khiển hoặc toast. Khung điểm chỉ giữ điểm, combo, thời gian. Đồng hồ ngày–đêm và nút fullscreen nằm cùng hàng, không giao nhau. |
 
 ## Bài soak 600 giây mô phỏng
 
-Đây là **600 giây thời gian gameplay chạy tăng tốc**, không phải 10 phút đồng hồ thực hay chơi thủ công. Test dùng cùng `Game.step(1/30)`, world, combat, director và AI thật; đặt invulnerability cho xe người chơi trong test để tránh dừng ở Game Over. Tắt cập nhật DOM mỗi tick và render tại các mốc một phút để stress logic. Không thay tần suất spawn.
+Đây là **600 giây thời gian gameplay chạy tăng tốc**, không phải 10 phút đồng hồ thực hay chơi thủ công. Test dùng cùng `Game.step(1/30)`, world, combat, director và AI thật; đặt invulnerability cho xe người chơi trong test để tránh dừng ở Game Over. Tắt cập nhật DOM mỗi tick và render tại các mốc một phút để stress logic. Không thay tần suất spawn. Bài soak dùng pháo thường; sức chứa đạn đặc biệt được kiểm tra riêng trong integration.
 
 Kết quả của lần cuối:
 
@@ -583,8 +592,8 @@ Kết quả của lần cuối:
 - Tối đa 12 đạn trực tiếp và 96 particle hoạt động trong kịch bản này; các pool luôn hữu hạn.
 - **0** lần phát hiện player/enemy nằm trong ô cấm hoặc grid mất liên thông khi lấy mẫu mỗi giây.
 - Ở 10 mốc render: **25–27 geometries, 1–2 texture** trong `renderer.info.memory`; draw call dao động **87–120**. Hai texture nhỏ tạo bóng mềm và quầng sáng, không tải từ mạng.
-- JS heap tại các mốc dao động khoảng **32,2–60,6 MB**, cuối bài khoảng **37,0 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
-- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,00 giây** đồng hồ ở lượt test này. Đây là thời gian chạy logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
+- JS heap tại các mốc dao động khoảng **35,4–64,0 MB**, cuối bài khoảng **55,3 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
+- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,45 giây** đồng hồ ở lượt test này. Đây là thời gian chạy logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
 
 ## Giới hạn và kiểm tra thủ công còn lại
 
@@ -604,7 +613,7 @@ Kết quả của lần cuối:
 Lần kiểm tra giao diện di động gần nhất dùng Chrome 153 headless với mô phỏng cảm ứng và DPR 2. Kết quả đều đạt ở các trạng thái sau:
 
 - Gameplay ngang 844×390 và 667×375: HUD, thông báo, hai cần điều khiển và nút lướt nằm trọn trong viewport, không chồng lấn; thao tác đi, ngắm và bắn hoạt động.
-- Cụm trạng thái 667×375: chỉ còn hai vòng Giáp và Năng lượng, rộng 93×50 px; không còn phần tử nhiệt nòng hay trạng thái khóa cò.
+- Cụm trạng thái 667×375: chỉ còn hai vòng Giáp và Năng lượng, rộng 93×50 px; nhãn rocket 85×27 px nằm ngay bên dưới. Không còn phần tử nhiệt nòng hay trạng thái khóa cò.
 - Hộp tạm dừng 667×375: chỉ còn Tiếp tục và Về màn hình chính, không có audio/settings, không cần cuộn; các vùng chạm cao ít nhất 44 CSS px.
 - Hộp kết thúc 667×375: tiêu đề, thống kê, Thử lại và Về màn hình chính hiện đầy đủ; vị trí cuộn luôn trở về đầu khi đổi trạng thái.
 - Gameplay dọc 390×844: lớp nhắc xoay ngang phủ kín màn hình. Menu dọc vẫn dùng được và không hiện lớp nhắc xoay.
@@ -624,6 +633,7 @@ Bài integration xác nhận 20 lần bắn liên tục vẫn tạo đủ 20 vi�
 6. Thua rồi bấm R nhiều lần; không còn entity trận trước, kỷ lục vẫn được giữ.
 7. Chơi 10 phút thực trên phần cứng đích, quan sát FPS/heap/GPU bằng DevTools trước khi công bố số liệu hiệu năng.
 8. Nghe nhạc menu, nhạc chiến đấu, tiếng pháo người chơi và địch trên loa điện thoại/tai nghe; kiểm tra mức âm khi bắn liên tục và khi tạm dừng.
+9. Nhặt thử cả bốn vũ khí; kiểm tra rocket phá cover, shotgun tỏa chùm, lửa không xuyên tường, điện giật lan và đạn trở về pháo thường khi hết.
 ````
 
 
@@ -641,6 +651,7 @@ export class Audio {
     this.musicVoice = null;
     this.musicCache = new Map();
     this.lastEnemyShot = -Infinity;
+    this.lastFlameSound = -Infinity;
   }
 
   unlock() {
@@ -808,12 +819,27 @@ export class Audio {
       if (now - this.lastEnemyShot < .12 || distance > 29) return;
       this.lastEnemyShot = now;
     }
+    if (name === 'flame') {
+      if (now - this.lastFlameSound < .18) return;
+      this.lastFlameSound = now;
+    }
     this.active++;
     let end;
     if (name === 'shot' || name === 'enemyShot') {
       const volume = name === 'shot' ? 1 : .4 * Math.max(.18, 1 - distance / 32);
       this.shot(volume, name === 'enemyShot');
       return;
+    } else if (name === 'shotgun') {
+      this.shot(1.05, false);
+      return;
+    } else if (name === 'rocket') {
+      this.noise(now, .24, .32, 900);
+      end = this.tone(now, .31, 280, 72, .35, 'sawtooth');
+    } else if (name === 'flame') {
+      end = this.noise(now, .18, .14, 1100);
+    } else if (name === 'electric') {
+      this.noise(now, .13, .2, 1800, 'highpass');
+      end = this.tone(now, .19, 980, 170, .27, 'sawtooth');
     } else if (name === 'explosion') {
       this.noise(now, .22, .52, 1300);
       this.tone(now, .42, 105, 29, .58, 'sine');
@@ -840,7 +866,7 @@ export class Audio {
 import * as THREE from 'three';
 import { CONFIG } from './config.js';
 import { TILE, dist, segmentCircle } from './core.js';
-import { part, ring, material } from './models.js';
+import { part, ring, material, pickupModel } from './models.js';
 function playerRoundGeometry(){
   const positions=[],colors=[],color=new THREE.Color();
   for(const [tint,sx,sy,sz,y,z] of [[0x06354b,.3,.3,.86,0,0],[0x31eaff,.19,.075,.65,.15,0],[0xf4ffff,.12,.08,.16,.16,.32]]){
@@ -849,21 +875,62 @@ function playerRoundGeometry(){
   }
   const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeBoundingSphere();return geometry;
 }
+function specialRoundGeometry(kind){
+  const positions=[],colors=[],color=new THREE.Color();
+  const shapes=kind==='rocket'?
+    [[new THREE.CylinderGeometry(.15,.17,.53,6),0xf36d38,Math.PI/2,0,0,0],[new THREE.ConeGeometry(.15,.27,6),0xfff1b1,Math.PI/2,0,0,.4],[new THREE.BoxGeometry(.35,.06,.16),0x6e4542,0,0,0,-.3],[new THREE.BoxGeometry(.06,.35,.16),0x6e4542,0,0,0,-.3]]:
+    [[new THREE.OctahedronGeometry(.16,0),0xf5ad38,0,0,0,0],[new THREE.OctahedronGeometry(.085,0),0xffffff,0,0,0,.13]];
+  for(const [shape,tint,rotation,x,y,z] of shapes){shape.rotateX(rotation);shape.translate(x,y,z);const flat=shape.index?shape.toNonIndexed():shape,points=flat.getAttribute('position');color.setHex(tint);for(let i=0;i<points.count;i++){positions.push(points.getX(i),points.getY(i),points.getZ(i));colors.push(color.r,color.g,color.b);}if(flat!==shape)flat.dispose();shape.dispose();}
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeBoundingSphere();return geometry;
+}
 export class Combat {
-  constructor(game){this.game=game;this.playerRoundGeometry=playerRoundGeometry();this.playerRoundMaterial=new THREE.MeshBasicMaterial({vertexColors:true,toneMapped:false});this.bullets=Array.from({length:CONFIG.combat.maxBullets},()=>{const mesh=part(game.scene,'sphere',0xf05b72,0,0,0,.17,.17,.65);mesh.visible=false;return {mesh,active:false};});this.enemyRoundGeometry=this.bullets[0].mesh.geometry;this.shells=Array.from({length:CONFIG.combat.maxMortars},()=>{const marker=ring(game.scene,0xef6867,2.6),mesh=part(game.scene,'sphere',0xf17963,0,0,0,.4);marker.visible=mesh.visible=false;return {marker,mesh,active:false};});this.activeBullets=new Set();this.activeShells=new Set();this.pickups=[];this.tip=new THREE.Vector3();}
-  shoot(owner,team,damage,offset=0){
+  constructor(game){this.game=game;this.playerRoundGeometry=playerRoundGeometry();this.rocketGeometry=specialRoundGeometry('rocket');this.pelletGeometry=specialRoundGeometry('pellet');this.playerRoundMaterial=new THREE.MeshBasicMaterial({vertexColors:true,toneMapped:false});this.bullets=Array.from({length:CONFIG.combat.maxBullets},()=>{const mesh=part(game.scene,'sphere',0xf05b72,0,0,0,.17,.17,.65);mesh.visible=false;return {mesh,active:false};});this.enemyRoundGeometry=this.bullets[0].mesh.geometry;this.shells=Array.from({length:CONFIG.combat.maxMortars},()=>{const marker=ring(game.scene,0xef6867,2.6),mesh=part(game.scene,'sphere',0xf17963,0,0,0,.4);marker.visible=mesh.visible=false;return {marker,mesh,active:false};});this.activeBullets=new Set();this.activeShells=new Set();this.pickups=[];this.tip=new THREE.Vector3();}
+  firePlayer(player){
+    const type=player.weapon,weapon=CONFIG.weapons[type];
+    if(!weapon)return this.shoot(player,'player',CONFIG.player.damage)?CONFIG.player.fireInterval:0;
+    let fired=false;
+    if(type==='rocket')fired=this.shoot(player,'player',weapon.damage,0,'rocket');
+    else if(type==='shotgun'){for(const offset of [-.3,-.18,-.06,.06,.18,.3])fired=this.shoot(player,'player',weapon.damage,offset,'pellet',!fired,false)||fired;if(fired)this.game.effects.shotgunMuzzle(this.tip.x,this.tip.y,this.tip.z,player.aim);}
+    else if(type==='flame')fired=this.flame(player,weapon);
+    else if(type==='electric')fired=this.electric(player,weapon);
+    if(!fired)return 0;
+    player.ammo--;
+    if(player.ammo<=0){player.weapon='normal';player.ammo=0;this.game.ui.toast('HẾT ĐẠN ĐẶC BIỆT · PHÁO THƯỜNG');}
+    return weapon.interval;
+  }
+  flame(player,weapon){
+    const g=this.game,grid=g.world.grid,range=6.5,angle=player.aim,hitWalls=new Set();let visualRange=range;
+    for(const e of g.enemies.list){if(e.dead)continue;const distance=dist(player,e),bearing=Math.atan2(e.x-player.x,e.z-player.z),difference=Math.abs(Math.atan2(Math.sin(bearing-angle),Math.cos(bearing-angle)));if(distance>range||difference>.43||grid.trace(player.x,player.z,e.x,e.z))continue;g.enemies.hurt(e,weapon.damage,true);if(!e.dead){e.burn=Math.max(e.burn,1.5);e.burnTick=Math.min(e.burnTick||.45,.45);}}
+    for(const offset of [-.34,0,.34]){const a=angle+offset,x=player.x+Math.sin(a)*range,z=player.z+Math.cos(a)*range,wall=grid.trace(player.x,player.z,x,z,.1);if(wall){visualRange=Math.min(visualRange,range*wall.t);if(!hitWalls.has(wall.i)){hitWalls.add(wall.i);g.world.damage(wall.i,weapon.damage,g);}}}
+    g.effects.flameJet(player.x,player.z,angle,visualRange);
+    player.model.flashTime=.08;g.audio.play('flame');return true;
+  }
+  electric(player,weapon){
+    const g=this.game,grid=g.world.grid,used=new Set();let source=player,hit=0;
+    for(let jump=0;jump<4;jump++){
+      let best=null,bestDistance=Infinity;
+      for(const e of g.enemies.list){if(e.dead||used.has(e))continue;const distance=dist(source,e);if(distance>(jump===0?11:5.2)||distance>=bestDistance||grid.trace(source.x,source.z,e.x,e.z))continue;if(jump===0){const bearing=Math.atan2(e.x-player.x,e.z-player.z),difference=Math.abs(Math.atan2(Math.sin(bearing-player.aim),Math.cos(bearing-player.aim)));if(difference>.5)continue;}best=e;bestDistance=distance;}
+      if(!best)break;used.add(best);g.effects.arc(source.x,source.z,best.x,best.z);g.effects.electricBurst(best.x,best.z);g.enemies.hurt(best,Math.round(weapon.damage*(1-jump*.18)),true);if(!best.dead)best.stun=Math.max(best.stun,.35);source=best;hit++;
+    }
+    if(!hit){const x=player.x+Math.sin(player.aim)*11,z=player.z+Math.cos(player.aim)*11,wall=grid.trace(player.x,player.z,x,z,.1),end=wall?{x:player.x+(x-player.x)*wall.t,z:player.z+(z-player.z)*wall.t}:{x,z};g.effects.arc(player.x,player.z,end.x,end.z);g.effects.electricBurst(end.x,end.z);if(wall)g.world.damage(wall.i,weapon.damage*.6,g);}
+    player.model.flashTime=.1;g.audio.play('electric');return true;
+  }
+  shoot(owner,team,damage,offset=0,kind='normal',sound=true,muzzleEffect=true){
     const b=this.bullets.find(b=>!b.active);if(!b)return false;
     const g=this.game,m=owner.model;m.root.position.set(owner.x,0,owner.z);m.turret.rotation.y=owner.aim;m.root.updateMatrixWorld(true);m.tip.getWorldPosition(this.tip);
-    const angle=owner.aim+offset,speed=team==='player'?CONFIG.combat.bulletSpeed:CONFIG.combat.enemyBulletSpeed*(1+Math.min(.45,g.time/700));
+    const angle=owner.aim+offset,speed=kind==='rocket'?17:kind==='pellet'?29:team==='player'?CONFIG.combat.bulletSpeed:CONFIG.combat.enemyBulletSpeed*(1+Math.min(.45,g.time/700));
     // Check the breech-to-muzzle segment too: a muzzle can overlap a wall while the hull cannot.
     const obstruction=g.world.grid.trace(owner.x,owner.z,this.tip.x,this.tip.z,.1);
-    if(obstruction){g.world.damage(obstruction.i,damage,g);m.flashTime=.1;g.effects.emit(this.tip.x,.8,this.tip.z,team==='player'?0x59efff:0xffd790,6,.22,1.25);g.audio.play(team==='player'?'shot':'enemyShot',team==='player'?0:dist(owner,g.player));return true;}
-    Object.assign(b,{active:true,x:this.tip.x,y:this.tip.y,z:this.tip.z,vx:Math.sin(angle)*speed,vz:Math.cos(angle)*speed,team,damage,life:3.5});this.activeBullets.add(b);b.mesh.position.set(b.x,b.y,b.z);b.mesh.rotation.y=angle;b.mesh.geometry=team==='player'?this.playerRoundGeometry:this.enemyRoundGeometry;b.mesh.scale.set(team==='player'?1:.17,team==='player'?1:.17,team==='player'?1:.65);b.mesh.material=team==='player'?this.playerRoundMaterial:material(0xf05b72,true);b.mesh.visible=true;
-    m.flashTime=.1;g.effects.emit(b.x,.9,b.z,team==='player'?0x63f1ff:0xffd19b,6,.18,1.3);g.audio.play(team==='player'?'shot':'enemyShot',team==='player'?0:dist(owner,g.player));return true;
+    const playSound=()=>{if(sound)g.audio.play(team!=='player'?'enemyShot':kind==='rocket'?'rocket':kind==='pellet'?'shotgun':'shot',team==='player'?0:dist(owner,g.player));};
+    if(obstruction){if(kind==='rocket')this.explode(this.tip.x,this.tip.z,2.8,damage,'player','rocket');else g.world.damage(obstruction.i,damage,g);m.flashTime=.1;if(muzzleEffect)g.effects.emit(this.tip.x,.8,this.tip.z,team==='player'?0x59efff:0xffd790,6,.22,1.25);playSound();return true;}
+    Object.assign(b,{active:true,x:this.tip.x,y:this.tip.y,z:this.tip.z,vx:Math.sin(angle)*speed,vz:Math.cos(angle)*speed,team,damage,kind,angle,trail:0,life:kind==='pellet'?.46:kind==='rocket'?2.5:3.5});this.activeBullets.add(b);b.mesh.position.set(b.x,b.y,b.z);b.mesh.rotation.y=angle;b.mesh.geometry=kind==='rocket'?this.rocketGeometry:kind==='pellet'?this.pelletGeometry:team==='player'?this.playerRoundGeometry:this.enemyRoundGeometry;
+    if(kind==='rocket')b.mesh.scale.setScalar(1.2);else if(kind==='pellet')b.mesh.scale.setScalar(1.35);else b.mesh.scale.set(team==='player'?1:.17,team==='player'?1:.17,team==='player'?1:.65);
+    b.mesh.material=team==='player'||kind==='rocket'||kind==='pellet'?this.playerRoundMaterial:material(0xf05b72,true);b.mesh.visible=true;
+    m.flashTime=.1;if(muzzleEffect)g.effects.emit(b.x,.9,b.z,kind==='rocket'?0xffad68:team==='player'?0x63f1ff:0xffd19b,6,.18,1.3);playSound();return true;
   }
   mortar(owner,x,z){const s=this.shells.find(s=>!s.active);if(!s)return;Object.assign(s,{active:true,x,z,startX:owner.x,startZ:owner.z,life:1.65,max:1.65,damage:owner.damage});this.activeShells.add(s);s.marker.visible=s.mesh.visible=true;s.marker.position.set(x,.12,z);s.marker.scale.setScalar(2.6);this.game.audio.play('warning');}
-  explode(x,z,radius,damage,team){
-    const g=this.game;g.effects.explosion(x,z,radius/3);g.audio.play('explosion');
+  explode(x,z,radius,damage,team,visual='normal'){
+    const g=this.game;if(visual==='rocket')g.effects.rocketExplosion(x,z,radius/3);else g.effects.explosion(x,z,radius/3);g.audio.play('explosion');
     if(team!=='player'&&dist({x,z},g.player)<radius+g.player.radius&&!g.world.grid.trace(x,z,g.player.x,g.player.z))g.player.hurt(damage,g);
     if(team!=='enemy')for(const e of g.enemies.list)if(!e.dead&&dist({x,z},e)<radius+e.radius&&!g.world.grid.trace(x,z,e.x,e.z))g.enemies.hurt(e,damage);
     // Destroy first, recurse second through World.damage: exploded barrels cannot retrigger themselves.
@@ -873,13 +940,14 @@ export class Combat {
   update(dt){const g=this.game,grid=g.world.grid;
     for(const b of this.activeBullets){const nx=b.x+b.vx*dt,nz=b.z+b.vz*dt,wall=grid.trace(b.x,b.z,nx,nz,.1);let best=wall?wall.t:Infinity,target=null;
       for(const e of b.team==='player'?g.enemies.list:[g.player]){if(e.dead||e.hp<=0)continue;const t=segmentCircle(b.x,b.z,nx,nz,e.x,e.z,e.radius+.11);if(t!==null&&t<best){best=t;target=e;}}
-      if(best!==Infinity){const x=b.x+(nx-b.x)*best,z=b.z+(nz-b.z)*best;g.effects.emit(x,.7,z,b.team==='player'?0x72f2ff:0xffcc9e,7,.3,1.3);if(target){if(b.team==='player')g.enemies.hurt(target,b.damage);else target.hurt(b.damage,g);}else{g.effects.emit(x,.3,z,0xc9bdac,5,.5,1.5);g.world.damage(wall.i,b.damage,g);}b.active=false;}
-      b.x=nx;b.z=nz;b.life-=dt;if(b.life<=0||Math.abs(nx)>grid.half||Math.abs(nz)>grid.half)b.active=false;b.mesh.visible=b.active;b.mesh.position.set(nx,b.y,nz);if(!b.active)this.activeBullets.delete(b);
+      if(best!==Infinity){const x=b.x+(nx-b.x)*best,z=b.z+(nz-b.z)*best;if(b.kind==='rocket')this.explode(x,z,2.8,b.damage,'player','rocket');else{g.effects.emit(x,.7,z,b.kind==='pellet'?0xffc45e:b.team==='player'?0x72f2ff:0xffcc9e,b.kind==='pellet'?4:7,.3,1.3);if(target){if(b.team==='player')g.enemies.hurt(target,b.damage);else target.hurt(b.damage,g);}else{g.effects.emit(x,.3,z,0xc9bdac,5,.5,1.5);g.world.damage(wall.i,b.damage,g);}}b.active=false;}
+      b.x=nx;b.z=nz;b.life-=dt;if(b.life<=0||Math.abs(nx)>grid.half||Math.abs(nz)>grid.half)b.active=false;if(b.active&&b.kind==='rocket'){b.trail-=dt;if(b.trail<=0){b.trail=.09;g.effects.rocketTrail(nx,b.y,nz,b.angle);}}b.mesh.visible=b.active;b.mesh.position.set(nx,b.y,nz);if(!b.active)this.activeBullets.delete(b);
     }
     for(const s of this.activeShells){s.life-=dt;const t=1-s.life/s.max;s.mesh.position.set(s.startX+(s.x-s.startX)*t,1+Math.sin(t*Math.PI)*8,s.startZ+(s.z-s.startZ)*t);if(s.life<=0){s.active=false;this.activeShells.delete(s);s.mesh.visible=s.marker.visible=false;this.explode(s.x,s.z,2.6,s.damage,'enemy');}}
-    for(let i=this.pickups.length-1;i>=0;i--){const p=this.pickups[i];p.life-=dt;if(dist(p,g.player)<1.2){const player=g.player;if(p.type===0)player.hp=Math.min(CONFIG.player.hp,player.hp+30);if(p.type===1)player.stamina=CONFIG.player.stamina;if(p.type===2)player.speedBuff=8;if(p.type===3)player.fireBuff=8;g.audio.play('pickup');g.effects.emit(p.x,1,p.z,0xb6ffce,7,.55);g.effects.popup(p.x,p.z,['+30 GIÁP','ĐẦY NĂNG LƯỢNG','TĂNG TỐC · 8s','BẮN NHANH · 8s'][p.type],'#a9ffe2');p.life=0;}if(p.life<=0){p.mesh.removeFromParent();this.pickups.splice(i,1);}}
+    for(let i=this.pickups.length-1;i>=0;i--){const p=this.pickups[i];p.life-=dt;if(dist(p,g.player)<1.2){const player=g.player,names=['+30 GIÁP','ĐẦY NĂNG LƯỢNG','TĂNG TỐC · 8s','BẮN NHANH · 8s'];if(p.type===0)player.hp=Math.min(CONFIG.player.hp,player.hp+30);if(p.type===1)player.stamina=CONFIG.player.stamina;if(p.type===2)player.speedBuff=8;if(p.type===3)player.fireBuff=8;if(p.type>=4){const type=['rocket','shotgun','flame','electric'][p.type-4];player.equipWeapon(type);names[p.type]=`${CONFIG.weapons[type].name} ×${player.ammo}`;g.ui.toast(`NHẶT ${CONFIG.weapons[type].name} · ${player.ammo} ĐẠN`);}g.audio.play('pickup');g.effects.emit(p.x,1,p.z,p.type>=4?CONFIG.weapons[player.weapon].color:0xb6ffce,7,.55);g.effects.popup(p.x,p.z,names[p.type],p.type>=4?'#fff0bf':'#a9ffe2');p.life=0;}if(p.life<=0){p.mesh.removeFromParent();this.pickups.splice(i,1);}}
   }
-  drop(x,z){const g=this.game;if(this.pickups.length>=CONFIG.combat.maxPickups||g.world.grid.random()>.4)return;const type=Math.floor(g.world.grid.random()*4),mesh=new THREE.Group();part(mesh,'box',[0x8fd6ac,0x89c7e6,0xffd36c,0xe69bd4][type],0,0,0,.6);part(mesh,'box',0xffffff,0,.32,0,.12,.03,.4);if(type<2)part(mesh,'box',0xffffff,0,.32,0,.4,.03,.12);mesh.position.set(x,.8,z);g.scene.add(mesh);this.pickups.push({x,z,type,mesh,life:18});}
+  spawnPickup(type,x,z){const g=this.game;if(this.pickups.length>=CONFIG.combat.maxPickups)return null;const mesh=pickupModel(type);mesh.position.set(x,.8,z);g.scene.add(mesh);const pickup={x,z,type,mesh,life:18};this.pickups.push(pickup);return pickup;}
+  drop(x,z){const grid=this.game.world.grid;if(this.pickups.length>=CONFIG.combat.maxPickups||grid.random()>.65)return;const roll=grid.random(),type=roll<.4?4+Math.min(3,Math.floor(roll/.4*4)):Math.min(3,Math.floor((roll-.4)/.6*4));this.spawnPickup(type,x,z);}
   clear(){for(const b of this.activeBullets){b.active=false;b.mesh.visible=false;}for(const s of this.activeShells){s.active=false;s.mesh.visible=s.marker.visible=false;}this.activeBullets.clear();this.activeShells.clear();for(const p of this.pickups)p.mesh.removeFromParent();this.pickups=[];}
 }
 ```
@@ -895,6 +963,12 @@ export const CONFIG = {
     dashCost: 30, dashDuration: .18, dashInvulnerability: .12, dashSpeed: 22, dashCooldown: .5, staminaRegen: 23, hurtGrace: .65 },
   director: { maxEnemies: 16, spawnStart: 4.2, spawnMin: 1.35, spawnWarning: 1.5, safeRadius: 11, eliteEvery: 90, assaultFirst: 24, assaultBase: 38, assaultMin: 28, assaultGap: .6 },
   combat: { maxBullets: 180, maxMortars: 12, bulletSpeed: 25, enemyBulletSpeed: 10, comboWindow: 4, maxCombo: 5, survivalScore: 5, maxPickups: 16 },
+  weapons: {
+    rocket: { name: 'ROCKET', ammo: 8, maxAmmo: 16, interval: .62, damage: 62, color: 0xf18c57 },
+    shotgun: { name: 'SHOTGUN', ammo: 20, maxAmmo: 40, interval: .46, damage: 12, color: 0xf3c96c },
+    flame: { name: 'LỬA', ammo: 50, maxAmmo: 100, interval: .1, damage: 7, color: 0xf07542 },
+    electric: { name: 'ĐIỆN', ammo: 18, maxAmmo: 36, interval: .42, damage: 34, color: 0x6bd9f2 },
+  },
   effects: { high: 96, popups: 16 },
   performance: { softwareFPS: 24, highFPS: 60, idleFPS: 4, uiFPS: 5 },
   colors: { mint: 0x74d6b2, sky: 0x8fcdda, yellow: 0xffd36c, coral: 0xed7765, road: 0xe8e4d7, grass: 0xb5d3a1, ink: 0x263f44, steel: 0x8babb4, water: 0x7ec8db },
@@ -1110,21 +1184,32 @@ export class Effects {
     this.mesh=new THREE.InstancedMesh(this.geometry,this.material,CONFIG.effects.high);this.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);this.mesh.frustumCulled=false;scene.add(this.mesh);this.dummy=new THREE.Object3D();this.color=new THREE.Color();this.limit=CONFIG.effects.high;
     for(let i=0;i<CONFIG.effects.high;i++){this.particles.push({life:0});this.dummy.scale.setScalar(0);this.dummy.updateMatrix();this.mesh.setMatrixAt(i,this.dummy.matrix);this.mesh.setColorAt(i,this.color);}
     this.rings=Array.from({length:6},()=>{const m=ring(scene,0xffdf9c);m.material=m.material.clone();m.material.transparent=true;m.material.depthWrite=false;m.material.toneMapped=false;m.visible=false;return {mesh:m,life:0,max:.38};});
+    this.arcs=Array.from({length:8},()=>{const positions=new Float32Array(21),coreVertices=new Float32Array(108),haloVertices=new Float32Array(108);const makeRibbon=(data,color,opacity)=>{const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(data,3).setUsage(THREE.DynamicDrawUsage));const line=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({color,transparent:true,opacity,depthWrite:false,toneMapped:false,side:THREE.DoubleSide}));line.frustumCulled=false;line.visible=false;scene.add(line);return line;};return {line:makeRibbon(coreVertices,0xf3ffff,1),halo:makeRibbon(haloVertices,0x20bcef,.55),positions,coreVertices,haloVertices,life:0};});
     this.popups=Array.from({length:CONFIG.effects.popups},()=>{const element=document.createElement('span');element.className='score-popup';element.hidden=true;document.getElementById('popups').append(element);return {element,life:0};});
     this.project=new THREE.Vector3();
   }
-  emit(x,y,z,color,count=8,life=.6,size=1){const limit=this.limit;
-    for(let i=0;i<count;i++){this.cursor=(this.cursor+1)%limit;const p=this.particles[this.cursor];Object.assign(p,{x,y,z,vx:(Math.random()-.5)*5,vy:1+Math.random()*4,vz:(Math.random()-.5)*5,life,max:life,size:(.05+Math.random()*.15)*size,color});this.active.add(this.cursor);this.mesh.setColorAt(this.cursor,this.color.setHex(color));}this.mesh.instanceColor.needsUpdate=true;
+  particle(x,y,z,color,life,size,vx,vy,vz){this.cursor=(this.cursor+1)%this.limit;const p=this.particles[this.cursor];p.x=x;p.y=y;p.z=z;p.vx=vx;p.vy=vy;p.vz=vz;p.life=life;p.max=life;p.size=size;p.color=color;this.active.add(this.cursor);this.mesh.setColorAt(this.cursor,this.color.setHex(color));}
+  emit(x,y,z,color,count=8,life=.6,size=1){
+    for(let i=0;i<count;i++)this.particle(x,y,z,color,life,(.05+Math.random()*.15)*size,(Math.random()-.5)*5,1+Math.random()*4,(Math.random()-.5)*5);this.mesh.instanceColor.needsUpdate=true;
   }
   setQuality(){this.limit=CONFIG.effects.high;this.mesh.count=this.limit;}
-  explosion(x,z,size=1){this.emit(x,.7,z,0xffffff,Math.round(7*size),.16,1.6);this.emit(x,.5,z,0xffaa68,Math.round(10*size),.42,1.25);this.emit(x,.2,z,0x8f9490,Math.round(7*size),.78,1.45);const r=this.rings.find(r=>r.life<=0)||this.rings[0];r.life=r.max;r.mesh.material.opacity=.8;r.mesh.position.set(x,.1,z);r.mesh.visible=true;r.size=size;this.shake=Math.max(this.shake,.1*size);}
+  shockwave(x,z,size,color=0xffdf9c){const r=this.rings.find(r=>r.life<=0)||this.rings[0];r.life=r.max;r.mesh.material.color.setHex(color);r.mesh.material.opacity=.8;r.mesh.position.set(x,.1,z);r.mesh.visible=true;r.size=size;this.shake=Math.max(this.shake,.1*size);}
+  explosion(x,z,size=1){this.emit(x,.7,z,0xffffff,Math.round(7*size),.16,1.6);this.emit(x,.5,z,0xffaa68,Math.round(10*size),.42,1.25);this.emit(x,.2,z,0x8f9490,Math.round(7*size),.78,1.45);this.shockwave(x,z,size);}
+  rocketTrail(x,y,z,angle){const sx=Math.sin(angle),sz=Math.cos(angle);this.particle(x-sx*.35,y,z-sz*.35,0x8d9694,.38,.19,-sx*.7,.45,-sz*.7);this.particle(x-sx*.2,y,z-sz*.2,0xffe4a0,.16,.12,-sx*1.6,.3,-sz*1.6);this.mesh.instanceColor.needsUpdate=true;}
+  rocketExplosion(x,z,size=1){this.emit(x,.7,z,0xffffff,7,.14,1.8);this.emit(x,.55,z,0xff9d49,14,.38,1.55);this.emit(x,.25,z,0x697477,9,.65,1.35);this.shockwave(x,z,size,0xff9b50);}
+  shotgunMuzzle(x,y,z,angle){const sx=Math.sin(angle),sz=Math.cos(angle),px=sz,pz=-sx;for(let i=0;i<7;i++){const d=.35+(i%3)*.37,spread=(i-3)*.11;this.particle(x+sx*d+px*spread,y,z+sz*d+pz*spread,i%2?0xffb94e:0xffffff,.17,.105+Math.abs(spread)*.15,sx*(3+i*.3)+px*spread*4,.4,sz*(3+i*.3)+pz*spread*4);}this.mesh.instanceColor.needsUpdate=true;}
+  flameJet(x,z,angle,range){const sx=Math.sin(angle),sz=Math.cos(angle),px=sz,pz=-sx;for(let i=0;i<12;i++){const d=(range-.12)*(i+1)/13;if(d<=.05)break;const spread=(i%3-1)*Math.min(.48,d*.11),warm=i%3===0?0xfff5ad:i%3===1?0xffa344:0xf15d3c;this.particle(x+sx*d+px*spread,.58+(i%2)*.1,z+sz*d+pz*spread,warm,.21+i*.008,.17+d*.02,sx*(2+i*.15)+px*spread*.5,.65,sz*(2+i*.15)+pz*spread*.5);}this.mesh.instanceColor.needsUpdate=true;}
+  electricBurst(x,z){this.particle(x,.9,z,0xffffff,.18,.23,0,1,0);for(let i=0;i<4;i++){const a=i*Math.PI/2+Math.random()*.5;this.particle(x,.8,z,0x60eaff,.24,.11,Math.sin(a)*3,1.4,Math.cos(a)*3);}this.mesh.instanceColor.needsUpdate=true;}
+  arc(ax,az,bx,bz){const arc=this.arcs.find(a=>a.life<=0)||this.arcs[0],p=arc.positions,dx=bx-ax,dz=bz-az,length=Math.max(.1,Math.hypot(dx,dz)),perpX=-dz/length,perpZ=dx/length;for(let i=0;i<7;i++){const t=i/6,j=i===0||i===6?0:(Math.random()-.5)*Math.min(1.1,length*.22),k=i*3;p[k]=ax+dx*t+perpX*j;p[k+1]=.93+Math.sin(t*Math.PI)*.3+(i%2)*.08;p[k+2]=az+dz*t+perpZ*j;}this.arcRibbon(p,arc.haloVertices,.17);this.arcRibbon(p,arc.coreVertices,.055);arc.line.geometry.attributes.position.needsUpdate=true;arc.halo.geometry.attributes.position.needsUpdate=true;arc.line.material.opacity=1;arc.halo.material.opacity=.55;arc.line.visible=arc.halo.visible=true;arc.life=.2;}
+  arcRibbon(path,out,width){for(let i=0;i<6;i++){const a=i*3,b=a+3,o=i*18,dx=path[b]-path[a],dz=path[b+2]-path[a+2],length=Math.max(.001,Math.hypot(dx,dz)),nx=-dz/length*width,nz=dx/length*width;out.set([path[a]+nx,path[a+1],path[a+2]+nz,path[a]-nx,path[a+1],path[a+2]-nz,path[b]+nx,path[b+1],path[b+2]+nz,path[b]+nx,path[b+1],path[b+2]+nz,path[a]-nx,path[a+1],path[a+2]-nz,path[b]-nx,path[b+1],path[b+2]-nz],o);}}
   popup(x,z,text,color='#fff9d5'){const p=this.popups.find(p=>p.life<=0)||this.popups[0];Object.assign(p,{x,z,life:1.2});p.element.textContent=text;p.element.style.color=color;p.element.hidden=false;}
   update(dt){this.shake=Math.max(0,this.shake-dt);let changed=false;for(const i of this.active){const p=this.particles[i];p.life=Math.max(0,p.life-dt);if(p.life>0){p.x+=p.vx*dt;p.y+=p.vy*dt;p.z+=p.vz*dt;p.vy-=6*dt;this.dummy.position.set(p.x,Math.max(.07,p.y),p.z);this.dummy.rotation.set(0,0,0);this.dummy.scale.setScalar(p.size*Math.min(1,p.life*4));}else{this.dummy.scale.setScalar(0);this.active.delete(i);}this.dummy.updateMatrix();this.mesh.setMatrixAt(i,this.dummy.matrix);changed=true;}if(changed)this.mesh.instanceMatrix.needsUpdate=true;
     for(const r of this.rings)if(r.life>0){r.life=Math.max(0,r.life-dt);r.mesh.visible=r.life>0;r.mesh.scale.setScalar((r.max-r.life)*8*r.size);r.mesh.material.opacity=.8*r.life/r.max;}
+    for(const a of this.arcs)if(a.life>0){a.life=Math.max(0,a.life-dt);a.line.visible=a.halo.visible=a.life>0;a.line.material.opacity=a.life/.2;a.halo.material.opacity=.55*a.life/.2;}
     for(const p of this.popups)if(p.life>0){p.life-=dt;p.element.hidden=p.life<=0;}
   }
   render(){for(const p of this.popups)if(p.life>0){this.project.set(p.x,2+(1.2-p.life),p.z).project(this.camera);p.element.style.transform=`translate(${(this.project.x*.5+.5)*innerWidth}px,${(-this.project.y*.5+.5)*innerHeight}px) translate(-50%,-50%)`;p.element.style.opacity=Math.min(1,p.life*3);}}
-  clear(){for(const i of this.active){const p=this.particles[i];p.life=0;this.dummy.scale.setScalar(0);this.dummy.updateMatrix();this.mesh.setMatrixAt(i,this.dummy.matrix);}this.active.clear();this.mesh.instanceMatrix.needsUpdate=true;for(const p of this.popups){p.life=0;p.element.hidden=true;}for(const r of this.rings){r.life=0;r.mesh.visible=false;}this.shake=0;}
+  clear(){for(const i of this.active){const p=this.particles[i];p.life=0;this.dummy.scale.setScalar(0);this.dummy.updateMatrix();this.mesh.setMatrixAt(i,this.dummy.matrix);}this.active.clear();this.mesh.instanceMatrix.needsUpdate=true;for(const p of this.popups){p.life=0;p.element.hidden=true;}for(const r of this.rings){r.life=0;r.mesh.visible=false;}for(const a of this.arcs){a.life=0;a.line.visible=a.halo.visible=false;}this.shake=0;}
 }
 ```
 
@@ -1149,7 +1234,7 @@ export class Enemies {
     for(let i=0;i<grid.tiles.length;i++)if(walkable(grid.tiles[i])&&reachable[i]){const p=grid.center(i),d=dist(p,g.player);if(d>CONFIG.director.safeRadius&&d<25&&grid.free(p.x,p.z,ENEMIES[type].radius)&&!this.list.some(e=>dist(e,p)<2)&&!this.pending.some(e=>dist(e,p)<2))possible.push(p);}
     if(!possible.length)return false;const p=possible[Math.floor(grid.random()*possible.length)],marker=ring(g.scene,0xe87870,1.3);marker.position.set(p.x,.09,p.z);this.pending.push({...p,type,remaining:CONFIG.director.spawnWarning,marker});return true;
   }
-  spawn(p){const g=this.game,data=ENEMIES[p.type],factor=1+Math.min(.7,g.time/700),model=tankModel(data.color,p.type,data.scale),baseMaxHP=data.hp*factor,e={...data,type:p.type,x:p.x,z:p.z,baseMaxHP,hp:baseMaxHP,maxHP:baseMaxHP,zombie:false,angle:0,aim:0,model,dead:false,fire:1.2,path:[],pathVersion:-1,pathTimer:0,senseTimer:0,distance:Infinity,los:false,desired:0,charge:0,burst:0,burstTimer:0,id:this.serial++,smoke:0,flash:0,phase:0};this.setZombie(e,g.isNight);g.scene.add(model.root);model.root.position.set(e.x,0,e.z);this.list.push(e);}
+  spawn(p){const g=this.game,data=ENEMIES[p.type],factor=1+Math.min(.7,g.time/700),model=tankModel(data.color,p.type,data.scale),baseMaxHP=data.hp*factor,e={...data,type:p.type,x:p.x,z:p.z,baseMaxHP,hp:baseMaxHP,maxHP:baseMaxHP,zombie:false,angle:0,aim:0,model,dead:false,fire:1.2,path:[],pathVersion:-1,pathTimer:0,senseTimer:0,distance:Infinity,los:false,desired:0,charge:0,burst:0,burstTimer:0,id:this.serial++,smoke:0,flash:0,phase:0,burn:0,burnTick:0,stun:0};this.setZombie(e,g.isNight);g.scene.add(model.root);model.root.position.set(e.x,0,e.z);this.list.push(e);}
   setZombie(e,night){if(e.zombie===night)return;const ratio=e.maxHP?e.hp/e.maxHP:1;e.zombie=night;e.maxHP=e.baseMaxHP*(night?2:1);e.hp=Math.max(1,e.maxHP*ratio);e.model.zombie.visible=night;e.model.halo.material=material(night?0x82d35f:e.color,true);}
   setNight(night){for(const e of this.list)if(!e.dead)this.setZombie(e,night);for(const p of this.pending)p.marker.material=material(night?0x82d35f:0xe87870,true);}
   pickType(time,level){const r=this.game.world.grid.random();if(time<12)return 'scout';if(time<30)return r<.72?'scout':'gunner';if(time<45)return r<.5?'scout':r<.86?'gunner':'heavy';return r<.45-level*.2?'scout':r<.8-level*.12?'gunner':r<.91?'heavy':'mortar';}
@@ -1161,7 +1246,7 @@ export class Enemies {
     if(this.spawnTimer<=0){const assault=this.assaultRemaining>0,scheduled=this.schedule(this.pickType(g.time,level));if(assault&&scheduled)this.assaultRemaining--;const onboarding=g.time<30?(30-g.time)/15:0;this.spawnTimer=assault?CONFIG.director.assaultGap:Math.max(CONFIG.director.spawnMin,CONFIG.director.spawnStart+onboarding-g.time*.008);}
     for(let i=this.pending.length-1;i>=0;i--){const s=this.pending[i];s.remaining-=dt;if(s.remaining<=0){s.marker.removeFromParent();this.pending.splice(i,1);if(dist(s,p)>=CONFIG.director.safeRadius&&grid.free(s.x,s.z,ENEMIES[s.type].radius)&&grid.path(grid.at(s.x,s.z),grid.at(p.x,p.z)).length)this.spawn(s);}}
     for(const e of this.list){
-      if(e.dead)continue;e.fire-=dt;e.pathTimer-=dt;e.senseTimer-=dt;e.flash=Math.max(0,e.flash-dt);e.smoke-=dt;
+      if(e.dead)continue;if(e.burn>0){e.burn=Math.max(0,e.burn-dt);e.burnTick-=dt;if(e.burnTick<=0){this.hurt(e,4,true);e.burnTick=.45;}if(e.dead)continue;}if(e.stun>0){e.stun=Math.max(0,e.stun-dt);e.charge=0;e.burst=0;e.flash=Math.max(0,e.flash-dt);e.model.flashTime=Math.max(0,e.model.flashTime-dt);e.model.flash.visible=e.model.flashTime>0;e.model.halo.visible=true;e.model.halo.material=material(0x9eeaff,true);continue;}e.fire-=dt;e.pathTimer-=dt;e.senseTimer-=dt;e.flash=Math.max(0,e.flash-dt);e.smoke-=dt;
       if(e.senseTimer<=0){const dx=p.x-e.x,dz=p.z-e.z;e.distance=Math.hypot(dx,dz);e.los=!grid.trace(e.x,e.z,p.x,p.z);e.desired=Math.atan2(dx,dz);e.senseTimer=.16+(e.id%4)*.03;}const distance=e.distance,los=e.los,desired=e.desired;
       if(e.charge<=0)e.aim=turn(e.aim,desired,1-Math.exp(-dt*5));
       if(e.charge>0){e.charge-=dt;if(e.charge<=0)this.attack(e);}
@@ -1188,7 +1273,7 @@ export class Enemies {
     if(g.world.grid.trace(e.x,e.z,g.player.x,g.player.z))return;
     g.combat.shoot(e,'enemy',e.damage);if(e.type==='gunner'){e.burst=2;e.burstTimer=.18;}
   }
-  hurt(e,damage){if(e.dead)return;e.hp-=damage;e.flash=.12;const g=this.game;g.effects.emit(e.x,.8,e.z,0xffefb8,5,.23,1.2);if(e.hp<=0){e.dead=true;this.dirty=true;e.model.root.removeFromParent();g.effects.explosion(e.x,e.z,e.type==='elite'?2:1);g.audio.play('explosion');g.onKill(e);g.combat.drop(e.x,e.z);}}
+  hurt(e,damage,quiet=false){if(e.dead)return;e.hp-=damage;e.flash=.12;const g=this.game;if(!quiet)g.effects.emit(e.x,.8,e.z,0xffefb8,5,.23,1.2);if(e.hp<=0){e.dead=true;this.dirty=true;e.model.root.removeFromParent();g.effects.explosion(e.x,e.z,e.type==='elite'?2:1);g.audio.play('explosion');g.onKill(e);g.combat.drop(e.x,e.z);}}
   clear(){for(const e of this.list)e.model.root.removeFromParent();for(const p of this.pending)p.marker.removeFromParent();this.list=[];this.pending=[];this.dirty=false;}
 }
 ```
@@ -1325,6 +1410,15 @@ function mergedPart(parent,key,specs){
     geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeBoundingSphere();mergedGeometries.set(key,geometry);
   }
   const mesh=new THREE.Mesh(geometry,mergedMaterial);mesh.castShadow=mesh.receiveShadow=true;parent.add(mesh);return mesh;
+}
+export function pickupModel(type){
+  const colors=[0x8fd6ac,0x89c7e6,0xffd36c,0xe69bd4,0xf18c57,0xf3c96c,0xf07542,0x6bd9f2],white=0xfff0c4,specs=[['box',colors[type],0,0,0,.6]];
+  if(type<4){specs.push(['box',0xffffff,0,.32,0,.12,.03,.4]);if(type<2)specs.push(['box',0xffffff,0,.32,0,.4,.03,.12]);}
+  else if(type===4)specs.push(['cone',white,0,.43,0,.25,.6,.25]);
+  else if(type===5)for(const offset of [-.18,0,.18])specs.push(['box',white,offset,.4,0,.09,.48,.12]);
+  else if(type===6)specs.push(['cone',0xffec9e,0,.43,0,.34,.65,.34]);
+  else specs.push(['box',0xe8ffff,-.12,.4,0,.13,.38,.13,0,0,-.5],['box',0xe8ffff,.12,.4,0,.13,.38,.13,0,0,.5]);
+  const root=new THREE.Group();mergedPart(root,`pickup-${type}`,specs);return root;
 }
 function compactEnemyTank(color,kind,scale){
   const root=new THREE.Group(),body=new THREE.Group(),turret=new THREE.Group(),zombie=new THREE.Group(),dark=CONFIG.colors.ink;root.add(body,turret,zombie);
@@ -1519,7 +1613,8 @@ import { CONFIG } from './config.js';
 import { turn } from './core.js';
 import { tankModel } from './models.js';
 export class Player {
-  constructor(scene){Object.assign(this,{x:0,z:0,radius:CONFIG.player.radius,hp:CONFIG.player.hp,stamina:CONFIG.player.stamina,angle:Math.PI,aim:Math.PI,fire:0,dash:0,dashCooldown:0,invulnerable:0,regenDelay:0,speedBuff:0,fireBuff:0,trail:0});this.model=tankModel(CONFIG.colors.mint);scene.add(this.model.root);}
+  constructor(scene){Object.assign(this,{x:0,z:0,radius:CONFIG.player.radius,hp:CONFIG.player.hp,stamina:CONFIG.player.stamina,angle:Math.PI,aim:Math.PI,fire:0,dash:0,dashCooldown:0,invulnerable:0,regenDelay:0,speedBuff:0,fireBuff:0,trail:0,weapon:'normal',ammo:0});this.model=tankModel(CONFIG.colors.mint);scene.add(this.model.root);}
+  equipWeapon(type){const weapon=CONFIG.weapons[type];if(!weapon)return;this.ammo=this.weapon===type?Math.min(weapon.maxAmmo,this.ammo+weapon.ammo):weapon.ammo;this.weapon=type;this.fire=0;}
   update(dt,game){
     const c=CONFIG.player,i=game.input,m=i.movement();
     for(const key of ['fire','dashCooldown','invulnerable','regenDelay','speedBuff','fireBuff'])this[key]=Math.max(0,this[key]-dt);
@@ -1533,7 +1628,7 @@ export class Player {
     if(i.touchCapable&&i.firing){let best=null,bestScore=Infinity;for(const enemy of game.enemies.list){if(enemy.dead)continue;const distance=Math.hypot(enemy.x-this.x,enemy.z-this.z),enemyAim=Math.atan2(enemy.x-this.x,enemy.z-this.z),difference=Math.abs(Math.atan2(Math.sin(enemyAim-aim),Math.cos(enemyAim-aim)));if(distance<=16&&difference<.26&&!game.world.grid.trace(this.x,this.z,enemy.x,enemy.z)){const score=difference*3+distance/24;if(score<bestScore){best=enemy;bestScore=score;}}}if(best)aim=Math.atan2(best.x-this.x,best.z-this.z);}
     this.aim=aim;
     this.sync(dt);
-    if(i.firing&&this.fire<=0){game.combat.shoot(this,'player',c.damage);this.fire=c.fireInterval*(this.fireBuff>0?.55:1);}
+    if(i.firing&&this.fire<=0){const interval=game.combat.firePlayer(this);if(interval)this.fire=interval*(this.fireBuff>0?.55:1);}
     this.trail-=dt;if(this.trail<=0&&(m.x||m.z||dashing||this.hp<30)){this.trail=.14;game.effects.emit(this.x,.2,this.z,dashing?0xc6fff0:this.hp<30?0x8e8e87:0xded5ba,dashing?2:1,.3);}
     this.model.halo.material=game.material(this.invulnerable>0?0xffffff:this.stamina>=c.dashCost?0xb6ffdf:0xf1af85,true);
   }
@@ -1577,9 +1672,10 @@ export class UI {
   update(dt){const g=this.game,p=g.player;this.toastLife-=dt;this.hitLife-=dt;if(this.toastLife<=0)$('toast').classList.remove('visible');if(this.hitLife<=0)$('hit-flash').classList.remove('active');
     const hp=Math.round(Math.max(0,p.hp/CONFIG.player.hp)*100),stamina=Math.round(p.stamina/CONFIG.player.stamina*100);$('hp-value').textContent=Math.ceil(p.hp);$('hp-ring').style.setProperty('--angle',`${hp*3.6}deg`);$('stamina-value').textContent=Math.floor(p.stamina);$('stamina-ring').style.setProperty('--angle',`${stamina*3.6}deg`);const dashReady=p.stamina>=CONFIG.player.dashCost&&p.dashCooldown<=0;$('dash-button').disabled=!dashReady;$('dash-button').classList.toggle('ready',dashReady);$('score').textContent=String(Math.floor(g.score)).padStart(6,'0');$('combo').textContent=`×${Math.max(1,g.combo)}`;$('time').textContent=formatTime(g.time);
     const elite=g.enemies.list.find(e=>e.type==='elite');$('elite').hidden=!elite;if(elite){const value=Math.round(Math.max(0,elite.hp/elite.maxHP)*100);$('elite-ring').style.setProperty('--angle',`${value*3.6}deg`);$('elite-value').textContent=`${value}%`;}
+    const weapon=$('weapon-status'),special=CONFIG.weapons[p.weapon];weapon.hidden=!special;if(special){weapon.dataset.weapon=p.weapon;$('weapon-symbol').textContent={rocket:'R',shotgun:'S',flame:'F',electric:'E'}[p.weapon];$('weapon-name').textContent=special.name;$('weapon-ammo').textContent=p.ammo;weapon.setAttribute('aria-label',`${special.name}, còn ${p.ammo} đạn`);}
     const phaseRemaining=CONFIG.world.phaseDuration-g.time%CONFIG.world.phaseDuration;$('day-icon').textContent=g.isNight?'☾':'☀';$('day-label').textContent=g.isNight?'ĐÊM ZOMBIE':'BAN NGÀY';$('day-timer').textContent=formatTime(Math.ceil(phaseRemaining));$('day-cycle').classList.toggle('is-night',g.isNight);
   }
-  clear(){this.toastLife=this.hitLife=0;$('toast').classList.remove('visible');$('hit-flash').classList.remove('active');}
+  clear(){this.toastLife=this.hitLife=0;$('toast').classList.remove('visible');$('hit-flash').classList.remove('active');$('weapon-status').hidden=true;}
 }
 ```
 
@@ -1796,7 +1892,18 @@ try:
     integration = evaluate("import('./tests/integration-suite.js').then(m=>m.runIntegrationTests(window.__game))")
     print('Integration: '+json.dumps(integration, ensure_ascii=False), flush=True)
     (ART / 'integration-results.json').write_text(json.dumps(integration, indent=2, ensure_ascii=False), encoding='utf-8')
-    performance_result = evaluate("""(async()=>{const g=__game,{CONFIG}=await import('./src/config.js');g.start();cancelAnimationFrame(g.frameId);g.setQuality();for(let i=0;i<16;i++)g.enemies.spawn({type:['scout','gunner','heavy','mortar'][i%4],x:-24+(i%6)*4.8,z:-24+Math.floor(i/6)*4.8});g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);const dayCalls=g.renderer.info.render.calls;g.setNight(true,true,true);g.renderer.render(g.scene,g.camera);const nightCalls=g.renderer.info.render.calls,pixelRatio=g.renderer.getPixelRatio(),expectedRatio=g.softwareRenderer?1:Math.min(devicePixelRatio,1.25);let enemyMeshes=0;for(const e of g.enemies.list)e.model.root.traverse(o=>{if(o.isMesh&&o.visible)enemyMeshes++;});const uiOptionRemoved=!document.getElementById('quality'),fixedHighScale=!('adjustRenderScale' in g)&&Math.abs(pixelRatio-expectedRatio)<1e-6,circularHUD=['hp-ring','stamina-ring'].every(id=>document.getElementById(id))&&!document.getElementById('heat-ring'),simulationFPS=Math.round(1/CONFIG.step);return {pass:dayCalls<110&&nightCalls<125&&!g.renderer.shadowMap.enabled&&g.effects.mesh.count===96&&enemyMeshes<=64&&g.settings.quality==='high'&&uiOptionRemoved&&fixedHighScale&&circularHUD&&simulationFPS===30,dayCalls,nightCalls,enemyMeshes,particleInstances:g.effects.mesh.count,quality:g.settings.quality,uiOptionRemoved,fixedHighScale,circularHUD,pixelRatio,expectedRatio,hardwareFPS:CONFIG.performance.highFPS,softwareFPS:CONFIG.performance.softwareFPS,simulationFPS,idleFPS:CONFIG.performance.idleFPS,shadows:g.renderer.shadowMap.enabled,softwareRenderer:g.softwareRenderer};})()""")
+    performance_result = evaluate("""(async()=>{
+      const g=__game,{CONFIG}=await import('./src/config.js');g.start();cancelAnimationFrame(g.frameId);g.setQuality();
+      for(let i=0;i<16;i++)g.enemies.spawn({type:['scout','gunner','heavy','mortar'][i%4],x:-24+(i%6)*4.8,z:-24+Math.floor(i/6)*4.8});
+      g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);const dayCalls=g.renderer.info.render.calls;
+      g.setNight(true,true,true);g.renderer.render(g.scene,g.camera);const nightCalls=g.renderer.info.render.calls;
+      for(let i=0;i<16;i++)g.combat.spawnPickup(i%8,-18+(i%8)*4.8,14+Math.floor(i/8)*2.4);
+      g.renderer.render(g.scene,g.camera);const pickupCalls=g.renderer.info.render.calls,pickupMeshes=g.combat.pickups.reduce((count,p)=>count+p.mesh.children.length,0);
+      const pixelRatio=g.renderer.getPixelRatio(),expectedRatio=g.softwareRenderer?1:Math.min(devicePixelRatio,1.25);let enemyMeshes=0;
+      for(const e of g.enemies.list)e.model.root.traverse(o=>{if(o.isMesh&&o.visible)enemyMeshes++;});
+      const uiOptionRemoved=!document.getElementById('quality'),fixedHighScale=!('adjustRenderScale' in g)&&Math.abs(pixelRatio-expectedRatio)<1e-6,circularHUD=['hp-ring','stamina-ring'].every(id=>document.getElementById(id))&&!document.getElementById('heat-ring'),simulationFPS=Math.round(1/CONFIG.step);
+      return {pass:dayCalls<110&&nightCalls<125&&pickupCalls-nightCalls<=16&&pickupMeshes===16&&!g.renderer.shadowMap.enabled&&g.effects.mesh.count===96&&enemyMeshes<=64&&g.settings.quality==='high'&&uiOptionRemoved&&fixedHighScale&&circularHUD&&simulationFPS===30,dayCalls,nightCalls,pickupCalls,pickupMeshes,enemyMeshes,particleInstances:g.effects.mesh.count,quality:g.settings.quality,uiOptionRemoved,fixedHighScale,circularHUD,pixelRatio,expectedRatio,hardwareFPS:CONFIG.performance.highFPS,softwareFPS:CONFIG.performance.softwareFPS,simulationFPS,idleFPS:CONFIG.performance.idleFPS,shadows:g.renderer.shadowMap.enabled,softwareRenderer:g.softwareRenderer};
+    })()""")
     print('Performance budget: '+json.dumps(performance_result), flush=True)
     (ART / 'performance-results.json').write_text(json.dumps(performance_result, indent=2), encoding='utf-8')
     visual = evaluate("""(()=>{const g=__game,i=g.world.grid.index(13,12);g.world.grid.tiles[i]=3;g.world.grid.hp[i]=Infinity;g.world.rebuild(i);g.player.x=0;g.player.z=0;g.player.sync(0);g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);return {ghosts:g.world.ghosts.size,fullHeight:g.world.tiles[i].scale.y===1};})()""")
@@ -1804,6 +1911,9 @@ try:
     screenshot('house-fade.png')
     evaluate("""(()=>{const g=__game;g.start();cancelAnimationFrame(g.frameId);g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);})()""")
     screenshot('gameplay.png')
+    for weapon in ('rocket', 'shotgun', 'flame', 'electric'):
+        evaluate("""(()=>{const g=__game;g.start();cancelAnimationFrame(g.frameId);const grid=g.world.grid;let spot=null,best=Infinity;for(let i=0;i<grid.tiles.length;i++){const p=grid.center(i),score=p.x*p.x+p.z*p.z;if(score<best&&Math.abs(p.x)<15&&Math.abs(p.z)<15&&grid.free(p.x,p.z,.8)&&!grid.trace(p.x,p.z,p.x+8,p.z,.1)){spot=p;best=score;}}if(!spot)throw Error('No clear weapon preview lane');g.world.rebatch();g.player.x=spot.x;g.player.z=spot.z;g.player.aim=Math.PI/2;g.player.sync(0);g.player.equipWeapon('%s');if('%s'==='electric')g.enemies.spawn({type:'heavy',x:spot.x+7,z:spot.z});g.combat.firePlayer(g.player);if('%s'==='flame'){for(let i=0;i<2;i++){g.effects.update(.065);g.combat.firePlayer(g.player);}}if('%s'==='rocket'||'%s'==='shotgun')g.combat.update(.09);g.effects.update(.025);g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);})()""" % (weapon, weapon, weapon, weapon, weapon))
+        screenshot('weapon-'+weapon+'.png')
     call('Emulation.setDeviceMetricsOverride', {'width':1024,'height':768,'deviceScaleFactor':1,'mobile':False})
     resize = evaluate("""(()=>{const g=__game;g.resize();g.input.clientX=620;g.input.clientY=350;g.input.pointerKnown=true;const p=g.input.aim(g.camera).clone().project(g.camera);g.renderer.render(g.scene,g.camera);return {pass:Math.abs(p.x-(620/innerWidth*2-1))<1e-6&&Math.abs(p.y-(-350/innerHeight*2+1))<1e-6,width:innerWidth,height:innerHeight};})()""")
     print('Resize: '+json.dumps(resize), flush=True)
@@ -1849,14 +1959,14 @@ try:
     (ART / 'night-results.json').write_text(json.dumps(night, indent=2, ensure_ascii=False), encoding='utf-8')
     screenshot('mobile-night.png')
     call('Emulation.setDeviceMetricsOverride', {'width':667,'height':375,'deviceScaleFactor':2,'mobile':True,'screenOrientation':{'type':'landscapePrimary','angle':90}})
-    compact = evaluate("""(()=>{const g=__game;g.setNight(false,true,true);g.resize();g.ui.update(0);g.renderer.render(g.scene,g.camera);
+    compact = evaluate("""(()=>{const g=__game;g.setNight(false,true,true);g.player.equipWeapon('rocket');g.resize();g.ui.update(0);g.renderer.render(g.scene,g.camera);
       const rect=id=>{const r=document.getElementById(id).getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};
       const overlap=(a,b)=>a.x<b.right&&a.right>b.x&&a.y<b.bottom&&a.bottom>b.y;
-      const status=rect('hp-ring'),panel=document.querySelector('.status-panel').getBoundingClientRect(),score=document.querySelector('.score-panel').getBoundingClientRect(),day=rect('day-cycle'),full=rect('fullscreen-button'),toast=rect('toast'),move=rect('move-stick'),aim=rect('aim-stick'),dash=rect('dash-button');
+      const status=rect('hp-ring'),panel=document.querySelector('.status-panel').getBoundingClientRect(),weapon=rect('weapon-status'),score=document.querySelector('.score-panel').getBoundingClientRect(),day=rect('day-cycle'),full=rect('fullscreen-button'),toast=rect('toast'),move=rect('move-stick'),aim=rect('aim-stick'),dash=rect('dash-button');
       const inside=r=>r.x>=0&&r.y>=0&&r.right<=innerWidth&&r.bottom<=innerHeight;
-      const topRects=[panel,score,day,full,toast],controls=[move,aim,dash];
+      const topRects=[panel,weapon,score,day,full,toast],controls=[move,aim,dash];
       const aligned=[panel.top,score.top,day.y].every(y=>Math.abs(y-panel.top)<=2);
-      return {pass:status.w>=40&&Math.abs(status.w-status.h)<=3&&panel.width<=145&&aligned&&topRects.every(inside)&&full.w>=44&&full.h>=44&&controls.every(inside)&&controls.every(r=>r.w>=44&&r.h>=44)&&!overlap(panel,day)&&!overlap(score,day)&&!overlap(full,panel)&&!overlap(full,score)&&!overlap(full,day)&&!overlap(panel,toast)&&!overlap(score,toast)&&!controls.some(r=>overlap(r,toast)),viewport:[innerWidth,innerHeight],aligned,status,panel,score,day,full,toast,move,aim,dash};})()""")
+      return {pass:status.w>=40&&Math.abs(status.w-status.h)<=3&&panel.width<=145&&aligned&&topRects.every(inside)&&full.w>=44&&full.h>=44&&controls.every(inside)&&controls.every(r=>r.w>=44&&r.h>=44)&&!overlap(panel,day)&&!overlap(score,day)&&!overlap(full,panel)&&!overlap(full,score)&&!overlap(full,day)&&!overlap(weapon,panel)&&!overlap(weapon,toast)&&!overlap(weapon,day)&&!overlap(panel,toast)&&!overlap(score,toast)&&!controls.some(r=>overlap(r,toast)),viewport:[innerWidth,innerHeight],aligned,status,panel,weapon,score,day,full,toast,move,aim,dash};})()""")
     print('Mobile compact: '+json.dumps(compact), flush=True)
     (ART / 'mobile-compact-results.json').write_text(json.dumps(compact, indent=2), encoding='utf-8')
     screenshot('mobile-compact.png')
@@ -2002,7 +2112,38 @@ export function runIntegrationTests(g){
     assert(shots===20);assert(!('heat' in g.player)&&!('overheated' in g.player));assert(!('heatMax' in CONFIG.player)&&!('heatPerShot' in CONFIG.player));
   });
   test('All four pickup effects apply and expire',()=>{
-    const random=g.world.grid.random;for(let type=0;type<4;type++){let count=0;g.world.grid.random=()=>count++===0?0:(type+.1)/4;g.combat.drop(0,0);g.player.hp=50;g.player.stamina=20;g.combat.update(1/60);if(type===0)assert(g.player.hp===80);if(type===1)assert(g.player.stamina===100);if(type===2)assert(g.player.speedBuff===8);if(type===3)assert(g.player.fireBuff===8);}g.world.grid.random=random;g.input.clear();for(let i=0;i<481;i++)g.player.update(1/60,g);assert(g.player.speedBuff===0&&g.player.fireBuff===0&&g.combat.pickups.length===0);
+    for(let type=0;type<4;type++){g.combat.spawnPickup(type,0,0);g.player.hp=50;g.player.stamina=20;g.combat.update(1/60);if(type===0)assert(g.player.hp===80);if(type===1)assert(g.player.stamina===100);if(type===2)assert(g.player.speedBuff===8);if(type===3)assert(g.player.fireBuff===8);}g.input.clear();for(let i=0;i<481;i++)g.player.update(1/60,g);assert(g.player.speedBuff===0&&g.player.fireBuff===0&&g.combat.pickups.length===0);
+  });
+  test('All four weapon drops can appear and pickups equip or refill ammo',()=>{
+    const ids=['rocket','shotgun','flame','electric'],random=g.world.grid.random;
+    for(let i=0;i<4;i++){let calls=0;g.world.grid.random=()=>calls++===0?0:[.05,.15,.25,.35][i];g.combat.drop(10+i*2,0);assert(g.combat.pickups.at(-1)?.type===i+4&&g.combat.pickups.at(-1).mesh.children.length===1);g.combat.spawnPickup(i+4,0,0);g.combat.update(1/60);assert(g.player.weapon===ids[i]&&g.player.ammo===CONFIG.weapons[ids[i]].ammo);}
+    g.world.grid.random=random;g.combat.spawnPickup(7,0,0);g.combat.update(1/60);assert(g.player.ammo===CONFIG.weapons.electric.maxAmmo);g.ui.update(0);assert(!document.getElementById('weapon-status').hidden&&document.getElementById('weapon-ammo').textContent===String(g.player.ammo));
+    g.player.ammo=1;g.combat.firePlayer(g.player);g.ui.update(0);assert(g.player.weapon==='normal'&&g.player.ammo===0&&document.getElementById('weapon-status').hidden);
+  });
+  test('Rocket is a pooled projectile with splash damage',()=>{
+    g.enemies.spawn({type:'gunner',x:6,z:0});g.enemies.spawn({type:'gunner',x:7.2,z:1.5});const [first,second]=g.enemies.list;
+    g.player.equipWeapon('rocket');assert(g.combat.firePlayer(g.player)===CONFIG.weapons.rocket.interval);const rocket=g.combat.bullets.find(b=>b.active&&b.kind==='rocket');assert(rocket&&g.player.ammo===7);
+    for(let i=0;i<20&&rocket.active;i++)g.combat.update(1/30);
+    assert(!rocket.active&&first.hp<first.maxHP&&second.hp<second.maxHP&&g.combat.activeBullets.size===0);
+  });
+  test('Shotgun fires one six-pellet short-range fan per shell',()=>{
+    g.player.equipWeapon('shotgun');g.combat.firePlayer(g.player);const pellets=[...g.combat.activeBullets];assert(pellets.length===6&&pellets.every(b=>b.kind==='pellet')&&g.player.ammo===19);assert(new Set(pellets.map(b=>Math.round(Math.atan2(b.vx,b.vz)*100))).size===6);g.combat.update(.5);assert(g.combat.activeBullets.size===0);
+  });
+  test('Flame burns visible targets and cannot pass through cover',()=>{
+    g.enemies.spawn({type:'heavy',x:5,z:0});const e=g.enemies.list[0];g.player.equipWeapon('flame');const hp=e.hp;g.combat.firePlayer(g.player);assert(e.hp<hp&&e.burn>0);g.enemies.spawnTimer=100;g.enemies.update(.46);assert(e.hp<hp-CONFIG.weapons.flame.damage);
+    e.burn=0;const blockedHP=e.hp,i=g.world.grid.index(13,12);g.world.grid.tiles[i]=TILE.BRICK;g.world.grid.hp[i]=50;g.world.rebuild(i);g.effects.clear();g.combat.firePlayer(g.player);assert(e.hp===blockedHP&&g.world.grid.hp[i]<50&&[...g.effects.active].every(index=>g.effects.particles[index].x<2));
+  });
+  test('Electricity chains between enemies and briefly stuns them',()=>{
+    g.enemies.spawn({type:'gunner',x:5,z:0});g.enemies.spawn({type:'gunner',x:8,z:0});const [first,second]=g.enemies.list;g.player.equipWeapon('electric');g.combat.firePlayer(g.player);assert(first.hp<first.maxHP&&second.hp<second.maxHP&&first.stun>0&&second.stun>0&&g.effects.arcs.filter(a=>a.line.visible).length>=2);const x=first.x;g.enemies.spawnTimer=100;g.enemies.update(.1);assert(first.x===x);
+  });
+  test('Sustained special fire respects the existing projectile pool',()=>{
+    g.player.equipWeapon('shotgun');g.player.equipWeapon('shotgun');for(let i=0;i<40;i++)g.combat.firePlayer(g.player);assert(g.combat.activeBullets.size===CONFIG.combat.maxBullets&&g.player.ammo===10);g.combat.update(1);assert(g.combat.activeBullets.size===0);g.combat.firePlayer(g.player);assert(g.combat.activeBullets.size===6&&g.player.ammo===9);
+  });
+  test('Special shots use distinct bounded visual effects',()=>{
+    g.player.equipWeapon('rocket');g.combat.firePlayer(g.player);const rocket=g.combat.bullets.find(b=>b.active&&b.kind==='rocket');assert(rocket.mesh.geometry===g.combat.rocketGeometry&&rocket.mesh.material===g.combat.playerRoundMaterial&&rocket.mesh.scale.x>=1.2);g.combat.update(.1);assert([...g.effects.active].some(i=>g.effects.particles[i].color===0x8d9694));g.combat.explode(4,0,2.8,0,'player','rocket');assert(g.effects.rings.some(r=>r.mesh.visible&&r.mesh.material.color.getHex()===0xff9b50));
+    g.combat.clear();g.effects.clear();g.player.equipWeapon('shotgun');g.combat.firePlayer(g.player);assert([...g.combat.activeBullets].every(b=>b.mesh.geometry===g.combat.pelletGeometry&&b.mesh.scale.x>=1.35));assert([...g.effects.active].length===7,'Shotgun should emit one shared muzzle fan');
+    g.effects.clear();g.player.equipWeapon('flame');g.combat.firePlayer(g.player);assert([...g.effects.active].length===12);assert([...g.effects.active].every(i=>g.effects.particles[i].x<6.5));
+    g.effects.clear();g.player.equipWeapon('electric');g.combat.firePlayer(g.player);const arc=g.effects.arcs.find(a=>a.line.visible);assert(arc&&arc.halo.visible&&arc.positions.length===21);assert(g.effects.active.size<=CONFIG.effects.high);g.effects.update(.3);assert(!arc.line.visible&&!arc.halo.visible);
   });
   test('City layout stays fixed through long survival and still reacts to destruction',()=>{
     const grid=g.world.grid,i=grid.index(13,12);grid.tiles[i]=TILE.BRICK;grid.hp[i]=grid.tileHP(TILE.BRICK);g.world.rebuild(i);

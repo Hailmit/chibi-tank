@@ -2,6 +2,8 @@
   "pass": true,
   "dayCalls": 75,
   "nightCalls": 86,
+  "pickupCalls": 101,
+  "pickupMeshes": 16,
   "enemyMeshes": 48,
   "particleInstances": 96,
   "quality": "high",

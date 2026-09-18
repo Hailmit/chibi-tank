@@ -154,7 +154,18 @@ try:
     integration = evaluate("import('./tests/integration-suite.js').then(m=>m.runIntegrationTests(window.__game))")
     print('Integration: '+json.dumps(integration, ensure_ascii=False), flush=True)
     (ART / 'integration-results.json').write_text(json.dumps(integration, indent=2, ensure_ascii=False), encoding='utf-8')
-    performance_result = evaluate("""(async()=>{const g=__game,{CONFIG}=await import('./src/config.js');g.start();cancelAnimationFrame(g.frameId);g.setQuality();for(let i=0;i<16;i++)g.enemies.spawn({type:['scout','gunner','heavy','mortar'][i%4],x:-24+(i%6)*4.8,z:-24+Math.floor(i/6)*4.8});g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);const dayCalls=g.renderer.info.render.calls;g.setNight(true,true,true);g.renderer.render(g.scene,g.camera);const nightCalls=g.renderer.info.render.calls,pixelRatio=g.renderer.getPixelRatio(),expectedRatio=g.softwareRenderer?1:Math.min(devicePixelRatio,1.25);let enemyMeshes=0;for(const e of g.enemies.list)e.model.root.traverse(o=>{if(o.isMesh&&o.visible)enemyMeshes++;});const uiOptionRemoved=!document.getElementById('quality'),fixedHighScale=!('adjustRenderScale' in g)&&Math.abs(pixelRatio-expectedRatio)<1e-6,circularHUD=['hp-ring','stamina-ring'].every(id=>document.getElementById(id))&&!document.getElementById('heat-ring'),simulationFPS=Math.round(1/CONFIG.step);return {pass:dayCalls<110&&nightCalls<125&&!g.renderer.shadowMap.enabled&&g.effects.mesh.count===96&&enemyMeshes<=64&&g.settings.quality==='high'&&uiOptionRemoved&&fixedHighScale&&circularHUD&&simulationFPS===30,dayCalls,nightCalls,enemyMeshes,particleInstances:g.effects.mesh.count,quality:g.settings.quality,uiOptionRemoved,fixedHighScale,circularHUD,pixelRatio,expectedRatio,hardwareFPS:CONFIG.performance.highFPS,softwareFPS:CONFIG.performance.softwareFPS,simulationFPS,idleFPS:CONFIG.performance.idleFPS,shadows:g.renderer.shadowMap.enabled,softwareRenderer:g.softwareRenderer};})()""")
+    performance_result = evaluate("""(async()=>{
+      const g=__game,{CONFIG}=await import('./src/config.js');g.start();cancelAnimationFrame(g.frameId);g.setQuality();
+      for(let i=0;i<16;i++)g.enemies.spawn({type:['scout','gunner','heavy','mortar'][i%4],x:-24+(i%6)*4.8,z:-24+Math.floor(i/6)*4.8});
+      g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);const dayCalls=g.renderer.info.render.calls;
+      g.setNight(true,true,true);g.renderer.render(g.scene,g.camera);const nightCalls=g.renderer.info.render.calls;
+      for(let i=0;i<16;i++)g.combat.spawnPickup(i%8,-18+(i%8)*4.8,14+Math.floor(i/8)*2.4);
+      g.renderer.render(g.scene,g.camera);const pickupCalls=g.renderer.info.render.calls,pickupMeshes=g.combat.pickups.reduce((count,p)=>count+p.mesh.children.length,0);
+      const pixelRatio=g.renderer.getPixelRatio(),expectedRatio=g.softwareRenderer?1:Math.min(devicePixelRatio,1.25);let enemyMeshes=0;
+      for(const e of g.enemies.list)e.model.root.traverse(o=>{if(o.isMesh&&o.visible)enemyMeshes++;});
+      const uiOptionRemoved=!document.getElementById('quality'),fixedHighScale=!('adjustRenderScale' in g)&&Math.abs(pixelRatio-expectedRatio)<1e-6,circularHUD=['hp-ring','stamina-ring'].every(id=>document.getElementById(id))&&!document.getElementById('heat-ring'),simulationFPS=Math.round(1/CONFIG.step);
+      return {pass:dayCalls<110&&nightCalls<125&&pickupCalls-nightCalls<=16&&pickupMeshes===16&&!g.renderer.shadowMap.enabled&&g.effects.mesh.count===96&&enemyMeshes<=64&&g.settings.quality==='high'&&uiOptionRemoved&&fixedHighScale&&circularHUD&&simulationFPS===30,dayCalls,nightCalls,pickupCalls,pickupMeshes,enemyMeshes,particleInstances:g.effects.mesh.count,quality:g.settings.quality,uiOptionRemoved,fixedHighScale,circularHUD,pixelRatio,expectedRatio,hardwareFPS:CONFIG.performance.highFPS,softwareFPS:CONFIG.performance.softwareFPS,simulationFPS,idleFPS:CONFIG.performance.idleFPS,shadows:g.renderer.shadowMap.enabled,softwareRenderer:g.softwareRenderer};
+    })()""")
     print('Performance budget: '+json.dumps(performance_result), flush=True)
     (ART / 'performance-results.json').write_text(json.dumps(performance_result, indent=2), encoding='utf-8')
     visual = evaluate("""(()=>{const g=__game,i=g.world.grid.index(13,12);g.world.grid.tiles[i]=3;g.world.grid.hp[i]=Infinity;g.world.rebuild(i);g.player.x=0;g.player.z=0;g.player.sync(0);g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);return {ghosts:g.world.ghosts.size,fullHeight:g.world.tiles[i].scale.y===1};})()""")
@@ -162,6 +173,9 @@ try:
     screenshot('house-fade.png')
     evaluate("""(()=>{const g=__game;g.start();cancelAnimationFrame(g.frameId);g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);})()""")
     screenshot('gameplay.png')
+    for weapon in ('rocket', 'shotgun', 'flame', 'electric'):
+        evaluate("""(()=>{const g=__game;g.start();cancelAnimationFrame(g.frameId);const grid=g.world.grid;let spot=null,best=Infinity;for(let i=0;i<grid.tiles.length;i++){const p=grid.center(i),score=p.x*p.x+p.z*p.z;if(score<best&&Math.abs(p.x)<15&&Math.abs(p.z)<15&&grid.free(p.x,p.z,.8)&&!grid.trace(p.x,p.z,p.x+8,p.z,.1)){spot=p;best=score;}}if(!spot)throw Error('No clear weapon preview lane');g.world.rebatch();g.player.x=spot.x;g.player.z=spot.z;g.player.aim=Math.PI/2;g.player.sync(0);g.player.equipWeapon('%s');if('%s'==='electric')g.enemies.spawn({type:'heavy',x:spot.x+7,z:spot.z});g.combat.firePlayer(g.player);if('%s'==='flame'){for(let i=0;i<2;i++){g.effects.update(.065);g.combat.firePlayer(g.player);}}if('%s'==='rocket'||'%s'==='shotgun')g.combat.update(.09);g.effects.update(.025);g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);})()""" % (weapon, weapon, weapon, weapon, weapon))
+        screenshot('weapon-'+weapon+'.png')
     call('Emulation.setDeviceMetricsOverride', {'width':1024,'height':768,'deviceScaleFactor':1,'mobile':False})
     resize = evaluate("""(()=>{const g=__game;g.resize();g.input.clientX=620;g.input.clientY=350;g.input.pointerKnown=true;const p=g.input.aim(g.camera).clone().project(g.camera);g.renderer.render(g.scene,g.camera);return {pass:Math.abs(p.x-(620/innerWidth*2-1))<1e-6&&Math.abs(p.y-(-350/innerHeight*2+1))<1e-6,width:innerWidth,height:innerHeight};})()""")
     print('Resize: '+json.dumps(resize), flush=True)
@@ -207,14 +221,14 @@ try:
     (ART / 'night-results.json').write_text(json.dumps(night, indent=2, ensure_ascii=False), encoding='utf-8')
     screenshot('mobile-night.png')
     call('Emulation.setDeviceMetricsOverride', {'width':667,'height':375,'deviceScaleFactor':2,'mobile':True,'screenOrientation':{'type':'landscapePrimary','angle':90}})
-    compact = evaluate("""(()=>{const g=__game;g.setNight(false,true,true);g.resize();g.ui.update(0);g.renderer.render(g.scene,g.camera);
+    compact = evaluate("""(()=>{const g=__game;g.setNight(false,true,true);g.player.equipWeapon('rocket');g.resize();g.ui.update(0);g.renderer.render(g.scene,g.camera);
       const rect=id=>{const r=document.getElementById(id).getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};
       const overlap=(a,b)=>a.x<b.right&&a.right>b.x&&a.y<b.bottom&&a.bottom>b.y;
-      const status=rect('hp-ring'),panel=document.querySelector('.status-panel').getBoundingClientRect(),score=document.querySelector('.score-panel').getBoundingClientRect(),day=rect('day-cycle'),full=rect('fullscreen-button'),toast=rect('toast'),move=rect('move-stick'),aim=rect('aim-stick'),dash=rect('dash-button');
+      const status=rect('hp-ring'),panel=document.querySelector('.status-panel').getBoundingClientRect(),weapon=rect('weapon-status'),score=document.querySelector('.score-panel').getBoundingClientRect(),day=rect('day-cycle'),full=rect('fullscreen-button'),toast=rect('toast'),move=rect('move-stick'),aim=rect('aim-stick'),dash=rect('dash-button');
       const inside=r=>r.x>=0&&r.y>=0&&r.right<=innerWidth&&r.bottom<=innerHeight;
-      const topRects=[panel,score,day,full,toast],controls=[move,aim,dash];
+      const topRects=[panel,weapon,score,day,full,toast],controls=[move,aim,dash];
       const aligned=[panel.top,score.top,day.y].every(y=>Math.abs(y-panel.top)<=2);
-      return {pass:status.w>=40&&Math.abs(status.w-status.h)<=3&&panel.width<=145&&aligned&&topRects.every(inside)&&full.w>=44&&full.h>=44&&controls.every(inside)&&controls.every(r=>r.w>=44&&r.h>=44)&&!overlap(panel,day)&&!overlap(score,day)&&!overlap(full,panel)&&!overlap(full,score)&&!overlap(full,day)&&!overlap(panel,toast)&&!overlap(score,toast)&&!controls.some(r=>overlap(r,toast)),viewport:[innerWidth,innerHeight],aligned,status,panel,score,day,full,toast,move,aim,dash};})()""")
+      return {pass:status.w>=40&&Math.abs(status.w-status.h)<=3&&panel.width<=145&&aligned&&topRects.every(inside)&&full.w>=44&&full.h>=44&&controls.every(inside)&&controls.every(r=>r.w>=44&&r.h>=44)&&!overlap(panel,day)&&!overlap(score,day)&&!overlap(full,panel)&&!overlap(full,score)&&!overlap(full,day)&&!overlap(weapon,panel)&&!overlap(weapon,toast)&&!overlap(weapon,day)&&!overlap(panel,toast)&&!overlap(score,toast)&&!controls.some(r=>overlap(r,toast)),viewport:[innerWidth,innerHeight],aligned,status,panel,weapon,score,day,full,toast,move,aim,dash};})()""")
     print('Mobile compact: '+json.dumps(compact), flush=True)
     (ART / 'mobile-compact-results.json').write_text(json.dumps(compact, indent=2), encoding='utf-8')
     screenshot('mobile-compact.png')

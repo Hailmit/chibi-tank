@@ -1,6 +1,6 @@
 # CHIBI TANK CITY: ENDLESS
 
-Game xe tăng 3D sinh tồn, giao diện tiếng Việt, bản đồ ngẫu nhiên mỗi trận và không tái cấu trúc giữa trận. Bản đồ tập trung vào khu đô thị với nhà ở, cao tầng và dãy hàng quán; công trình bị bắn sập sẽ thành đống đổ nát mở lối mới. Ngày và đêm luân phiên mỗi 60 giây; ban đêm biến địch thành xe tăng zombie có lượng máu ×2. HTML/CSS/JavaScript ES Modules, Three.js **0.170.0** đóng gói tại `vendor/`. Không build, backend, tài khoản, CDN, model, texture hay audio tải ngoài. Nhạc và hiệu ứng âm thanh gốc được tổng hợp bằng Web Audio sau thao tác người chơi.
+Game xe tăng 3D sinh tồn, giao diện tiếng Việt, bản đồ ngẫu nhiên mỗi trận và không tái cấu trúc giữa trận. Bản đồ tập trung vào khu đô thị với nhà ở, cao tầng và dãy hàng quán; công trình bị bắn sập sẽ thành đống đổ nát mở lối mới. Ngày và đêm luân phiên mỗi 60 giây; ban đêm biến địch thành xe tăng zombie có lượng máu ×2. Nhặt rocket, shotgun, lửa hoặc điện để đổi lối đánh trong thời gian ngắn. HTML/CSS/JavaScript ES Modules, Three.js **0.170.0** đóng gói tại `vendor/`. Không build, backend, tài khoản, CDN, model, texture hay audio tải ngoài. Nhạc và hiệu ứng âm thanh gốc được tổng hợp bằng Web Audio sau thao tác người chơi.
 
 ## Chạy tại máy
 
@@ -27,6 +27,8 @@ Mở **http://127.0.0.1:8000/**. Không mở `index.html` bằng `file://` vì E
 Thân xe xoay theo di chuyển; tháp pháo xoay riêng theo điểm chuột chiếu xuống mặt đất. Người chơi có thể giữ cò để bắn liên tục theo tốc độ bắn hiện tại, không có nhiệt nòng hoặc khóa cò. Đạn người chơi có lõi xanh sáng và viền tối, khác đạn hồng của địch. Tâm ngắm desktop dùng cursor gốc của trình duyệt, không còn bị giới hạn bởi nhịp cập nhật HUD 5 Hz; phép chiếu điểm ngắm không đọc layout mỗi tick. Dash có 0,12 giây bất tử trong 0,18 giây di chuyển. Nhận sát thương có 0,65 giây bảo vệ. Dùng vật cản để cắt đường đạn. Nút toàn màn hình hỗ trợ API chuẩn của Chrome, Edge và Safari mới, đồng thời có nhánh WebKit/Microsoft cho trình duyệt cũ; khi chơi bằng cảm ứng, game cũng thử khóa ngang màn hình. Mất focus hoặc đổi tab sẽ xóa phím đang giữ và tạm dừng; trở lại bằng Esc hoặc nút Tiếp tục.
 
 Nhạc theme ở menu và nhạc chiến đấu là hai bản gốc khác nhau, được tổng hợp một lần vào bộ nhớ rồi phát lặp bằng Web Audio; chuyển trạng thái có fade ngắn, tạm dừng thì nhạc dừng. Tiếng pháo gồm tiếng nổ đầu nòng, thân trầm và đuôi vang nhẹ; tiếng bắn của địch nhỏ dần theo khoảng cách và giới hạn tần suất để tránh chồng âm. Trình duyệt chỉ cho phát âm thanh sau thao tác đầu tiên, nên menu ban đầu im lặng cho đến khi người chơi chạm, bấm phím hoặc click.
+
+Vũ khí đặc biệt rơi từ địch và tự trang bị khi nhặt. **Rocket** bay chậm, nổ diện rộng và phá công trình; **shotgun** bắn sáu viên tỏa quạt, hiệu quả ở gần; **lửa** quét hình nón ngắn và đốt mục tiêu; **điện** giật lan tối đa bốn mục tiêu gần nhau, làm chúng khựng lại. Rocket có đầu đạn hai màu, khói và vòng nổ cam riêng; shotgun có viên sáng và lóe nòng hình quạt; lửa tạo luồng ba sắc độ; điện dùng tia răng cưa có lõi trắng, viền lam và chớp tại điểm trúng. Nhặt cùng loại sẽ nạp thêm đạn đến giới hạn; nhặt loại khác sẽ thay vũ khí hiện tại. Khi hết đạn đặc biệt, xe tự trở về pháo thường không giới hạn đạn. HUD chỉ hiện tên và số đạn khi đang dùng vũ khí đặc biệt.
 
 Trên iPhone, Safari trong tab không cho trang game gọi Fullscreen API. Game có manifest `display: standalone`, biểu tượng riêng và cấu hình Home Screen. Nếu đã thêm game, hãy **mở từ biểu tượng trên Màn hình chính**, không mở lại tab Safari; lúc đó game nhận biết chế độ ứng dụng và ẩn nút fullscreen vô tác dụng. Nếu biểu tượng cũ vẫn mở tab, hãy tạo lại biểu tượng và bật **Mở dưới dạng ứng dụng** khi iOS hiển thị tùy chọn đó. iOS có thể vẫn giữ thanh trạng thái/thanh điều hướng hệ thống; trang web không thể ép ẩn các phần này.
 
@@ -64,7 +66,7 @@ chibi-tank-city/
 │   ├── input.js            Bàn phím, chuột, raycast, focus
 │   ├── player.js           Di chuyển, dash, stamina, sát thương
 │   ├── enemies.js          AI, director, spawn, elite
-│   ├── combat.js           Pool đạn, pháo cối, vật phẩm, nổ dây chuyền
+│   ├── combat.js           Pool đạn, bốn vũ khí nhặt được, vật phẩm và nổ dây chuyền
 │   ├── world.js            Địa hình phá hủy được, bóng, instancing
 │   ├── models.js           Mô hình xe và thành phố từ geometry
 │   ├── effects.js          Pool particle/debris, shockwave, popup
@@ -106,6 +108,7 @@ Chỉnh trực tiếp tại `src/config.js`; tải lại trang sau khi sửa.
 | `director.assaultFirst / assaultBase / assaultMin` | 24 / 38 / 28 s | Đợt tấn công đầu, khoảng cơ sở và khoảng thấp nhất |
 | `director.assaultGap` | 0,6 s | Khoảng cách giữa từng xe trong một đợt dồn quân |
 | `combat.maxBullets / maxMortars` | 180 / 12 | Sức chứa pool |
+| `weapons` | Rocket 8, shotgun 20, lửa 50, điện 18 | Đạn mỗi lần nhặt, giới hạn nạp và nhịp bắn riêng từng loại |
 | `combat.bulletSpeed / enemyBulletSpeed` | 25 / 10 | Tốc độ đạn ban đầu |
 | `combat.comboWindow / maxCombo` | 4 s / ×5 | Combo hết khi quá hạn hoặc nhận sát thương |
 | `combat.survivalScore` | 5/giây | Điểm thời gian |
@@ -119,7 +122,7 @@ Director tăng HP tối đa 70%, tốc độ đạn tối đa 45%, tăng tỷ tr
 
 Trên thiết bị cảm ứng, game vẫn dùng cấu hình đồ họa cao, phóng camera gần hơn và dùng trợ ngắm nhẹ trong một góc hẹp theo hướng kéo; vật cản vẫn chặn khóa mục tiêu. Giao diện yêu cầu xoay ngang để giữ đủ không gian cho hai cần điều khiển.
 
-Game dùng một cấu hình hình ảnh cao cố định. WebGL phần cứng dùng mật độ điểm ảnh `min(devicePixelRatio, 1.25)` và hướng tới 60 FPS; SwiftShader dùng độ phân giải native, 24 FPS và bỏ tone mapping nặng. MSAA, shadow map thời gian thực và nguồn sáng điểm động được tắt; vật liệu Lambert, bảng màu và silhouette giữ hình ảnh rõ với shader nhẹ. Bóng tiếp xúc mềm của công trình/xe được gộp trong hai `InstancedMesh`; quầng sáng xanh dưới xe người chơi chỉ hiện ban đêm. Hai texture radial 64×64 được tạo tại runtime, không tải tài nguyên ngoài. Mô phỏng chạy 30 tick/giây. Menu, pause và Game Over chỉ render 4 FPS; tab ẩn không render. Particle, đạn và pháo cối chỉ cập nhật các slot đang sống; AI quét tầm nhìn theo nhịp chia đều. Tia lóe nòng, va chạm, bụi đổ nhà và vòng nổ đã rõ hơn; particle vẫn gộp trong một `InstancedMesh` tối đa 96 phần tử và vòng nổ tái dùng sáu mesh. Các animation trang trí ở địa hình, điểm spawn, vòng ngắm địch, độ giật nòng và HUD vẫn được bỏ.
+Game dùng một cấu hình hình ảnh cao cố định. WebGL phần cứng dùng mật độ điểm ảnh `min(devicePixelRatio, 1.25)` và hướng tới 60 FPS; SwiftShader dùng độ phân giải native, 24 FPS và bỏ tone mapping nặng. MSAA, shadow map thời gian thực và nguồn sáng điểm động được tắt; vật liệu Lambert, bảng màu và silhouette giữ hình ảnh rõ với shader nhẹ. Bóng tiếp xúc mềm của công trình/xe được gộp trong hai `InstancedMesh`; quầng sáng xanh dưới xe người chơi chỉ hiện ban đêm. Hai texture radial 64×64 được tạo tại runtime, không tải tài nguyên ngoài. Mô phỏng chạy 30 tick/giây. Menu, pause và Game Over chỉ render 4 FPS; tab ẩn không render. Particle, đạn và pháo cối chỉ cập nhật các slot đang sống; AI quét tầm nhìn theo nhịp chia đều. Tia lóe nòng, va chạm, bụi đổ nhà và vòng nổ đã rõ hơn; particle vẫn gộp trong một `InstancedMesh` tối đa 96 phần tử và vòng nổ tái dùng sáu mesh. Mỗi vật phẩm chỉ dùng một mesh gộp; tia điện dùng tám cặp dải răng cưa tái sử dụng và chỉ hiện khi bắn. Các animation trang trí ở địa hình, điểm spawn, vòng ngắm địch, độ giật nòng và HUD vẫn được bỏ.
 
 Hình xe tăng vẫn giữ bánh, xích, đèn, ăng-ten, tháp pháo và màu riêng của từng bộ phận. Nòng pháo được gộp vào mesh tháp pháo; các phần còn lại được ghép trước khi gửi sang GPU. Nhà cao tầng, hàng quán và cây giữ silhouette nhưng giảm chi tiết hình học nhỏ; bản sao trong suốt của nhà che khuất xe dùng silhouette gọn hơn. HUD chỉ còn hai vòng Giáp và Năng lượng; vòng nhiệt đã được loại bỏ. Khung điểm chỉ giữ điểm, combo và thời gian. Đồng hồ ngày–đêm nằm giữa hàng trên; đồng hồ tái cấu trúc đã bỏ. Nút fullscreen nằm trước khung điểm. Thanh tên game, minimap và nút audio/settings không xuất hiện trong gameplay.
 

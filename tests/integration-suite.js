@@ -54,7 +54,38 @@ export function runIntegrationTests(g){
     assert(shots===20);assert(!('heat' in g.player)&&!('overheated' in g.player));assert(!('heatMax' in CONFIG.player)&&!('heatPerShot' in CONFIG.player));
   });
   test('All four pickup effects apply and expire',()=>{
-    const random=g.world.grid.random;for(let type=0;type<4;type++){let count=0;g.world.grid.random=()=>count++===0?0:(type+.1)/4;g.combat.drop(0,0);g.player.hp=50;g.player.stamina=20;g.combat.update(1/60);if(type===0)assert(g.player.hp===80);if(type===1)assert(g.player.stamina===100);if(type===2)assert(g.player.speedBuff===8);if(type===3)assert(g.player.fireBuff===8);}g.world.grid.random=random;g.input.clear();for(let i=0;i<481;i++)g.player.update(1/60,g);assert(g.player.speedBuff===0&&g.player.fireBuff===0&&g.combat.pickups.length===0);
+    for(let type=0;type<4;type++){g.combat.spawnPickup(type,0,0);g.player.hp=50;g.player.stamina=20;g.combat.update(1/60);if(type===0)assert(g.player.hp===80);if(type===1)assert(g.player.stamina===100);if(type===2)assert(g.player.speedBuff===8);if(type===3)assert(g.player.fireBuff===8);}g.input.clear();for(let i=0;i<481;i++)g.player.update(1/60,g);assert(g.player.speedBuff===0&&g.player.fireBuff===0&&g.combat.pickups.length===0);
+  });
+  test('All four weapon drops can appear and pickups equip or refill ammo',()=>{
+    const ids=['rocket','shotgun','flame','electric'],random=g.world.grid.random;
+    for(let i=0;i<4;i++){let calls=0;g.world.grid.random=()=>calls++===0?0:[.05,.15,.25,.35][i];g.combat.drop(10+i*2,0);assert(g.combat.pickups.at(-1)?.type===i+4&&g.combat.pickups.at(-1).mesh.children.length===1);g.combat.spawnPickup(i+4,0,0);g.combat.update(1/60);assert(g.player.weapon===ids[i]&&g.player.ammo===CONFIG.weapons[ids[i]].ammo);}
+    g.world.grid.random=random;g.combat.spawnPickup(7,0,0);g.combat.update(1/60);assert(g.player.ammo===CONFIG.weapons.electric.maxAmmo);g.ui.update(0);assert(!document.getElementById('weapon-status').hidden&&document.getElementById('weapon-ammo').textContent===String(g.player.ammo));
+    g.player.ammo=1;g.combat.firePlayer(g.player);g.ui.update(0);assert(g.player.weapon==='normal'&&g.player.ammo===0&&document.getElementById('weapon-status').hidden);
+  });
+  test('Rocket is a pooled projectile with splash damage',()=>{
+    g.enemies.spawn({type:'gunner',x:6,z:0});g.enemies.spawn({type:'gunner',x:7.2,z:1.5});const [first,second]=g.enemies.list;
+    g.player.equipWeapon('rocket');assert(g.combat.firePlayer(g.player)===CONFIG.weapons.rocket.interval);const rocket=g.combat.bullets.find(b=>b.active&&b.kind==='rocket');assert(rocket&&g.player.ammo===7);
+    for(let i=0;i<20&&rocket.active;i++)g.combat.update(1/30);
+    assert(!rocket.active&&first.hp<first.maxHP&&second.hp<second.maxHP&&g.combat.activeBullets.size===0);
+  });
+  test('Shotgun fires one six-pellet short-range fan per shell',()=>{
+    g.player.equipWeapon('shotgun');g.combat.firePlayer(g.player);const pellets=[...g.combat.activeBullets];assert(pellets.length===6&&pellets.every(b=>b.kind==='pellet')&&g.player.ammo===19);assert(new Set(pellets.map(b=>Math.round(Math.atan2(b.vx,b.vz)*100))).size===6);g.combat.update(.5);assert(g.combat.activeBullets.size===0);
+  });
+  test('Flame burns visible targets and cannot pass through cover',()=>{
+    g.enemies.spawn({type:'heavy',x:5,z:0});const e=g.enemies.list[0];g.player.equipWeapon('flame');const hp=e.hp;g.combat.firePlayer(g.player);assert(e.hp<hp&&e.burn>0);g.enemies.spawnTimer=100;g.enemies.update(.46);assert(e.hp<hp-CONFIG.weapons.flame.damage);
+    e.burn=0;const blockedHP=e.hp,i=g.world.grid.index(13,12);g.world.grid.tiles[i]=TILE.BRICK;g.world.grid.hp[i]=50;g.world.rebuild(i);g.effects.clear();g.combat.firePlayer(g.player);assert(e.hp===blockedHP&&g.world.grid.hp[i]<50&&[...g.effects.active].every(index=>g.effects.particles[index].x<2));
+  });
+  test('Electricity chains between enemies and briefly stuns them',()=>{
+    g.enemies.spawn({type:'gunner',x:5,z:0});g.enemies.spawn({type:'gunner',x:8,z:0});const [first,second]=g.enemies.list;g.player.equipWeapon('electric');g.combat.firePlayer(g.player);assert(first.hp<first.maxHP&&second.hp<second.maxHP&&first.stun>0&&second.stun>0&&g.effects.arcs.filter(a=>a.line.visible).length>=2);const x=first.x;g.enemies.spawnTimer=100;g.enemies.update(.1);assert(first.x===x);
+  });
+  test('Sustained special fire respects the existing projectile pool',()=>{
+    g.player.equipWeapon('shotgun');g.player.equipWeapon('shotgun');for(let i=0;i<40;i++)g.combat.firePlayer(g.player);assert(g.combat.activeBullets.size===CONFIG.combat.maxBullets&&g.player.ammo===10);g.combat.update(1);assert(g.combat.activeBullets.size===0);g.combat.firePlayer(g.player);assert(g.combat.activeBullets.size===6&&g.player.ammo===9);
+  });
+  test('Special shots use distinct bounded visual effects',()=>{
+    g.player.equipWeapon('rocket');g.combat.firePlayer(g.player);const rocket=g.combat.bullets.find(b=>b.active&&b.kind==='rocket');assert(rocket.mesh.geometry===g.combat.rocketGeometry&&rocket.mesh.material===g.combat.playerRoundMaterial&&rocket.mesh.scale.x>=1.2);g.combat.update(.1);assert([...g.effects.active].some(i=>g.effects.particles[i].color===0x8d9694));g.combat.explode(4,0,2.8,0,'player','rocket');assert(g.effects.rings.some(r=>r.mesh.visible&&r.mesh.material.color.getHex()===0xff9b50));
+    g.combat.clear();g.effects.clear();g.player.equipWeapon('shotgun');g.combat.firePlayer(g.player);assert([...g.combat.activeBullets].every(b=>b.mesh.geometry===g.combat.pelletGeometry&&b.mesh.scale.x>=1.35));assert([...g.effects.active].length===7,'Shotgun should emit one shared muzzle fan');
+    g.effects.clear();g.player.equipWeapon('flame');g.combat.firePlayer(g.player);assert([...g.effects.active].length===12);assert([...g.effects.active].every(i=>g.effects.particles[i].x<6.5));
+    g.effects.clear();g.player.equipWeapon('electric');g.combat.firePlayer(g.player);const arc=g.effects.arcs.find(a=>a.line.visible);assert(arc&&arc.halo.visible&&arc.positions.length===21);assert(g.effects.active.size<=CONFIG.effects.high);g.effects.update(.3);assert(!arc.line.visible&&!arc.halo.visible);
   });
   test('City layout stays fixed through long survival and still reacts to destruction',()=>{
     const grid=g.world.grid,i=grid.index(13,12);grid.tiles[i]=TILE.BRICK;grid.hp[i]=grid.tileHP(TILE.BRICK);g.world.rebuild(i);

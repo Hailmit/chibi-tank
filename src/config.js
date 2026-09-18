@@ -5,6 +5,12 @@ export const CONFIG = {
     dashCost: 30, dashDuration: .18, dashInvulnerability: .12, dashSpeed: 22, dashCooldown: .5, staminaRegen: 23, hurtGrace: .65 },
   director: { maxEnemies: 16, spawnStart: 4.2, spawnMin: 1.35, spawnWarning: 1.5, safeRadius: 11, eliteEvery: 90, assaultFirst: 24, assaultBase: 38, assaultMin: 28, assaultGap: .6 },
   combat: { maxBullets: 180, maxMortars: 12, bulletSpeed: 25, enemyBulletSpeed: 10, comboWindow: 4, maxCombo: 5, survivalScore: 5, maxPickups: 16 },
+  weapons: {
+    rocket: { name: 'ROCKET', ammo: 8, maxAmmo: 16, interval: .62, damage: 62, color: 0xf18c57 },
+    shotgun: { name: 'SHOTGUN', ammo: 20, maxAmmo: 40, interval: .46, damage: 12, color: 0xf3c96c },
+    flame: { name: 'LỬA', ammo: 50, maxAmmo: 100, interval: .1, damage: 7, color: 0xf07542 },
+    electric: { name: 'ĐIỆN', ammo: 18, maxAmmo: 36, interval: .42, damage: 34, color: 0x6bd9f2 },
+  },
   effects: { high: 96, popups: 16 },
   performance: { softwareFPS: 24, highFPS: 60, idleFPS: 4, uiFPS: 5 },
   colors: { mint: 0x74d6b2, sky: 0x8fcdda, yellow: 0xffd36c, coral: 0xed7765, road: 0xe8e4d7, grass: 0xb5d3a1, ink: 0x263f44, steel: 0x8babb4, water: 0x7ec8db },

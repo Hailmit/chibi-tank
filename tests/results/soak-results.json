@@ -1,7 +1,7 @@
 {
   "pass": true,
   "time": 600.0000000001116,
-  "elapsedMs": 2001.2999999998137,
+  "elapsedMs": 2543,
   "terrainChanges": 54,
   "maxEnemies": 16,
   "maxBullets": 12,
@@ -11,93 +11,93 @@
   "samples": [
     {
       "second": 60,
-      "geometries": 25,
+      "geometries": 37,
       "textures": 1,
       "drawCalls": 87,
       "enemies": 15,
       "terrainChanges": 0,
-      "heap": 44668605
+      "heap": 66027778
     },
     {
       "second": 120,
-      "geometries": 27,
+      "geometries": 39,
       "textures": 2,
       "drawCalls": 120,
       "enemies": 16,
       "terrainChanges": 4,
-      "heap": 45743410
+      "heap": 63511447
     },
     {
       "second": 180,
-      "geometries": 27,
+      "geometries": 39,
       "textures": 2,
       "drawCalls": 101,
       "enemies": 16,
       "terrainChanges": 18,
-      "heap": 39222848
+      "heap": 61872682
     },
     {
       "second": 240,
-      "geometries": 27,
+      "geometries": 39,
       "textures": 2,
       "drawCalls": 111,
       "enemies": 16,
       "terrainChanges": 33,
-      "heap": 60640624
+      "heap": 50195512
     },
     {
       "second": 300,
-      "geometries": 27,
+      "geometries": 39,
       "textures": 2,
       "drawCalls": 113,
       "enemies": 16,
       "terrainChanges": 41,
-      "heap": 47034459
+      "heap": 73325880
     },
     {
       "second": 360,
-      "geometries": 27,
+      "geometries": 39,
       "textures": 2,
       "drawCalls": 96,
       "enemies": 16,
       "terrainChanges": 53,
-      "heap": 32186348
+      "heap": 61497642
     },
     {
       "second": 420,
-      "geometries": 27,
+      "geometries": 39,
       "textures": 2,
       "drawCalls": 112,
       "enemies": 16,
       "terrainChanges": 54,
-      "heap": 51313916
+      "heap": 48674849
     },
     {
       "second": 480,
-      "geometries": 27,
+      "geometries": 39,
       "textures": 2,
       "drawCalls": 97,
       "enemies": 16,
       "terrainChanges": 54,
-      "heap": 35228366
+      "heap": 69566885
     },
     {
       "second": 540,
-      "geometries": 27,
+      "geometries": 39,
       "textures": 2,
       "drawCalls": 109,
       "enemies": 16,
       "terrainChanges": 54,
-      "heap": 53647138
+      "heap": 62483721
     },
     {
       "second": 600,
-      "geometries": 27,
+      "geometries": 39,
       "textures": 2,
       "drawCalls": 93,
       "enemies": 16,
       "terrainChanges": 54,
-      "heap": 37047722
+      "heap": 48351103
     }
   ]
 }

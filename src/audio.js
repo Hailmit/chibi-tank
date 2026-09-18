@@ -9,6 +9,7 @@ export class Audio {
     this.musicVoice = null;
     this.musicCache = new Map();
     this.lastEnemyShot = -Infinity;
+    this.lastFlameSound = -Infinity;
   }
 
   unlock() {
@@ -176,12 +177,27 @@ export class Audio {
       if (now - this.lastEnemyShot < .12 || distance > 29) return;
       this.lastEnemyShot = now;
     }
+    if (name === 'flame') {
+      if (now - this.lastFlameSound < .18) return;
+      this.lastFlameSound = now;
+    }
     this.active++;
     let end;
     if (name === 'shot' || name === 'enemyShot') {
       const volume = name === 'shot' ? 1 : .4 * Math.max(.18, 1 - distance / 32);
       this.shot(volume, name === 'enemyShot');
       return;
+    } else if (name === 'shotgun') {
+      this.shot(1.05, false);
+      return;
+    } else if (name === 'rocket') {
+      this.noise(now, .24, .32, 900);
+      end = this.tone(now, .31, 280, 72, .35, 'sawtooth');
+    } else if (name === 'flame') {
+      end = this.noise(now, .18, .14, 1100);
+    } else if (name === 'electric') {
+      this.noise(now, .13, .2, 1800, 'highpass');
+      end = this.tone(now, .19, 980, 170, .27, 'sawtooth');
     } else if (name === 'explosion') {
       this.noise(now, .22, .52, 1300);
       this.tone(now, .42, 105, 29, .58, 'sine');

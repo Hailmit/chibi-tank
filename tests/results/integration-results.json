@@ -56,6 +56,34 @@
     "pass": true
   },
   {
+    "name": "All four weapon drops can appear and pickups equip or refill ammo",
+    "pass": true
+  },
+  {
+    "name": "Rocket is a pooled projectile with splash damage",
+    "pass": true
+  },
+  {
+    "name": "Shotgun fires one six-pellet short-range fan per shell",
+    "pass": true
+  },
+  {
+    "name": "Flame burns visible targets and cannot pass through cover",
+    "pass": true
+  },
+  {
+    "name": "Electricity chains between enemies and briefly stuns them",
+    "pass": true
+  },
+  {
+    "name": "Sustained special fire respects the existing projectile pool",
+    "pass": true
+  },
+  {
+    "name": "Special shots use distinct bounded visual effects",
+    "pass": true
+  },
+  {
     "name": "City layout stays fixed through long survival and still reacts to destruction",
     "pass": true
   },

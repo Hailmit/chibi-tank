@@ -8,7 +8,7 @@ Lệnh thực chạy:
 python tests/browser_runner.py --soak
 ```
 
-Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài smoke + 20 bài integration đều đạt; kiểm tra resize desktop, mô phỏng cảm ứng landscape 844×390 và giao diện đêm đều đạt; không có JavaScript exception hay HTTP response từ 400 trở lên. JSON và ảnh gần nhất nằm trong `artifacts/`.
+Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài smoke + 26 bài integration đều đạt; kiểm tra resize desktop, mô phỏng cảm ứng landscape 844×390 và giao diện đêm đều đạt; không có JavaScript exception hay HTTP response từ 400 trở lên. JSON và ảnh gần nhất nằm trong `artifacts/`.
 
 ## Checklist đã chạy
 
@@ -29,7 +29,7 @@ Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài sm
 | Va chạm đạn | Đạt. Segment/AABB và segment/circle; đạn bị chặn khi đầu nòng chạm cover; sau khi phá cover mới trúng địch phía sau. |
 | Tường và tìm đường | Đạt. Tường mất collision ngay; version tăng; đường BFS đổi và AI cập nhật cache theo version. |
 | Địa hình cố định trong trận | Đạt. Bố cục không tự tái cấu trúc sau nhiều phút sinh tồn; chỉ những công trình bị phá mới chuyển thành rubble và cập nhật đường đi. Đồng hồ và vùng cảnh báo tái cấu trúc đã được gỡ. |
-| Hiệu ứng chiến đấu | Đạt. Tia lóe, bụi và lõi sáng của vụ nổ rõ hơn; vòng xung kích mờ dần. Hạt hiệu ứng vẫn dùng một `InstancedMesh` với trần 96 phần tử. |
+| Hiệu ứng chiến đấu | Đạt. Rocket có khói và vòng nổ cam; shotgun có viên sáng và lóe hình quạt; lửa thành luồng ba màu; điện có lõi trắng, viền lam và tia răng cưa. Hạt hiệu ứng vẫn dùng một `InstancedMesh` với trần 96 phần tử. |
 | Vật thể che xe | Đạt. Nhà/cây phía trước được thay bằng bản sao mờ 18% opacity, giữ `scale.y = 1` và vẫn giữ collision; trở lại mô hình đặc khi xe rời vùng che. |
 | Spawn | Đạt. Spawn đang cảnh báo bị hủy nếu người chơi tiến vào bán kính an toàn. Tổng địch và spawn chờ bị giới hạn. |
 | Chi phí chọn điểm spawn | Đạt. Mỗi lần chọn dùng một flood-fill chung cho mọi ô ứng viên, không gọi BFS đường đi riêng cho từng ô. |
@@ -39,17 +39,18 @@ Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài sm
 | Phá hủy công trình | Đạt. Thép, nhà, cây, cao tầng và hàng quán có HP hữu hạn; cao tầng/hàng quán hấp thụ đạn rồi chuyển thành rubble đi được. |
 | Đợt tấn công | Đạt. Director tạo nhóm quân nhanh từ giây 24, giảm bộ đếm đúng khi schedule thành công và không vượt trần 16 địch + spawn chờ. |
 | Vật phẩm | Đạt. Hồi HP, hồi stamina, buff tốc độ, buff bắn nhanh; buff hết sau thời hạn. |
+| Vũ khí nhặt được | Đạt. Cả bốn loại đều có thể rơi và nhặt; cùng loại nạp thêm đến trần, hết đạn tự trở về pháo thường. Rocket gây nổ lan; shotgun bắn một chùm sáu viên tầm ngắn mỗi lần trừ một đạn; lửa gây cháy nhưng không xuyên cover; điện giật lan và làm địch khựng lại. Bắn shotgun liên tục đến trần 180 projectile không cấp phát thêm hoặc trừ đạn khi pool đầy. |
 | Điểm / combo | Đạt. Mỗi địch chỉ thưởng một lần, combo tối đa ×5, reset khi hết thời gian hoặc nhận sát thương. |
 | HP / grace | Đạt. Hai lần trúng liên tiếp trong khoảng bảo vệ chỉ nhận sát thương một lần. |
 | Pause / mất focus | Đạt. Timer và spawn đóng băng khi pause; blur tự pause và xóa held input. Handler visibilitychange cùng cơ chế đã được kiểm tra mã nguồn; chưa tự động chuyển tab thật. |
 | Game Over / R / restart | Đạt. Hiện thống kê, phím R tạo trận mới. Năm restart liên tiếp không giữ enemy, projectile, pickup từ trận trước. Các listener và RAF chỉ được tạo trong constructor, không tạo ở restart. |
-| Pool | Đạt. 180 đạn, 12 pháo cối, 96 particle/debris và 16 popup; particle chết không còn được cập nhật mỗi tick. |
-| Ngân sách render | Đạt với 16 xe địch. 75 draw call ban ngày, 86 ban đêm; tối đa 48 enemy mesh và 96 particle instance. Shadow map tắt; bóng tiếp xúc instanced và quầng sáng đêm hoạt động. SwiftShader dùng pixel ratio 1 và 24 FPS, WebGL phần cứng hướng tới 60 FPS. |
-| HUD tối giản | Đạt. Không còn minimap, header tên game, nút audio/settings hay các điều khiển tương ứng trong DOM. Cụm status chỉ còn Giáp và Năng lượng, đo được 93×50 px ở viewport mobile 667×375. Khung điểm chỉ giữ điểm, combo, thời gian. Đồng hồ ngày–đêm và nút fullscreen nằm cùng hàng, không giao nhau. |
+| Pool | Đạt. 180 đạn dùng chung cả đạn thường, rocket và shotgun; 12 pháo cối, 96 particle/debris, 8 cặp dải tia điện và 16 popup. Vật phẩm có tối đa 16 món, mỗi món một mesh gộp; particle chết không còn được cập nhật mỗi tick. |
+| Ngân sách render | Đạt với 16 xe địch. 75 draw call ban ngày, 86 ban đêm; thêm 16 vật phẩm chỉ lên 101 draw call ban đêm do mỗi vật phẩm có một mesh. Tối đa 48 enemy mesh và 96 particle instance. Shadow map tắt; bóng tiếp xúc instanced và quầng sáng đêm hoạt động. SwiftShader dùng pixel ratio 1 và 24 FPS, WebGL phần cứng hướng tới 60 FPS. |
+| HUD tối giản | Đạt. Không còn minimap, header tên game, nút audio/settings hay các điều khiển tương ứng trong DOM. Cụm status chỉ còn Giáp và Năng lượng, đo được 93×50 px ở viewport mobile 667×375. Nhãn vũ khí/đạn chỉ xuất hiện khi nhặt vũ khí đặc biệt; trên mobile nằm dưới status, không che cần điều khiển hoặc toast. Khung điểm chỉ giữ điểm, combo, thời gian. Đồng hồ ngày–đêm và nút fullscreen nằm cùng hàng, không giao nhau. |
 
 ## Bài soak 600 giây mô phỏng
 
-Đây là **600 giây thời gian gameplay chạy tăng tốc**, không phải 10 phút đồng hồ thực hay chơi thủ công. Test dùng cùng `Game.step(1/30)`, world, combat, director và AI thật; đặt invulnerability cho xe người chơi trong test để tránh dừng ở Game Over. Tắt cập nhật DOM mỗi tick và render tại các mốc một phút để stress logic. Không thay tần suất spawn.
+Đây là **600 giây thời gian gameplay chạy tăng tốc**, không phải 10 phút đồng hồ thực hay chơi thủ công. Test dùng cùng `Game.step(1/30)`, world, combat, director và AI thật; đặt invulnerability cho xe người chơi trong test để tránh dừng ở Game Over. Tắt cập nhật DOM mỗi tick và render tại các mốc một phút để stress logic. Không thay tần suất spawn. Bài soak dùng pháo thường; sức chứa đạn đặc biệt được kiểm tra riêng trong integration.
 
 Kết quả của lần cuối:
 
@@ -59,8 +60,8 @@ Kết quả của lần cuối:
 - Tối đa 12 đạn trực tiếp và 96 particle hoạt động trong kịch bản này; các pool luôn hữu hạn.
 - **0** lần phát hiện player/enemy nằm trong ô cấm hoặc grid mất liên thông khi lấy mẫu mỗi giây.
 - Ở 10 mốc render: **25–27 geometries, 1–2 texture** trong `renderer.info.memory`; draw call dao động **87–120**. Hai texture nhỏ tạo bóng mềm và quầng sáng, không tải từ mạng.
-- JS heap tại các mốc dao động khoảng **32,2–60,6 MB**, cuối bài khoảng **37,0 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
-- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,00 giây** đồng hồ ở lượt test này. Đây là thời gian chạy logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
+- JS heap tại các mốc dao động khoảng **35,4–64,0 MB**, cuối bài khoảng **55,3 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
+- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,45 giây** đồng hồ ở lượt test này. Đây là thời gian chạy logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
 
 ## Giới hạn và kiểm tra thủ công còn lại
 
@@ -80,7 +81,7 @@ Kết quả của lần cuối:
 Lần kiểm tra giao diện di động gần nhất dùng Chrome 153 headless với mô phỏng cảm ứng và DPR 2. Kết quả đều đạt ở các trạng thái sau:
 
 - Gameplay ngang 844×390 và 667×375: HUD, thông báo, hai cần điều khiển và nút lướt nằm trọn trong viewport, không chồng lấn; thao tác đi, ngắm và bắn hoạt động.
-- Cụm trạng thái 667×375: chỉ còn hai vòng Giáp và Năng lượng, rộng 93×50 px; không còn phần tử nhiệt nòng hay trạng thái khóa cò.
+- Cụm trạng thái 667×375: chỉ còn hai vòng Giáp và Năng lượng, rộng 93×50 px; nhãn rocket 85×27 px nằm ngay bên dưới. Không còn phần tử nhiệt nòng hay trạng thái khóa cò.
 - Hộp tạm dừng 667×375: chỉ còn Tiếp tục và Về màn hình chính, không có audio/settings, không cần cuộn; các vùng chạm cao ít nhất 44 CSS px.
 - Hộp kết thúc 667×375: tiêu đề, thống kê, Thử lại và Về màn hình chính hiện đầy đủ; vị trí cuộn luôn trở về đầu khi đổi trạng thái.
 - Gameplay dọc 390×844: lớp nhắc xoay ngang phủ kín màn hình. Menu dọc vẫn dùng được và không hiện lớp nhắc xoay.
@@ -100,3 +101,4 @@ Bài integration xác nhận 20 lần bắn liên tục vẫn tạo đủ 20 vi�
 6. Thua rồi bấm R nhiều lần; không còn entity trận trước, kỷ lục vẫn được giữ.
 7. Chơi 10 phút thực trên phần cứng đích, quan sát FPS/heap/GPU bằng DevTools trước khi công bố số liệu hiệu năng.
 8. Nghe nhạc menu, nhạc chiến đấu, tiếng pháo người chơi và địch trên loa điện thoại/tai nghe; kiểm tra mức âm khi bắn liên tục và khi tạm dừng.
+9. Nhặt thử cả bốn vũ khí; kiểm tra rocket phá cover, shotgun tỏa chùm, lửa không xuyên tường, điện giật lan và đạn trở về pháo thường khi hết.

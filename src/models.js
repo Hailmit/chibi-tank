@@ -29,6 +29,15 @@ function mergedPart(parent,key,specs){
   }
   const mesh=new THREE.Mesh(geometry,mergedMaterial);mesh.castShadow=mesh.receiveShadow=true;parent.add(mesh);return mesh;
 }
+export function pickupModel(type){
+  const colors=[0x8fd6ac,0x89c7e6,0xffd36c,0xe69bd4,0xf18c57,0xf3c96c,0xf07542,0x6bd9f2],white=0xfff0c4,specs=[['box',colors[type],0,0,0,.6]];
+  if(type<4){specs.push(['box',0xffffff,0,.32,0,.12,.03,.4]);if(type<2)specs.push(['box',0xffffff,0,.32,0,.4,.03,.12]);}
+  else if(type===4)specs.push(['cone',white,0,.43,0,.25,.6,.25]);
+  else if(type===5)for(const offset of [-.18,0,.18])specs.push(['box',white,offset,.4,0,.09,.48,.12]);
+  else if(type===6)specs.push(['cone',0xffec9e,0,.43,0,.34,.65,.34]);
+  else specs.push(['box',0xe8ffff,-.12,.4,0,.13,.38,.13,0,0,-.5],['box',0xe8ffff,.12,.4,0,.13,.38,.13,0,0,.5]);
+  const root=new THREE.Group();mergedPart(root,`pickup-${type}`,specs);return root;
+}
 function compactEnemyTank(color,kind,scale){
   const root=new THREE.Group(),body=new THREE.Group(),turret=new THREE.Group(),zombie=new THREE.Group(),dark=CONFIG.colors.ink;root.add(body,turret,zombie);
   const bodyParts=[['box',dark,-.53,.3,0,.35,.5,1.35],['box',dark,.53,.3,0,.35,.5,1.35],['box',0x425c59,-.53,.55,0,.38,.06,1.18],['box',0x425c59,.53,.55,0,.38,.06,1.18],['box',color,0,.55,0,1.05,.48,1.1],['box',0xe8edcc,0,.59,.56,.72,.1,.05],['sphere',0xffe9ac,-.35,.52,.58,.15],['sphere',0xffe9ac,.35,.52,.58,.15]];
