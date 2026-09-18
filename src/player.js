@@ -2,15 +2,15 @@ import { CONFIG } from './config.js';
 import { turn } from './core.js';
 import { tankModel } from './models.js';
 export class Player {
-  constructor(scene){Object.assign(this,{x:0,z:0,radius:CONFIG.player.radius,hp:CONFIG.player.hp,stamina:CONFIG.player.stamina,angle:Math.PI,aim:Math.PI,fire:0,dash:0,dashCooldown:0,invulnerable:0,regenDelay:0,speedBuff:0,fireBuff:0,trail:0,weapon:'normal',ammo:0});this.model=tankModel(CONFIG.colors.mint);scene.add(this.model.root);}
+  constructor(scene){Object.assign(this,{x:0,z:0,radius:CONFIG.player.radius,hp:CONFIG.player.hp,maxHP:CONFIG.player.hp,stamina:CONFIG.player.stamina,angle:Math.PI,aim:Math.PI,fire:0,dash:0,dashCooldown:0,invulnerable:0,regenDelay:0,speedBuff:0,fireBuff:0,trail:0,weapon:'normal',ammo:0,armorLevel:0,engineLevel:0,cannonLevel:0,speedMultiplier:1,staminaRegenMultiplier:1,damageMultiplier:1});this.model=tankModel(CONFIG.colors.mint);scene.add(this.model.root);}
   equipWeapon(type){const weapon=CONFIG.weapons[type];if(!weapon)return;this.ammo=this.weapon===type?Math.min(weapon.maxAmmo,this.ammo+weapon.ammo):weapon.ammo;this.weapon=type;this.fire=0;}
   update(dt,game){
     const c=CONFIG.player,i=game.input,m=i.movement();
     for(const key of ['fire','dashCooldown','invulnerable','regenDelay','speedBuff','fireBuff'])this[key]=Math.max(0,this[key]-dt);
-    if(this.regenDelay===0)this.stamina=Math.min(c.stamina,this.stamina+c.staminaRegen*dt);
+    if(this.regenDelay===0)this.stamina=Math.min(c.stamina,this.stamina+c.staminaRegen*this.staminaRegenMultiplier*dt);
     if(i.dash){i.dash=false;if(this.stamina>=c.dashCost&&this.dashCooldown<=0){this.stamina-=c.dashCost;this.dash=c.dashDuration;this.invulnerable=c.dashInvulnerability;this.dashCooldown=c.dashCooldown;this.regenDelay=.5;this.dashX=m.x||m.z?m.x:Math.sin(this.angle);this.dashZ=m.x||m.z?m.z:Math.cos(this.angle);game.audio.play('dash');}}
     if(m.x||m.z)this.angle=turn(this.angle,Math.atan2(m.x,m.z),1-Math.exp(-dt*14));
-    const dashing=this.dash>0,speed=c.speed*(this.speedBuff>0?1.4:1);
+    const dashing=this.dash>0,speed=c.speed*this.speedMultiplier*(this.speedBuff>0?1.4:1);
     game.world.grid.move(this,(dashing?this.dashX*c.dashSpeed:m.x*speed)*dt,(dashing?this.dashZ*c.dashSpeed:m.z*speed)*dt);
     this.dash=Math.max(0,this.dash-dt);
     const target=i.aim(game.camera,this);let aim=Math.atan2(target.x-this.x,target.z-this.z);

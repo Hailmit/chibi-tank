@@ -69,6 +69,19 @@
       <button id="home" class="text-button">Về màn hình chính</button>
     </section>
   </div>
+  <div id="upgrade-overlay" class="overlay upgrade-overlay" hidden>
+    <section class="upgrade-dialog" role="dialog" aria-modal="true" aria-labelledby="upgrade-title" aria-describedby="upgrade-description">
+      <div class="eyebrow">SỐNG SÓT <span id="upgrade-time">02:00</span></div>
+      <h2 id="upgrade-title">Chọn nâng cấp<span>.</span></h2>
+      <p id="upgrade-description">Chọn một cải tiến cho xe tăng rồi tiếp tục chiến đấu.</p>
+      <div class="upgrade-choices">
+        <button id="upgrade-armor" class="upgrade-card" type="button"><span class="upgrade-symbol" aria-hidden="true">◆</span><strong>GIÁP GIA CỐ</strong><span class="upgrade-description">+25 giáp tối đa và hồi 25 giáp</span><small class="upgrade-level">CẤP 1/4</small></button>
+        <button id="upgrade-engine" class="upgrade-card" type="button"><span class="upgrade-symbol" aria-hidden="true">↗</span><strong>ĐỘNG CƠ</strong><span class="upgrade-description">+10% tốc độ, +15% hồi năng lượng</span><small class="upgrade-level">CẤP 1/4</small></button>
+        <button id="upgrade-cannon" class="upgrade-card" type="button"><span class="upgrade-symbol" aria-hidden="true">✦</span><strong>HỎA LỰC</strong><span class="upgrade-description">+12% sát thương mọi loại đạn</span><small class="upgrade-level">CẤP 1/4</small></button>
+      </div>
+      <button id="upgrade-home" class="upgrade-home" type="button">Về màn hình chính</button>
+    </section>
+  </div>
   <div id="toast" class="toast" role="status"></div>
   <div class="rotate-notice" role="status"><span>↻</span><strong>Xoay ngang thiết bị để chơi</strong></div>
   <div id="popups" aria-hidden="true"></div><div id="hit-flash"></div>

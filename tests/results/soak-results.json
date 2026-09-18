@@ -1,7 +1,7 @@
 {
   "pass": true,
   "time": 600.0000000001116,
-  "elapsedMs": 2543,
+  "elapsedMs": 2624.10000000149,
   "terrainChanges": 54,
   "maxEnemies": 16,
   "maxBullets": 12,
@@ -16,7 +16,7 @@
       "drawCalls": 87,
       "enemies": 15,
       "terrainChanges": 0,
-      "heap": 66027778
+      "heap": 50675434
     },
     {
       "second": 120,
@@ -25,7 +25,7 @@
       "drawCalls": 120,
       "enemies": 16,
       "terrainChanges": 4,
-      "heap": 63511447
+      "heap": 46899579
     },
     {
       "second": 180,
@@ -34,7 +34,7 @@
       "drawCalls": 101,
       "enemies": 16,
       "terrainChanges": 18,
-      "heap": 61872682
+      "heap": 45758177
     },
     {
       "second": 240,
@@ -43,7 +43,7 @@
       "drawCalls": 111,
       "enemies": 16,
       "terrainChanges": 33,
-      "heap": 50195512
+      "heap": 34557032
     },
     {
       "second": 300,
@@ -52,7 +52,7 @@
       "drawCalls": 113,
       "enemies": 16,
       "terrainChanges": 41,
-      "heap": 73325880
+      "heap": 58126692
     },
     {
       "second": 360,
@@ -61,7 +61,7 @@
       "drawCalls": 96,
       "enemies": 16,
       "terrainChanges": 53,
-      "heap": 61497642
+      "heap": 46578594
     },
     {
       "second": 420,
@@ -70,7 +70,7 @@
       "drawCalls": 112,
       "enemies": 16,
       "terrainChanges": 54,
-      "heap": 48674849
+      "heap": 34439948
     },
     {
       "second": 480,
@@ -79,7 +79,7 @@
       "drawCalls": 97,
       "enemies": 16,
       "terrainChanges": 54,
-      "heap": 69566885
+      "heap": 55961852
     },
     {
       "second": 540,
@@ -88,7 +88,7 @@
       "drawCalls": 109,
       "enemies": 16,
       "terrainChanges": 54,
-      "heap": 62483721
+      "heap": 47489841
     },
     {
       "second": 600,
@@ -97,7 +97,7 @@
       "drawCalls": 93,
       "enemies": 16,
       "terrainChanges": 54,
-      "heap": 48351103
+      "heap": 34174066
     }
   ]
 }

@@ -30,6 +30,8 @@ Nhạc theme ở menu và nhạc chiến đấu là hai bản gốc khác nhau, 
 
 Vũ khí đặc biệt rơi từ địch và tự trang bị khi nhặt. **Rocket** bay chậm, nổ diện rộng và phá công trình; **shotgun** bắn sáu viên tỏa quạt, hiệu quả ở gần; **lửa** quét hình nón ngắn và đốt mục tiêu; **điện** giật lan tối đa bốn mục tiêu gần nhau, làm chúng khựng lại. Rocket có đầu đạn hai màu, khói và vòng nổ cam riêng; shotgun có viên sáng và lóe nòng hình quạt; lửa tạo luồng ba sắc độ; điện dùng tia răng cưa có lõi trắng, viền lam và chớp tại điểm trúng. Nhặt cùng loại sẽ nạp thêm đạn đến giới hạn; nhặt loại khác sẽ thay vũ khí hiện tại. Khi hết đạn đặc biệt, xe tự trở về pháo thường không giới hạn đạn. HUD chỉ hiện tên và số đạn khi đang dùng vũ khí đặc biệt.
 
+Sau mỗi **120 giây sống sót**, trận tạm dừng để chọn một trong ba nâng cấp: **Giáp gia cố** (+25 giáp tối đa và hồi 25 giáp), **Động cơ** (+10% tốc độ di chuyển, +15% hồi năng lượng), hoặc **Hỏa lực** (+12% sát thương cho đạn thường và đạn đặc biệt). Mỗi nhánh có tối đa bốn cấp; chọn lại sau khi đạt cấp tối đa sẽ nhận một phần thưởng tức thời tương ứng. Đồng hồ trận dừng trong lúc chọn, các thẻ chọn đủ lớn cho màn hình ngang điện thoại, và trận tiếp tục ngay sau khi chạm một thẻ. Nút Về màn hình chính cho phép kết thúc lượt từ màn chọn. Nâng cấp chỉ tồn tại trong trận hiện tại.
+
 Trên iPhone, Safari trong tab không cho trang game gọi Fullscreen API. Game có manifest `display: standalone`, biểu tượng riêng và cấu hình Home Screen. Nếu đã thêm game, hãy **mở từ biểu tượng trên Màn hình chính**, không mở lại tab Safari; lúc đó game nhận biết chế độ ứng dụng và ẩn nút fullscreen vô tác dụng. Nếu biểu tượng cũ vẫn mở tab, hãy tạo lại biểu tượng và bật **Mở dưới dạng ứng dụng** khi iOS hiển thị tùy chọn đó. iOS có thể vẫn giữ thanh trạng thái/thanh điều hướng hệ thống; trang web không thể ép ẩn các phần này.
 
 ## Triển khai GitHub Pages
@@ -70,6 +72,7 @@ chibi-tank-city/
 │   ├── world.js            Địa hình phá hủy được, bóng, instancing
 │   ├── models.js           Mô hình xe và thành phố từ geometry
 │   ├── effects.js          Pool particle/debris, shockwave, popup
+│   ├── upgrades.js         Ba nhánh nâng cấp sống sót mỗi 120 giây
 │   ├── audio.js            Web Audio, chuyển nhạc và hiệu ứng chiến đấu
 │   ├── music.js            Hai vòng nhạc gốc được dựng một lần trong bộ nhớ
 │   └── ui.js               HUD tối giản, pause và hiển thị kỷ lục

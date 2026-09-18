@@ -1,5 +1,6 @@
 import { TILE } from '../src/core.js';
 import { CONFIG } from '../src/config.js';
+import { applyUpgrade, UPGRADE_MAX_LEVEL } from '../src/upgrades.js';
 export function runIntegrationTests(g){
   const results=[];
   const assert=(condition,message='Assertion failed')=>{if(!condition)throw new Error(message);};
@@ -28,6 +29,25 @@ export function runIntegrationTests(g){
   });
   test('Day and night alternate every sixty gameplay seconds',()=>{
     g.enemies.spawn({type:'scout',x:12,z:0});g.time=CONFIG.world.phaseDuration-.01;g.step(.02);assert(g.isNight&&g.enemies.list[0].zombie);g.time=CONFIG.world.phaseDuration*2-.01;g.step(.02);assert(!g.isNight&&!g.enemies.list[0].zombie);
+  });
+  test('Every 120 seconds offers one choice and freezes combat until selected',()=>{
+    g.player.hp=40;g.time=119.99;g.step(.02);const frozen=g.time;
+    assert(g.state==='upgrade'&&!document.getElementById('upgrade-overlay').hidden&&document.getElementById('overlay').hidden);
+    g.step(1);g.togglePause();assert(g.state==='upgrade'&&g.time===frozen);
+    assert(g.chooseUpgrade('armor')&&g.state==='playing'&&g.player.armorLevel===1&&g.player.maxHP===125&&g.player.hp===65);
+    assert(!g.chooseUpgrade('cannon')&&g.player.cannonLevel===0);
+    g.step(.02);assert(g.state==='playing','Upgrade repeated before the next interval');
+    g.time=239.99;g.step(.02);assert(g.state==='upgrade');document.getElementById('upgrade-engine').click();assert(g.state==='playing'&&g.player.speedMultiplier===1.1&&g.player.staminaRegenMultiplier===1.15);
+    g.time=359.99;g.step(.02);assert(g.state==='upgrade');document.getElementById('upgrade-cannon').click();assert(g.player.cannonLevel===1&&g.player.damageMultiplier===1.12);
+    g.combat.firePlayer(g.player);assert(g.combat.bullets.some(b=>b.active&&b.damage===Math.round(CONFIG.player.damage*1.12)));
+    g.start();assert(g.player.armorLevel===0&&g.player.engineLevel===0&&g.player.cannonLevel===0&&g.player.maxHP===CONFIG.player.hp);
+    g.time=119.99;g.step(.02);document.getElementById('upgrade-home').click();assert(g.state==='menu'&&document.getElementById('upgrade-overlay').hidden);
+  });
+  test('Maxed upgrades give a useful immediate reward without raising permanent caps',()=>{
+    for(let i=0;i<UPGRADE_MAX_LEVEL;i++){applyUpgrade(g.player,'armor');applyUpgrade(g.player,'engine');applyUpgrade(g.player,'cannon');}
+    assert(g.player.maxHP===200&&g.player.speedMultiplier===1.4&&g.player.damageMultiplier===1.48);
+    g.player.hp=50;g.player.stamina=0;applyUpgrade(g.player,'armor');applyUpgrade(g.player,'engine');applyUpgrade(g.player,'cannon');
+    assert(g.player.maxHP===200&&g.player.hp===100&&g.player.stamina===100&&g.player.speedBuff===8&&g.player.fireBuff===10&&g.player.damageMultiplier===1.48);
   });
   test('Elite can enter a saturated regular enemy population',()=>{
     for(let i=0;i<CONFIG.director.maxEnemies-1;i++)g.enemies.spawn({type:'scout',x:-24+(i%5)*2.4,z:-24+Math.floor(i/5)*2.4});

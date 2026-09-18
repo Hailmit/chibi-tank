@@ -22,32 +22,33 @@ export class Combat {
   constructor(game){this.game=game;this.playerRoundGeometry=playerRoundGeometry();this.rocketGeometry=specialRoundGeometry('rocket');this.pelletGeometry=specialRoundGeometry('pellet');this.playerRoundMaterial=new THREE.MeshBasicMaterial({vertexColors:true,toneMapped:false});this.bullets=Array.from({length:CONFIG.combat.maxBullets},()=>{const mesh=part(game.scene,'sphere',0xf05b72,0,0,0,.17,.17,.65);mesh.visible=false;return {mesh,active:false};});this.enemyRoundGeometry=this.bullets[0].mesh.geometry;this.shells=Array.from({length:CONFIG.combat.maxMortars},()=>{const marker=ring(game.scene,0xef6867,2.6),mesh=part(game.scene,'sphere',0xf17963,0,0,0,.4);marker.visible=mesh.visible=false;return {marker,mesh,active:false};});this.activeBullets=new Set();this.activeShells=new Set();this.pickups=[];this.tip=new THREE.Vector3();}
   firePlayer(player){
     const type=player.weapon,weapon=CONFIG.weapons[type];
-    if(!weapon)return this.shoot(player,'player',CONFIG.player.damage)?CONFIG.player.fireInterval:0;
+    if(!weapon)return this.shoot(player,'player',Math.round(CONFIG.player.damage*player.damageMultiplier))?CONFIG.player.fireInterval:0;
+    const damage=Math.round(weapon.damage*player.damageMultiplier);
     let fired=false;
-    if(type==='rocket')fired=this.shoot(player,'player',weapon.damage,0,'rocket');
-    else if(type==='shotgun'){for(const offset of [-.3,-.18,-.06,.06,.18,.3])fired=this.shoot(player,'player',weapon.damage,offset,'pellet',!fired,false)||fired;if(fired)this.game.effects.shotgunMuzzle(this.tip.x,this.tip.y,this.tip.z,player.aim);}
-    else if(type==='flame')fired=this.flame(player,weapon);
-    else if(type==='electric')fired=this.electric(player,weapon);
+    if(type==='rocket')fired=this.shoot(player,'player',damage,0,'rocket');
+    else if(type==='shotgun'){for(const offset of [-.3,-.18,-.06,.06,.18,.3])fired=this.shoot(player,'player',damage,offset,'pellet',!fired,false)||fired;if(fired)this.game.effects.shotgunMuzzle(this.tip.x,this.tip.y,this.tip.z,player.aim);}
+    else if(type==='flame')fired=this.flame(player,weapon,damage);
+    else if(type==='electric')fired=this.electric(player,weapon,damage);
     if(!fired)return 0;
     player.ammo--;
     if(player.ammo<=0){player.weapon='normal';player.ammo=0;this.game.ui.toast('HẾT ĐẠN ĐẶC BIỆT · PHÁO THƯỜNG');}
     return weapon.interval;
   }
-  flame(player,weapon){
+  flame(player,weapon,damage=weapon.damage){
     const g=this.game,grid=g.world.grid,range=6.5,angle=player.aim,hitWalls=new Set();let visualRange=range;
-    for(const e of g.enemies.list){if(e.dead)continue;const distance=dist(player,e),bearing=Math.atan2(e.x-player.x,e.z-player.z),difference=Math.abs(Math.atan2(Math.sin(bearing-angle),Math.cos(bearing-angle)));if(distance>range||difference>.43||grid.trace(player.x,player.z,e.x,e.z))continue;g.enemies.hurt(e,weapon.damage,true);if(!e.dead){e.burn=Math.max(e.burn,1.5);e.burnTick=Math.min(e.burnTick||.45,.45);}}
-    for(const offset of [-.34,0,.34]){const a=angle+offset,x=player.x+Math.sin(a)*range,z=player.z+Math.cos(a)*range,wall=grid.trace(player.x,player.z,x,z,.1);if(wall){visualRange=Math.min(visualRange,range*wall.t);if(!hitWalls.has(wall.i)){hitWalls.add(wall.i);g.world.damage(wall.i,weapon.damage,g);}}}
+    for(const e of g.enemies.list){if(e.dead)continue;const distance=dist(player,e),bearing=Math.atan2(e.x-player.x,e.z-player.z),difference=Math.abs(Math.atan2(Math.sin(bearing-angle),Math.cos(bearing-angle)));if(distance>range||difference>.43||grid.trace(player.x,player.z,e.x,e.z))continue;g.enemies.hurt(e,damage,true);if(!e.dead){e.burn=Math.max(e.burn,1.5);e.burnTick=Math.min(e.burnTick||.45,.45);}}
+    for(const offset of [-.34,0,.34]){const a=angle+offset,x=player.x+Math.sin(a)*range,z=player.z+Math.cos(a)*range,wall=grid.trace(player.x,player.z,x,z,.1);if(wall){visualRange=Math.min(visualRange,range*wall.t);if(!hitWalls.has(wall.i)){hitWalls.add(wall.i);g.world.damage(wall.i,damage,g);}}}
     g.effects.flameJet(player.x,player.z,angle,visualRange);
     player.model.flashTime=.08;g.audio.play('flame');return true;
   }
-  electric(player,weapon){
+  electric(player,weapon,damage=weapon.damage){
     const g=this.game,grid=g.world.grid,used=new Set();let source=player,hit=0;
     for(let jump=0;jump<4;jump++){
       let best=null,bestDistance=Infinity;
       for(const e of g.enemies.list){if(e.dead||used.has(e))continue;const distance=dist(source,e);if(distance>(jump===0?11:5.2)||distance>=bestDistance||grid.trace(source.x,source.z,e.x,e.z))continue;if(jump===0){const bearing=Math.atan2(e.x-player.x,e.z-player.z),difference=Math.abs(Math.atan2(Math.sin(bearing-player.aim),Math.cos(bearing-player.aim)));if(difference>.5)continue;}best=e;bestDistance=distance;}
-      if(!best)break;used.add(best);g.effects.arc(source.x,source.z,best.x,best.z);g.effects.electricBurst(best.x,best.z);g.enemies.hurt(best,Math.round(weapon.damage*(1-jump*.18)),true);if(!best.dead)best.stun=Math.max(best.stun,.35);source=best;hit++;
+      if(!best)break;used.add(best);g.effects.arc(source.x,source.z,best.x,best.z);g.effects.electricBurst(best.x,best.z);g.enemies.hurt(best,Math.round(damage*(1-jump*.18)),true);if(!best.dead)best.stun=Math.max(best.stun,.35);source=best;hit++;
     }
-    if(!hit){const x=player.x+Math.sin(player.aim)*11,z=player.z+Math.cos(player.aim)*11,wall=grid.trace(player.x,player.z,x,z,.1),end=wall?{x:player.x+(x-player.x)*wall.t,z:player.z+(z-player.z)*wall.t}:{x,z};g.effects.arc(player.x,player.z,end.x,end.z);g.effects.electricBurst(end.x,end.z);if(wall)g.world.damage(wall.i,weapon.damage*.6,g);}
+    if(!hit){const x=player.x+Math.sin(player.aim)*11,z=player.z+Math.cos(player.aim)*11,wall=grid.trace(player.x,player.z,x,z,.1),end=wall?{x:player.x+(x-player.x)*wall.t,z:player.z+(z-player.z)*wall.t}:{x,z};g.effects.arc(player.x,player.z,end.x,end.z);g.effects.electricBurst(end.x,end.z);if(wall)g.world.damage(wall.i,damage*.6,g);}
     player.model.flashTime=.1;g.audio.play('electric');return true;
   }
   shoot(owner,team,damage,offset=0,kind='normal',sound=true,muzzleEffect=true){
@@ -79,7 +80,7 @@ export class Combat {
       b.x=nx;b.z=nz;b.life-=dt;if(b.life<=0||Math.abs(nx)>grid.half||Math.abs(nz)>grid.half)b.active=false;if(b.active&&b.kind==='rocket'){b.trail-=dt;if(b.trail<=0){b.trail=.09;g.effects.rocketTrail(nx,b.y,nz,b.angle);}}b.mesh.visible=b.active;b.mesh.position.set(nx,b.y,nz);if(!b.active)this.activeBullets.delete(b);
     }
     for(const s of this.activeShells){s.life-=dt;const t=1-s.life/s.max;s.mesh.position.set(s.startX+(s.x-s.startX)*t,1+Math.sin(t*Math.PI)*8,s.startZ+(s.z-s.startZ)*t);if(s.life<=0){s.active=false;this.activeShells.delete(s);s.mesh.visible=s.marker.visible=false;this.explode(s.x,s.z,2.6,s.damage,'enemy');}}
-    for(let i=this.pickups.length-1;i>=0;i--){const p=this.pickups[i];p.life-=dt;if(dist(p,g.player)<1.2){const player=g.player,names=['+30 GIÁP','ĐẦY NĂNG LƯỢNG','TĂNG TỐC · 8s','BẮN NHANH · 8s'];if(p.type===0)player.hp=Math.min(CONFIG.player.hp,player.hp+30);if(p.type===1)player.stamina=CONFIG.player.stamina;if(p.type===2)player.speedBuff=8;if(p.type===3)player.fireBuff=8;if(p.type>=4){const type=['rocket','shotgun','flame','electric'][p.type-4];player.equipWeapon(type);names[p.type]=`${CONFIG.weapons[type].name} ×${player.ammo}`;g.ui.toast(`NHẶT ${CONFIG.weapons[type].name} · ${player.ammo} ĐẠN`);}g.audio.play('pickup');g.effects.emit(p.x,1,p.z,p.type>=4?CONFIG.weapons[player.weapon].color:0xb6ffce,7,.55);g.effects.popup(p.x,p.z,names[p.type],p.type>=4?'#fff0bf':'#a9ffe2');p.life=0;}if(p.life<=0){p.mesh.removeFromParent();this.pickups.splice(i,1);}}
+    for(let i=this.pickups.length-1;i>=0;i--){const p=this.pickups[i];p.life-=dt;if(dist(p,g.player)<1.2){const player=g.player,names=['+30 GIÁP','ĐẦY NĂNG LƯỢNG','TĂNG TỐC · 8s','BẮN NHANH · 8s'];if(p.type===0)player.hp=Math.min(player.maxHP,player.hp+30);if(p.type===1)player.stamina=CONFIG.player.stamina;if(p.type===2)player.speedBuff=8;if(p.type===3)player.fireBuff=8;if(p.type>=4){const type=['rocket','shotgun','flame','electric'][p.type-4];player.equipWeapon(type);names[p.type]=`${CONFIG.weapons[type].name} ×${player.ammo}`;g.ui.toast(`NHẶT ${CONFIG.weapons[type].name} · ${player.ammo} ĐẠN`);}g.audio.play('pickup');g.effects.emit(p.x,1,p.z,p.type>=4?CONFIG.weapons[player.weapon].color:0xb6ffce,7,.55);g.effects.popup(p.x,p.z,names[p.type],p.type>=4?'#fff0bf':'#a9ffe2');p.life=0;}if(p.life<=0){p.mesh.removeFromParent();this.pickups.splice(i,1);}}
   }
   spawnPickup(type,x,z){const g=this.game;if(this.pickups.length>=CONFIG.combat.maxPickups)return null;const mesh=pickupModel(type);mesh.position.set(x,.8,z);g.scene.add(mesh);const pickup={x,z,type,mesh,life:18};this.pickups.push(pickup);return pickup;}
   drop(x,z){const grid=this.game.world.grid;if(this.pickups.length>=CONFIG.combat.maxPickups||grid.random()>.65)return;const roll=grid.random(),type=roll<.4?4+Math.min(3,Math.floor(roll/.4*4)):Math.min(3,Math.floor((roll-.4)/.6*4));this.spawnPickup(type,x,z);}

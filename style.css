@@ -219,3 +219,19 @@ body.night.playing .fullscreen-button{color:#e7efdd;border-color:#a5b9ae77;backg
   .fullscreen-button{top:max(8px,env(safe-area-inset-top));right:max(8px,env(safe-area-inset-right));width:44px;height:44px;padding:10px}
   body.touch.playing .fullscreen-button{top:max(11px,calc(env(safe-area-inset-top) + 3px));right:max(146px,calc(env(safe-area-inset-right) + 146px))}
 }
+
+/* A choice freezes gameplay every two minutes; all three cards fit in landscape. */
+.upgrade-dialog{width:min(720px,calc(100vw - 24px));max-height:calc(100dvh - 20px);overflow:auto;padding:25px;background:var(--paper);border:1px solid #fffdf0;border-radius:17px;box-shadow:0 25px 90px #17352e44}
+.upgrade-dialog .eyebrow{color:#8a957e}.upgrade-dialog .eyebrow span{width:auto;height:auto;background:none;color:#d37d4e;font-weight:900;font-variant-numeric:tabular-nums}
+.upgrade-dialog h2{font-size:34px;letter-spacing:-1.8px;line-height:1.05;margin:10px 0 5px}.upgrade-dialog h2 span{color:var(--orange)}
+.upgrade-dialog p{font-size:12px;line-height:1.5;color:#667a6b;margin:0 0 18px}
+.upgrade-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.upgrade-card{min-width:0;min-height:154px;padding:14px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:7px;border:1px solid #c9d6c4;border-radius:11px;background:#fffef3;color:var(--ink);box-shadow:0 4px 0 #d6dfcf}
+.upgrade-card:hover,.upgrade-card:focus-visible{border-color:#dd8c5c;background:#fff8e9}.upgrade-card:active{transform:translateY(3px);box-shadow:0 1px 0 #d6dfcf}
+.upgrade-symbol{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:#dcebd9;color:#548974;font-size:18px;font-weight:800}
+#upgrade-engine .upgrade-symbol{background:#e7e5cd;color:#ab8a36}#upgrade-cannon .upgrade-symbol{background:#f5ded0;color:#cc754f}
+.upgrade-card strong{font-size:12px;letter-spacing:.6px}.upgrade-description{font-size:11px;line-height:1.35;color:#5e7565}.upgrade-level{margin-top:auto;font-size:9px;font-weight:800;letter-spacing:.7px;color:#bc744c}
+.upgrade-home{display:block;min-height:44px;margin:8px auto -8px;padding:9px 16px;border:0;background:transparent;color:#667a6b;font-size:11px}
+.upgrade-home:hover{text-decoration:underline}
+@media (pointer:coarse) and (orientation:landscape) and (max-height:430px){.upgrade-dialog{padding:14px 18px;max-height:calc(100dvh - 12px)}.upgrade-dialog h2{font-size:26px;margin:5px 0 2px}.upgrade-dialog p{font-size:10px;margin-bottom:9px}.upgrade-choices{gap:7px}.upgrade-card{min-height:119px;padding:9px;gap:4px}.upgrade-symbol{width:22px;height:22px;font-size:15px}.upgrade-card strong{font-size:10px}.upgrade-description{font-size:9px}.upgrade-level{font-size:8px}}
+@media (max-width:560px) and (orientation:portrait){.upgrade-dialog{padding:18px}.upgrade-dialog h2{font-size:27px}.upgrade-choices{grid-template-columns:1fr;gap:8px}.upgrade-card{min-height:76px;padding:9px 12px;display:grid;grid-template-columns:32px 1fr;align-items:center;gap:2px 9px}.upgrade-symbol{grid-row:1/4}.upgrade-description{font-size:10px}.upgrade-level{margin:0}}

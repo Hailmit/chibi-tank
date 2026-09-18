@@ -100,14 +100,24 @@ try:
     time.sleep(2)
     screenshot('menu.png')
     fullscreen_rect = evaluate("(()=>{const r=document.getElementById('fullscreen-button').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()")
-    call('Input.dispatchMouseEvent', {'type':'mousePressed','x':fullscreen_rect['x'],'y':fullscreen_rect['y'],'button':'left','clickCount':1})
-    call('Input.dispatchMouseEvent', {'type':'mouseReleased','x':fullscreen_rect['x'],'y':fullscreen_rect['y'],'button':'left','clickCount':1})
-    time.sleep(.25)
+    entered_fullscreen = False
+    for _ in range(2):
+        call('Input.dispatchMouseEvent', {'type':'mousePressed','x':fullscreen_rect['x'],'y':fullscreen_rect['y'],'button':'left','clickCount':1})
+        call('Input.dispatchMouseEvent', {'type':'mouseReleased','x':fullscreen_rect['x'],'y':fullscreen_rect['y'],'button':'left','clickCount':1})
+        for _ in range(10):
+            entered_fullscreen = evaluate("Boolean(document.fullscreenElement||document.webkitFullscreenElement)")
+            if entered_fullscreen:
+                break
+            time.sleep(.1)
+        if entered_fullscreen:
+            break
     evaluate("window.__menuMusicAudit={scene:__game.audio.scene,track:__game.audio.musicVoice?.track,context:__game.audio.context?.state}")
-    entered_fullscreen = evaluate("Boolean(document.fullscreenElement||document.webkitFullscreenElement)")
     if entered_fullscreen:
         evaluate("(document.exitFullscreen||document.webkitExitFullscreen).call(document)")
-        time.sleep(.15)
+        for _ in range(10):
+            if not evaluate("Boolean(document.fullscreenElement||document.webkitFullscreenElement)"):
+                break
+            time.sleep(.1)
     fullscreen_result = {'name':'Fullscreen button enters and exits browser fullscreen','pass':bool(entered_fullscreen and not evaluate("Boolean(document.fullscreenElement||document.webkitFullscreenElement)"))}
     core = evaluate("import('./tests/core-suite.js').then(m=>m.runCoreTests())")
     print(json.dumps(core, ensure_ascii=False), flush=True)
@@ -187,7 +197,7 @@ try:
           const g=__game;g.start();cancelAnimationFrame(g.frameId);g.setQuality();
           const updateUI=g.ui.update.bind(g.ui);g.ui.update=()=>{};const samples=[],started=performance.now(),initialTerrainVersion=g.world.grid.version;let maxEnemies=0,maxBullets=0,maxParticles=0,invalid=0,eliteSeen=false;
           for(let second=0;second<600;second++){
-            for(let f=0;f<30;f++){g.player.invulnerable=2;g.step(1/30);maxEnemies=Math.max(maxEnemies,g.enemies.list.length+g.enemies.pending.length);maxBullets=Math.max(maxBullets,g.combat.activeBullets.size);maxParticles=Math.max(maxParticles,g.effects.active.size);}
+            for(let f=0;f<30;f++){g.player.invulnerable=2;g.step(1/30);if(g.state==='upgrade')g.chooseUpgrade(['armor','engine','cannon'][g.upgradeCount%3]);maxEnemies=Math.max(maxEnemies,g.enemies.list.length+g.enemies.pending.length);maxBullets=Math.max(maxBullets,g.combat.activeBullets.size);maxParticles=Math.max(maxParticles,g.effects.active.size);}
             if(!g.world.grid.connected()||!g.world.grid.free(g.player.x,g.player.z,g.player.radius)||g.enemies.list.some(e=>!g.world.grid.free(e.x,e.z,e.radius)))invalid++;if(g.enemies.list.some(e=>e.type==='elite'))eliteSeen=true;
             if(second%60===59){g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);samples.push({second:second+1,geometries:g.renderer.info.memory.geometries,textures:g.renderer.info.memory.textures,drawCalls:g.renderer.info.render.calls,enemies:g.enemies.list.length,terrainChanges:g.world.grid.version-initialTerrainVersion,heap:performance.memory?.usedJSHeapSize});await new Promise(r=>setTimeout(r,0));}
           }
@@ -232,6 +242,12 @@ try:
     print('Mobile compact: '+json.dumps(compact), flush=True)
     (ART / 'mobile-compact-results.json').write_text(json.dumps(compact, indent=2), encoding='utf-8')
     screenshot('mobile-compact.png')
+    upgrade = evaluate("""(()=>{const g=__game;g.time=119.99;g.step(.02);const frozen=g.time,dialog=document.querySelector('.upgrade-dialog'),r=dialog.getBoundingClientRect(),cards=[...document.querySelectorAll('.upgrade-card')].map(el=>el.getBoundingClientRect()),home=document.getElementById('upgrade-home').getBoundingClientRect();g.step(1);g.togglePause();g.renderer.render(g.scene,g.camera);const inside=x=>x.left>=r.left&&x.right<=r.right&&x.top>=r.top&&x.bottom<=r.bottom;return {pass:g.state==='upgrade'&&g.time===frozen&&!document.getElementById('upgrade-overlay').hidden&&document.getElementById('touch-controls').hidden&&r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight&&dialog.scrollHeight<=dialog.clientHeight&&cards.length===3&&cards.every(x=>inside(x)&&x.width>=44&&x.height>=44)&&inside(home)&&home.height>=44,state:g.state,dialog:[r.x,r.y,r.width,r.height],cards:cards.map(x=>[x.x,x.y,x.width,x.height]),home:[home.x,home.y,home.width,home.height],scroll:[dialog.scrollHeight,dialog.clientHeight]};})()""")
+    print('Mobile upgrade: '+json.dumps(upgrade), flush=True)
+    (ART / 'mobile-upgrade-results.json').write_text(json.dumps(upgrade, indent=2), encoding='utf-8')
+    screenshot('mobile-upgrade.png')
+    upgrade_resume = evaluate("""(()=>{const g=__game,before=g.player.maxHP;document.getElementById('upgrade-armor').click();return {pass:g.state==='playing'&&document.getElementById('upgrade-overlay').hidden&&g.player.maxHP===before+25&&g.upgradeCount===1,state:g.state,maxHP:g.player.maxHP};})()""")
+    print('Upgrade resume: '+json.dumps(upgrade_resume), flush=True)
     status = evaluate("""(()=>{const g=__game;g.ui.update(0);const panel=document.querySelector('.status-panel'),rings=[...panel.querySelectorAll('.status-orb')],aim=document.getElementById('aim-stick'),r=panel.getBoundingClientRect();return {pass:rings.length===2&&!document.getElementById('heat-ring')&&!('heat' in g.player)&&aim.getAttribute('aria-label')==='Kéo để ngắm và bắn'&&r.left>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,panel:[r.x,r.y,r.width,r.height],rings:rings.map(x=>x.id)};})()""")
     print('Mobile status: '+json.dumps(status, ensure_ascii=False), flush=True)
     (ART / 'mobile-status-results.json').write_text(json.dumps(status, indent=2, ensure_ascii=False), encoding='utf-8')
@@ -256,7 +272,7 @@ try:
     errors = [e for e in events if e.get('method')=='Runtime.exceptionThrown' or (e.get('method')=='Network.responseReceived' and e['params']['response']['status']>=400)]
     print('Browser errors: '+json.dumps(errors), flush=True)
     (ART / 'browser-errors.json').write_text(json.dumps(errors, indent=2), encoding='utf-8')
-    if errors or not all(r['pass'] for r in core+smoke+integration) or not performance_result['pass'] or not visual['fullHeight'] or not resize['pass'] or not mobile['pass'] or not night['pass'] or not all(result['pass'] for result in [compact,status,pause,gameover,portrait,menuPortrait]) or ('--soak' in sys.argv and not soak['pass']):
+    if errors or not all(r['pass'] for r in core+smoke+integration) or not performance_result['pass'] or not visual['fullHeight'] or not resize['pass'] or not mobile['pass'] or not night['pass'] or not upgrade_resume['pass'] or not all(result['pass'] for result in [compact,upgrade,status,pause,gameover,portrait,menuPortrait]) or ('--soak' in sys.argv and not soak['pass']):
         sys.exit(1)
 finally:
     if ws:

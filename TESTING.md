@@ -8,7 +8,7 @@ Lệnh thực chạy:
 python tests/browser_runner.py --soak
 ```
 
-Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài smoke + 26 bài integration đều đạt; kiểm tra resize desktop, mô phỏng cảm ứng landscape 844×390 và giao diện đêm đều đạt; không có JavaScript exception hay HTTP response từ 400 trở lên. JSON và ảnh gần nhất nằm trong `artifacts/`.
+Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài smoke + 29 bài integration đều đạt; kiểm tra resize desktop, mô phỏng cảm ứng landscape 844×390, màn nâng cấp 667×375 và giao diện đêm đều đạt; không có JavaScript exception hay HTTP response từ 400 trở lên. JSON và ảnh gần nhất nằm trong `artifacts/`.
 
 ## Checklist đã chạy
 
@@ -23,6 +23,7 @@ Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài sm
 | Cảm ứng landscape | Đạt ở viewport 844×390, DPR 2. Hai cần 100×100 CSS px và nút lướt 60×60 CSS px nằm trong màn hình; kéo cần trái tạo vector di chuyển, cần phải vừa ngắm vừa bắn. Cấu hình đồ họa luôn là High. |
 | Toàn màn hình | Đạt bằng click thật qua Chrome CDP: nút vào và thoát Fullscreen API thành công, cập nhật nhãn/biểu tượng. Kiểm thử adapter xác nhận các nhánh chuẩn Chrome/Edge, WebKit Safari mới/cũ và Microsoft cũ. Nhánh giả lập iPhone xác nhận nút bị ẩn khi đã chạy standalone, tab Safari hiện hướng dẫn mở từ biểu tượng đã cài; manifest và icon tải thành công. Vùng chạm 44×44 px nằm trọn viewport desktop và mobile 667×375, không chồng bốn cụm HUD. Chưa thử iPhone vật lý. |
 | Chu kỳ ngày–đêm | Đạt. Chuyển sang đêm tại 60 giây và trở lại ngày tại 120 giây gameplay. Pause vẫn đóng băng đồng hồ vì chu kỳ dùng `game.time`. |
+| Chọn nâng cấp mỗi 120 giây | Đạt. Trận dừng đúng mốc, đồng hồ và chiến đấu đóng băng cho tới khi chọn một trong ba thẻ. Giáp, động cơ và hỏa lực nâng đúng chỉ số, sát thương áp dụng cho mọi vũ khí; mỗi nhánh có trần bốn cấp và phần thưởng tức thời sau trần. Bắt đầu trận mới xóa nâng cấp cũ. Màn chọn 667×375 nằm gọn trong viewport, ba thẻ và nút về menu đều cao ít nhất 44 px. |
 | Zombie ban đêm | Đạt. Địch đang sống và địch sinh mới đều có `maxHP = baseMaxHP × 2`, giữ phần trăm máu khi chuyển pha, hiện mắt/gai xanh và trở lại HP thường lúc bình minh. |
 | Bắn có chủ đích | Đạt. Bắt đầu trận không có đạn tự bắn; tạo đạn khi giữ trạng thái chuột trái. Listener pointerdown chỉ nằm trên canvas, tách khỏi nút UI. Đạn người chơi dùng hình có lõi xanh sáng và viền tối trong một draw call. |
 | Nhạc và tiếng pháo | Đạt. Click thật ở menu mở AudioContext và bắt đầu theme. Hai vòng nhạc khác nhau có tín hiệu âm rõ, chuyển theo menu/trận/tạm dừng/kết thúc. Tiếng pháo được trộn sẵn vào một buffer ngắn, có transient mạnh và đuôi tắt dần; địch giảm âm theo khoảng cách và giới hạn số tiếng bắn chồng. Chưa đánh giá bằng nghe thủ công trên nhiều loại loa. |
@@ -50,7 +51,7 @@ Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài sm
 
 ## Bài soak 600 giây mô phỏng
 
-Đây là **600 giây thời gian gameplay chạy tăng tốc**, không phải 10 phút đồng hồ thực hay chơi thủ công. Test dùng cùng `Game.step(1/30)`, world, combat, director và AI thật; đặt invulnerability cho xe người chơi trong test để tránh dừng ở Game Over. Tắt cập nhật DOM mỗi tick và render tại các mốc một phút để stress logic. Không thay tần suất spawn. Bài soak dùng pháo thường; sức chứa đạn đặc biệt được kiểm tra riêng trong integration.
+Đây là **600 giây thời gian gameplay chạy tăng tốc**, không phải 10 phút đồng hồ thực hay chơi thủ công. Test dùng cùng `Game.step(1/30)`, world, combat, director và AI thật; đặt invulnerability cho xe người chơi trong test để tránh dừng ở Game Over. Driver tự chọn luân phiên ba nâng cấp ở các mốc 120 giây để trận tiếp tục. Tắt cập nhật DOM mỗi tick và render tại các mốc một phút để stress logic. Không thay tần suất spawn. Bài soak dùng pháo thường; sức chứa đạn đặc biệt được kiểm tra riêng trong integration.
 
 Kết quả của lần cuối:
 
@@ -59,9 +60,9 @@ Kết quả của lần cuối:
 - Đã có elite trong trận; tối đa **16 địch + điểm spawn đang chờ**.
 - Tối đa 12 đạn trực tiếp và 96 particle hoạt động trong kịch bản này; các pool luôn hữu hạn.
 - **0** lần phát hiện player/enemy nằm trong ô cấm hoặc grid mất liên thông khi lấy mẫu mỗi giây.
-- Ở 10 mốc render: **25–27 geometries, 1–2 texture** trong `renderer.info.memory`; draw call dao động **87–120**. Hai texture nhỏ tạo bóng mềm và quầng sáng, không tải từ mạng.
-- JS heap tại các mốc dao động khoảng **35,4–64,0 MB**, cuối bài khoảng **55,3 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
-- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,45 giây** đồng hồ ở lượt test này. Đây là thời gian chạy logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
+- Ở 10 mốc render: **37–39 geometries, 1–2 texture** trong `renderer.info.memory`; draw call dao động **87–120**. Hai texture nhỏ tạo bóng mềm và quầng sáng, không tải từ mạng.
+- JS heap tại các mốc dao động khoảng **34,2–58,1 MB**, cuối bài khoảng **34,2 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
+- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,62 giây** đồng hồ ở lượt test này. Đây là thời gian chạy logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
 
 ## Giới hạn và kiểm tra thủ công còn lại
 

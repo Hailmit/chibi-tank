@@ -24,6 +24,14 @@
     "pass": true
   },
   {
+    "name": "Every 120 seconds offers one choice and freezes combat until selected",
+    "pass": true
+  },
+  {
+    "name": "Maxed upgrades give a useful immediate reward without raising permanent caps",
+    "pass": true
+  },
+  {
     "name": "Elite can enter a saturated regular enemy population",
     "pass": true
   },
