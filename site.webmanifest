@@ -1,0 +1,14 @@
+{
+  "id": "./",
+  "name": "Chibi Tank City: Endless",
+  "short_name": "Chibi Tank",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#e5ecdb",
+  "theme_color": "#e5ecdb",
+  "icons": [
+    { "src": "./apple-touch-icon.png", "sizes": "192x192", "type": "image/png" }
+  ]
+}

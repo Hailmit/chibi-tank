@@ -32,14 +32,6 @@
     "pass": true
   },
   {
-    "name": "Moving entity invalidates its warned terrain cell",
-    "pass": true
-  },
-  {
-    "name": "10 seeds × 12 irregular changes always alter topology and stay connected",
-    "pass": true
-  },
-  {
     "name": "Pathfinding changes route after topology changes",
     "pass": true
   }

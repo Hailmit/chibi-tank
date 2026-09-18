@@ -56,11 +56,19 @@
     "pass": true
   },
   {
-    "name": "Terrain warning commits real topology and preserves unrelated destroyed cover",
+    "name": "City layout stays fixed through long survival and still reacts to destruction",
     "pass": true
   },
   {
-    "name": "A reconstruction still commits if a vehicle enters the warned region",
+    "name": "Brighter explosions fade while instanced particles stay capped",
+    "pass": true
+  },
+  {
+    "name": "Theme and battle music are distinct loops that follow game state",
+    "pass": true
+  },
+  {
+    "name": "Buffered cannon shot has a strong transient and decaying tail",
     "pass": true
   },
   {

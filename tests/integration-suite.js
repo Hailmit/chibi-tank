@@ -1,4 +1,4 @@
-import { TILE, walkable } from '../src/core.js';
+import { TILE } from '../src/core.js';
 import { CONFIG } from '../src/config.js';
 export function runIntegrationTests(g){
   const results=[];
@@ -56,14 +56,31 @@ export function runIntegrationTests(g){
   test('All four pickup effects apply and expire',()=>{
     const random=g.world.grid.random;for(let type=0;type<4;type++){let count=0;g.world.grid.random=()=>count++===0?0:(type+.1)/4;g.combat.drop(0,0);g.player.hp=50;g.player.stamina=20;g.combat.update(1/60);if(type===0)assert(g.player.hp===80);if(type===1)assert(g.player.stamina===100);if(type===2)assert(g.player.speedBuff===8);if(type===3)assert(g.player.fireBuff===8);}g.world.grid.random=random;g.input.clear();for(let i=0;i<481;i++)g.player.update(1/60,g);assert(g.player.speedBuff===0&&g.player.fireBuff===0&&g.combat.pickups.length===0);
   });
-  test('Terrain warning commits real topology and preserves unrelated destroyed cover',()=>{
-    g.start();const grid=g.world.grid;let candidate;for(let i=0;i<50&&!candidate;i++)candidate=grid.candidate([g.player]);assert(candidate);
-    const selected=new Set(candidate.indices),brick=grid.tiles.findIndex((t,i)=>t===TILE.BRICK&&!selected.has(i)&&grid.neighbors(i).some(n=>grid.tiles[n]===TILE.ROAD));assert(brick>=0);g.world.pending={...candidate,remaining:CONFIG.world.warning};
-    g.world.damage(brick,100,g);const before=grid.tiles.slice(),hp=g.player.hp,score=g.score;g.world.update(1,g);assert(g.world.shifts===0);g.world.update(1.01,g);assert(g.world.shifts===1);assert(grid.tiles[brick]===TILE.RUBBLE);assert(grid.tiles.some((v,i)=>v!==before[i]));assert(g.player.hp===hp&&g.score===score&&grid.connected());
+  test('City layout stays fixed through long survival and still reacts to destruction',()=>{
+    const grid=g.world.grid,i=grid.index(13,12);grid.tiles[i]=TILE.BRICK;grid.hp[i]=grid.tileHP(TILE.BRICK);g.world.rebuild(i);
+    const before=grid.tiles.slice(),version=grid.version;g.time=40;g.step(1/30);g.time=600;g.step(1/30);
+    assert(grid.version===version&&grid.tiles.every((tile,i)=>tile===before[i]),'Map changed without damage');
+    g.world.damage(i,grid.hp[i],g);assert(grid.tiles[i]===TILE.RUBBLE&&grid.version===version+1&&grid.connected(),'Destroyed roadside cover did not open a connected tile');
   });
-  test('A reconstruction still commits if a vehicle enters the warned region',()=>{
-    g.start();const grid=g.world.grid,candidate=grid.candidate([g.player]);assert(candidate);const occupied=candidate.indices.find(i=>walkable(grid.tiles[i]));assert(occupied!==undefined);const point=grid.center(occupied);g.player.x=point.x;g.player.z=point.z;
-    const before=grid.tiles.slice();g.world.pending={...candidate,remaining:.01};g.world.update(.02,g);assert(g.world.shifts===1);assert(grid.tiles.some((t,i)=>t!==before[i]));assert(grid.connected());assert(grid.free(g.player.x,g.player.z,g.player.radius));
+  test('Brighter explosions fade while instanced particles stay capped',()=>{
+    g.effects.explosion(0,0,2);const ring=g.effects.rings.find(r=>r.mesh.visible);assert(ring&&ring.mesh.material.opacity===.8);
+    for(let i=0;i<20;i++)g.effects.explosion(i*.2,0,2);
+    assert(g.effects.mesh.count===CONFIG.effects.high&&g.effects.active.size<=CONFIG.effects.high);
+    g.effects.update(.19);assert(ring.mesh.material.opacity<.8);
+  });
+  test('Theme and battle music are distinct loops that follow game state',()=>{
+    const audio=g.audio,theme=audio.musicBuffer('theme'),battle=audio.musicBuffer('battle');
+    const energy=buffer=>{const samples=buffer.getChannelData(0);let total=0;for(let i=0;i<samples.length;i+=17)total+=samples[i]*samples[i];return Math.sqrt(total/Math.ceil(samples.length/17));};
+    assert(theme.length>100000&&battle.length>100000&&theme.length!==battle.length&&energy(theme)>.025&&energy(battle)>.025);
+    assert(audio.scene==='playing');g.togglePause();assert(audio.scene==='paused'&&!audio.musicVoice);g.togglePause();assert(audio.scene==='playing');
+    g.end();assert(audio.scene==='over');g.home();assert(audio.scene==='menu');
+    if(audio.context.state==='running')assert(audio.musicVoice?.track==='theme');
+  });
+  test('Buffered cannon shot has a strong transient and decaying tail',()=>{
+    const buffer=g.audio.shotBuffer,data=buffer.getChannelData(0),rate=buffer.sampleRate;
+    const rms=(start,end)=>{let energy=0,count=0;for(let i=Math.floor(start*rate);i<Math.floor(end*rate);i++){energy+=data[i]*data[i];count++;}return Math.sqrt(energy/count);};
+    const crack=rms(.005,.065),tail=rms(.27,.38);
+    assert(buffer.length>rate*.35&&crack>.035&&tail<crack*.6,`Unexpected cannon envelope: ${crack}, ${tail}`);
   });
   test('Active enemies invalidate cached paths after topology changes',()=>{
     g.enemies.spawn({type:'scout',x:19.2,z:0});const e=g.enemies.list[0];g.enemies.spawnTimer=100;g.enemies.update(1/60);assert(e.pathVersion===g.world.grid.version);const i=g.world.grid.index(19,12);g.world.grid.tiles[i]=TILE.BRICK;g.world.grid.hp[i]=1;g.world.damage(i,2,g);g.enemies.update(1/60);assert(e.pathVersion===g.world.grid.version);

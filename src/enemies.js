@@ -54,6 +54,6 @@ export class Enemies {
     if(g.world.grid.trace(e.x,e.z,g.player.x,g.player.z))return;
     g.combat.shoot(e,'enemy',e.damage);if(e.type==='gunner'){e.burst=2;e.burstTimer=.18;}
   }
-  hurt(e,damage){if(e.dead)return;e.hp-=damage;e.flash=.12;const g=this.game;g.effects.emit(e.x,.8,e.z,0xfff0c2,3,.2);if(e.hp<=0){e.dead=true;this.dirty=true;e.model.root.removeFromParent();g.effects.explosion(e.x,e.z,e.type==='elite'?2:1);g.audio.play('explosion');g.onKill(e);g.combat.drop(e.x,e.z);}}
+  hurt(e,damage){if(e.dead)return;e.hp-=damage;e.flash=.12;const g=this.game;g.effects.emit(e.x,.8,e.z,0xffefb8,5,.23,1.2);if(e.hp<=0){e.dead=true;this.dirty=true;e.model.root.removeFromParent();g.effects.explosion(e.x,e.z,e.type==='elite'?2:1);g.audio.play('explosion');g.onKill(e);g.combat.drop(e.x,e.z);}}
   clear(){for(const e of this.list)e.model.root.removeFromParent();for(const p of this.pending)p.marker.removeFromParent();this.list=[];this.pending=[];this.dirty=false;}
 }

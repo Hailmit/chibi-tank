@@ -5,14 +5,14 @@ import json
 import zipfile
 
 root = Path(__file__).resolve().parents[1]
-top = ['index.html', 'style.css', 'favicon.svg', '.nojekyll', '.gitignore', 'package.json', 'README.md', 'TESTING.md']
+top = ['index.html', 'style.css', 'favicon.svg', 'crosshair.png', 'apple-touch-icon.png', 'site.webmanifest', '.nojekyll', '.gitignore', 'package.json', 'README.md', 'TESTING.md']
 files = [root / name for name in top]
 for directory in ['src', 'vendor', 'tests', 'tools']:
     files.extend(p for p in sorted((root / directory).rglob('*')) if p.is_file() and '__pycache__' not in p.parts)
-language = {'.js':'javascript','.html':'html','.css':'css','.svg':'xml','.json':'json','.py':'python','.md':'markdown'}
+language = {'.js':'javascript','.html':'html','.css':'css','.svg':'xml','.json':'json','.webmanifest':'json','.py':'python','.md':'markdown'}
 listing = ['# Mã nguồn CHIBI TANK CITY: ENDLESS\n', 'Toàn bộ mã nguồn tự viết, theo đường dẫn. Bản Three.js 0.170.0 nguyên gốc và giấy phép nằm tại `vendor/` trong ZIP; không lặp thư viện minify trong tài liệu này.\n']
 for p in files:
-    if 'vendor' in p.relative_to(root).parts or 'results' in p.relative_to(root).parts:
+    if 'vendor' in p.relative_to(root).parts or 'results' in p.relative_to(root).parts or p.suffix == '.png':
         continue
     fence = '````' if p.suffix == '.md' else '```'
     listing.append('\n## '+p.relative_to(root).as_posix()+'\n\n'+fence+language.get(p.suffix,'text')+'\n'+p.read_text(encoding='utf-8').rstrip()+'\n'+fence+'\n')

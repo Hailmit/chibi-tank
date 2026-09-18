@@ -1,6 +1,6 @@
 export const CONFIG = {
   step: 1 / 30,
-  world: { size: 25, cell: 2.4, shiftMin: 35, shiftMax: 50, warning: 2, protectRadius: 5.5, phaseDuration: 60 },
+  world: { size: 25, cell: 2.4, phaseDuration: 60 },
   player: { hp: 100, stamina: 100, speed: 6, radius: .62, fireInterval: .25, damage: 28,
     dashCost: 30, dashDuration: .18, dashInvulnerability: .12, dashSpeed: 22, dashCooldown: .5, staminaRegen: 23, hurtGrace: .65 },
   director: { maxEnemies: 16, spawnStart: 4.2, spawnMin: 1.35, spawnWarning: 1.5, safeRadius: 11, eliteEvery: 90, assaultFirst: 24, assaultBase: 38, assaultMin: 28, assaultGap: .6 },

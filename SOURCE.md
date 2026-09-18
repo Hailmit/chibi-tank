@@ -15,9 +15,12 @@ Toàn bộ mã nguồn tự viết, theo đường dẫn. Bản Three.js 0.170.0
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Chibi Tank City">
   <meta name="description" content="Thành phố tí hon. Trận chiến bất tận. Game xe tăng 3D sinh tồn với địa hình biến đổi, chạy ngay trong trình duyệt.">
   <title>Chibi Tank City — Endless</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="manifest" href="./site.webmanifest">
   <link rel="stylesheet" href="./style.css">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
 </head>
@@ -29,13 +32,13 @@ Toàn bộ mã nguồn tự viết, theo đường dẫn. Bản Three.js 0.170.0
       <div class="eyebrow"><span></span> MỘT THÀNH PHỐ. VÔ HẠN THỬ THÁCH.</div>
       <h1>CHIBI<br>TANK <span class="title-star">✳</span><br>CITY<span class="title-dot">.</span></h1>
       <div class="endless-label"><span>ENDLESS</span><i></i><span class="infinity">∞</span></div>
-      <p class="intro-description">Lái xe tí hon. Đương đầu hỗn loạn.<br>Sống sót trong thành phố luôn đổi thay.</p>
+      <p class="intro-description">Lái xe tí hon. Đương đầu hỗn loạn.<br>Mỗi trận một thành phố khác để chinh phục.</p>
       <button id="play" class="primary-button"><span>CHƠI NGAY</span><span class="button-arrow">↗</span></button>
       <div class="play-note"><span class="live-dot"></span> Không tải xuống · Không đăng nhập</div>
       <div class="best-card"><div class="trophy">♜</div><div><span>KỶ LỤC CỦA BẠN</span><strong id="menu-best">000000</strong></div><span class="local-tag">CỤC BỘ</span></div>
     </div>
     <div class="scene-label"><span class="live-dot"></span> KHU PHỐ 01 <span>—</span> <span id="seed-label">MINT DISTRICT</span></div>
-    <div class="scene-note"><span class="note-icon">↻</span><div><strong>Thành phố không bao giờ đứng yên.</strong><p>Đường mới, chiến thuật mới. Mỗi 35–50 giây.</p></div></div>
+    <div class="scene-note"><span class="note-icon">✦</span><div><strong>Mỗi trận là một thành phố khác.</strong><p>Phá công trình để mở lối đi mới.</p></div></div>
     <div class="field-label">XE TĂNG CỦA BẠN <span>↙</span></div>
   </main>
 
@@ -43,8 +46,7 @@ Toàn bộ mã nguồn tự viết, theo đường dẫn. Bản Three.js 0.170.0
     <div class="status-panel" aria-label="Giáp và năng lượng"><div class="status-orbs"><div id="hp-ring" class="status-orb hp-orb"><span>GIÁP</span><strong id="hp-value">100</strong></div><div id="stamina-ring" class="status-orb stamina-orb"><span>NL</span><strong id="stamina-value">100</strong></div></div></div>
     <div class="score-panel" aria-label="Điểm, combo và thời gian"><strong id="score" title="Điểm">000000</strong><span id="combo" title="Combo">×1</span><span id="time" title="Thời gian">00:00</span></div>
     <div id="elite" class="elite-panel" hidden><div id="elite-ring" class="elite-orb"><span>ĐẠI ÚY</span><b id="elite-value">100%</b></div></div>
-    <div class="hud-center"><div id="day-cycle" class="day-cycle"><span id="day-icon">☀</span><div><small id="day-label">BAN NGÀY</small><b id="day-timer">01:00</b></div></div><div class="world-status"><span class="live-dot"></span><span id="world-status">TÁI CẤU TRÚC</span><b id="shift-timer">00:40</b></div></div>
-    <div id="crosshair">+</div>
+    <div class="hud-center"><div id="day-cycle" class="day-cycle"><span id="day-icon">☀</span><div><small id="day-label">BAN NGÀY</small><b id="day-timer">01:00</b></div></div></div>
     <div id="touch-controls" class="touch-controls" hidden aria-label="Điều khiển cảm ứng">
       <button id="move-stick" class="touch-stick move-stick" type="button" aria-label="Kéo để di chuyển">
         <span class="stick-knob"></span><b>DI CHUYỂN</b>
@@ -89,7 +91,7 @@ Toàn bộ mã nguồn tự viết, theo đường dẫn. Bản Three.js 0.170.0
 ## style.css
 
 ```css
-﻿:root{--ink:#243e35;--muted:#7c8779;--paper:#f3f4ea;--orange:#e88454;--line:#d9dfd0;--mint:#a9d9b9}*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#e5ecdb}button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--orange);outline-offset:5px}[hidden]{display:none!important}#game{position:fixed;inset:0;width:100%;height:100%;display:block;outline:none}.vignette{position:fixed;inset:0;pointer-events:none;background:linear-gradient(90deg,#edf0e4 0%,#edf0e4f5 23%,#edf0e420 49%,transparent 66%)}.topbar{position:fixed;z-index:5;top:0;left:0;right:0;height:94px;margin:0 44px;border-bottom:1px solid #a9b7a64d;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;gap:12px;text-decoration:none;align-items:center;color:var(--ink);font-size:14px;font-weight:900;letter-spacing:.7px}.brand-mark{background:var(--ink);color:#d1e8b5;border-radius:10px;width:43px;height:43px;display:grid;place-items:center;transform:rotate(-5deg)}.brand-mark svg{width:31px;height:31px}.brand-sub{display:block;font-size:8px;font-weight:600;letter-spacing:1.8px;margin-top:7px;color:#73806b}.top-center{font-size:9px;letter-spacing:1.6px;display:flex;align-items:center;gap:11px;font-weight:700}.top-center>span:last-child{font-weight:400;color:var(--muted)}.divider{margin:0 9px;color:#a6b29d}.live-dot{width:6px;height:6px;border-radius:50%;background:#71997a;display:inline-block;box-shadow:0 0 0 3px #71997a16}.top-actions{display:flex;gap:10px}.icon-button{border:1px solid #b4beac;background:#eff2e691;width:37px;height:37px;border-radius:50%;font-size:20px;color:var(--ink);transition:.2s}.icon-button:hover{background:#fff9e8;transform:rotate(-8deg)}.menu-screen{position:fixed;inset:94px 0 89px;pointer-events:none}.intro{position:absolute;left:7.2%;top:8%;width:350px;pointer-events:auto}.eyebrow{font-size:9px;letter-spacing:1.6px;font-weight:700;display:flex;gap:9px;align-items:center}.eyebrow>span{width:18px;height:2px;background:var(--orange)}h1{font-size:clamp(64px,6.4vw,103px);line-height:.9;letter-spacing:-5px;margin:27px 0 19px;font-weight:950}.title-star{font-size:.67em;display:inline-block;vertical-align:middle;color:var(--orange);font-weight:400;position:relative;top:-5px}.title-dot{color:var(--orange)}.endless-label{display:flex;align-items:center;gap:16px;max-width:287px;color:var(--orange)}.endless-label>span:first-child{font-size:16px;font-weight:800;letter-spacing:8px}.endless-label i{height:1px;flex:1;background:#e1a37b}.infinity{font-size:33px;line-height:20px}.intro-description{font-size:13px;line-height:1.9;color:#748071;margin:25px 0 23px}.primary-button{background:var(--orange);border:1px solid #d27446;color:#fffaf0;box-shadow:0 4px 0 #c16b43;padding:18px 22px;display:flex;width:286px;align-items:center;justify-content:space-between;border-radius:8px;font-size:12px;font-weight:800;letter-spacing:1.7px;transition:transform .15s,background .15s}.primary-button:hover{background:#ef9362;transform:translateY(-2px)}.primary-button:active{transform:translateY(3px);box-shadow:none}.button-arrow{font-size:23px;line-height:14px}.play-note{font-size:9px;color:#86907f;margin:18px 0 27px;display:flex;align-items:center;gap:8px;letter-spacing:.3px}.play-note .live-dot{width:4px;height:4px}.best-card{border-top:1px solid var(--line);border-bottom:1px solid var(--line);width:286px;display:flex;align-items:center;padding:16px 0;gap:14px}.trophy{font-size:27px;color:#9f9878}.best-card div>span{display:block;font-size:8px;letter-spacing:1.3px;color:#7e8877;font-weight:700}.best-card strong{font-size:24px;letter-spacing:2px;display:block;margin-top:4px;font-variant-numeric:tabular-nums}.local-tag{margin-left:auto;font-size:7px;letter-spacing:1px;border:1px solid #c8d0bd;padding:5px;border-radius:3px;color:#8a937f}.scene-label{position:absolute;top:35px;right:6%;font-size:9px;letter-spacing:1.4px;display:flex;gap:12px;align-items:center}.scene-label>span:last-child{color:#7e8f7b}.scene-note{position:absolute;bottom:37px;right:6%;display:flex;align-items:center;gap:14px;background:#f4f5e4b8;backdrop-filter:blur(10px);padding:17px 22px;border-radius:9px;border:1px solid #f9fced}.note-icon{font-size:31px;font-weight:300;color:#7e9a76}.scene-note strong{font-size:11px;font-weight:700}.scene-note p{font-size:10px;color:#7b8874;margin:6px 0 0}.field-label{position:absolute;left:63%;top:54%;font-size:8px;letter-spacing:1.4px;background:#f6f6eae6;padding:10px 12px;border-radius:4px;transform:rotate(-5deg);box-shadow:0 3px 8px #3d604b0c}.field-label span{position:absolute;left:8px;top:30px;font-size:21px;color:#4c705a}.control-bar{position:fixed;bottom:0;left:44px;right:44px;height:89px;display:flex;align-items:center;gap:30px;border-top:1px solid #a9b7a64d;z-index:4}.control{display:flex;align-items:center;gap:10px;font-size:10px;white-space:nowrap}.control small{display:block;font-size:8px;color:#8b9582;margin-top:5px}.key-group{display:flex;gap:3px}kbd{display:inline-grid;place-items:center;min-width:23px;height:26px;padding:0 5px;border:1px solid #b9c4ae;border-radius:4px;box-shadow:0 2px 0 #c7d0bf;background:#f5f6eb8c;font:9px Arial,sans-serif;color:#5b7258}.wide-key{padding:0 12px;font-size:8px;letter-spacing:.7px}.mouse-icon{display:block;width:18px;height:26px;border:1.5px solid #9aac91;border-radius:9px;position:relative}.mouse-icon:after{content:'';position:absolute;top:3px;left:7px;width:2px;height:7px;background:#78946f}.footer-note{margin-left:auto;font-size:8px;font-weight:700;letter-spacing:1px}.footer-note span{color:#8a9680;font-weight:400}.status-panel,.score-panel{position:fixed;top:116px;background:#f4f5e9ee;border:1px solid #faffec;border-radius:10px;box-shadow:0 6px 25px #2544370b;padding:19px 22px}.status-panel{left:44px;width:270px}.pilot-heading{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:1px;font-weight:800;margin-bottom:22px}.pilot-dot{background:#76b895;width:7px;height:7px;border-radius:50%}.pilot-heading>span:last-child{margin-left:auto;font-size:7px;letter-spacing:.7px;color:#69947b}.meter-label{display:flex;justify-content:space-between;font-size:8px;letter-spacing:1px;margin-bottom:7px}.meter-label strong{font-size:9px;letter-spacing:0}.meter{height:9px;border-radius:3px;background:#dce1d2;overflow:hidden}.meter i{display:block;width:100%;height:100%;background:#7ab69a;transition:width .12s}.stamina-label{margin-top:12px}.stamina{height:5px}.stamina i{background:#d4ac5e}.buffs{font-size:8px;color:#8e6d38;line-height:1.7;margin-top:8px}.score-panel{right:44px;width:180px;text-align:right}.score-panel>span{font-size:8px;letter-spacing:1.3px;color:#7f8b76}.score-panel>strong{display:block;font-size:32px;letter-spacing:2px;font-variant-numeric:tabular-nums;margin:7px 0 9px}.score-panel>div{display:flex;justify-content:space-between;font-size:12px;font-variant-numeric:tabular-nums}#combo{color:#d47f51;font-weight:bold}.score-panel small{display:block;font-size:8px;color:#8b947f;margin-top:14px;letter-spacing:1px}.elite-panel{position:fixed;top:112px;left:50%;transform:translateX(-50%);width:300px;text-align:center}.elite-panel>span{font-size:10px;letter-spacing:2px}.elite-panel .meter{margin-top:9px;height:7px}.elite-panel i{background:#d5647f}.world-status{position:fixed;bottom:115px;left:44px;display:flex;align-items:center;gap:10px;background:#f2f5e8e6;border-radius:5px;padding:12px;font-size:8px;letter-spacing:1px}.world-status b{font-size:11px;margin-left:5px}#minimap{position:fixed;right:44px;bottom:113px;width:130px;height:130px;border:5px solid #f6f6ea;border-radius:8px;box-shadow:0 3px 18px #28442f1a;opacity:.9}#crosshair{position:fixed;pointer-events:none;color:#355444;font:26px monospace;text-shadow:0 0 3px white;transform:translate(-50%,-50%)}.overlay{position:fixed;inset:0;background:#243d354d;backdrop-filter:blur(8px);z-index:10;display:grid;place-items:center}.dialog{width:410px;max-width:90vw;border-radius:17px;padding:36px;background:var(--paper);box-shadow:0 25px 100px #17352e38}.dialog .eyebrow{color:#8a957e;font-size:8px}.dialog h2{font-size:42px;line-height:1.1;letter-spacing:-2px;margin:18px 0 8px}.dialog h2 span{color:var(--orange)}.dialog>p{font-size:12px;color:#86917a;line-height:1.7;margin-bottom:23px}.dialog .primary-button{width:100%;margin-top:24px}.dialog label{display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:15px 0;border-bottom:1px solid var(--line)}input[type=range]{width:140px;accent-color:#80ac8d}input[type=checkbox]{accent-color:#80ac8d;width:17px;height:17px}.text-button{border:0;background:transparent;color:#7a8a70;display:block;font-size:11px;margin:22px auto 0}.result-score{border-top:1px solid var(--line);padding-top:20px}.result-score span{font-size:9px;letter-spacing:2px}.result-score strong{display:block;font-size:54px;letter-spacing:-2px;margin:5px 0 20px}.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.result-grid span{display:block;font-size:10px;color:#8b927d;margin-bottom:6px}.result-grid b{font-size:19px}.toast{position:fixed;z-index:7;left:50%;top:25%;transform:translate(-50%,-10px);opacity:0;transition:.2s;background:#284337ed;color:#f7f1cf;border:1px solid #b2cda166;padding:14px 23px;border-radius:7px;font-size:12px;max-width:80vw;text-align:center;pointer-events:none}.toast.visible{opacity:1;transform:translate(-50%,0)}#popups{position:fixed;inset:0;pointer-events:none;z-index:6}.score-popup{position:absolute;top:0;left:0;font-size:14px;font-weight:800;white-space:nowrap;text-shadow:0 2px 2px #254432,1px 0 2px #254432}#hit-flash{position:fixed;inset:0;box-shadow:inset 0 0 100px #e2765a80;opacity:0;pointer-events:none;transition:opacity .12s;z-index:6}#hit-flash.active{opacity:1}#loading{position:fixed;inset:0;z-index:20;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;font-size:10px;letter-spacing:2px}.loader-tank{font-size:55px;color:#80b493;animation:pulse 1s infinite alternate}#error{position:fixed;inset:20%;background:var(--paper);padding:40px;z-index:30;border-radius:15px}#error p{line-height:1.8}body.playing .vignette{display:none}body.playing #game{cursor:none}body.playing .topbar{height:78px}body.playing .control-bar{height:75px}body.playing .field-label{display:none}@keyframes pulse{to{transform:translateX(15px)}}@media(min-height:900px){.intro{top:12%}.intro-description{margin:32px 0}.best-card{margin-top:32px}}@media(max-height:760px){.intro{top:5%}h1{font-size:73px;margin:20px 0 14px}.intro-description{margin:17px 0;font-size:12px}.play-note{margin:14px 0 18px}.best-card{padding:12px 0}.primary-button{padding:15px 20px}.scene-note{bottom:20px}}@media(max-width:1100px){.top-center{display:none}.intro{left:6%;width:310px}h1{font-size:77px}.control-bar{gap:20px}.footer-note{display:none}.field-label{left:68%}.scene-note{right:4%}.topbar{margin:0 30px}.control-bar{left:30px;right:30px}.eyebrow{font-size:8px;letter-spacing:1px}}@media(max-width:720px){.topbar{margin:0 20px;height:76px}.brand{font-size:11px}.brand-sub{font-size:7px}.intro{left:25px;top:25px}.menu-screen{top:76px}.intro h1{font-size:64px;letter-spacing:-3px}.intro-description{font-size:11px}.primary-button,.best-card{width:250px}.scene-label,.scene-note,.field-label{display:none}.vignette{background:linear-gradient(90deg,#edf0e4f5 0%,#edf0e4db 40%,#edf0e455 100%)}.control-bar{left:20px;right:20px;gap:18px;height:73px;flex-wrap:wrap;align-content:center;row-gap:12px}.control{font-size:8px}.control small{display:none}.control:last-of-type{display:none}.status-panel{left:15px;top:95px;width:205px;padding:14px}.score-panel{right:15px;top:95px;width:130px;padding:14px}.score-panel>strong{font-size:24px}.pilot-heading>span:last-child{font-size:6px}.world-status{left:15px;bottom:95px;font-size:6px}#minimap{right:15px;bottom:100px;width:95px;height:95px}.elite-panel{top:255px;width:240px}.dialog{padding:26px}#error{inset:15px}.top-actions{gap:5px}}
+:root{--ink:#243e35;--muted:#7c8779;--paper:#f3f4ea;--orange:#e88454;--line:#d9dfd0;--mint:#a9d9b9}*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#e5ecdb}button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--orange);outline-offset:5px}[hidden]{display:none!important}#game{position:fixed;inset:0;width:100%;height:100%;display:block;outline:none}.vignette{position:fixed;inset:0;pointer-events:none;background:linear-gradient(90deg,#edf0e4 0%,#edf0e4f5 23%,#edf0e420 49%,transparent 66%)}.topbar{position:fixed;z-index:5;top:0;left:0;right:0;height:94px;margin:0 44px;border-bottom:1px solid #a9b7a64d;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;gap:12px;text-decoration:none;align-items:center;color:var(--ink);font-size:14px;font-weight:900;letter-spacing:.7px}.brand-mark{background:var(--ink);color:#d1e8b5;border-radius:10px;width:43px;height:43px;display:grid;place-items:center;transform:rotate(-5deg)}.brand-mark svg{width:31px;height:31px}.brand-sub{display:block;font-size:8px;font-weight:600;letter-spacing:1.8px;margin-top:7px;color:#73806b}.top-center{font-size:9px;letter-spacing:1.6px;display:flex;align-items:center;gap:11px;font-weight:700}.top-center>span:last-child{font-weight:400;color:var(--muted)}.divider{margin:0 9px;color:#a6b29d}.live-dot{width:6px;height:6px;border-radius:50%;background:#71997a;display:inline-block;box-shadow:0 0 0 3px #71997a16}.top-actions{display:flex;gap:10px}.icon-button{border:1px solid #b4beac;background:#eff2e691;width:37px;height:37px;border-radius:50%;font-size:20px;color:var(--ink);transition:.2s}.icon-button:hover{background:#fff9e8;transform:rotate(-8deg)}.menu-screen{position:fixed;inset:94px 0 89px;pointer-events:none}.intro{position:absolute;left:7.2%;top:8%;width:350px;pointer-events:auto}.eyebrow{font-size:9px;letter-spacing:1.6px;font-weight:700;display:flex;gap:9px;align-items:center}.eyebrow>span{width:18px;height:2px;background:var(--orange)}h1{font-size:clamp(64px,6.4vw,103px);line-height:.9;letter-spacing:-5px;margin:27px 0 19px;font-weight:950}.title-star{font-size:.67em;display:inline-block;vertical-align:middle;color:var(--orange);font-weight:400;position:relative;top:-5px}.title-dot{color:var(--orange)}.endless-label{display:flex;align-items:center;gap:16px;max-width:287px;color:var(--orange)}.endless-label>span:first-child{font-size:16px;font-weight:800;letter-spacing:8px}.endless-label i{height:1px;flex:1;background:#e1a37b}.infinity{font-size:33px;line-height:20px}.intro-description{font-size:13px;line-height:1.9;color:#748071;margin:25px 0 23px}.primary-button{background:var(--orange);border:1px solid #d27446;color:#fffaf0;box-shadow:0 4px 0 #c16b43;padding:18px 22px;display:flex;width:286px;align-items:center;justify-content:space-between;border-radius:8px;font-size:12px;font-weight:800;letter-spacing:1.7px;transition:transform .15s,background .15s}.primary-button:hover{background:#ef9362;transform:translateY(-2px)}.primary-button:active{transform:translateY(3px);box-shadow:none}.button-arrow{font-size:23px;line-height:14px}.play-note{font-size:9px;color:#86907f;margin:18px 0 27px;display:flex;align-items:center;gap:8px;letter-spacing:.3px}.play-note .live-dot{width:4px;height:4px}.best-card{border-top:1px solid var(--line);border-bottom:1px solid var(--line);width:286px;display:flex;align-items:center;padding:16px 0;gap:14px}.trophy{font-size:27px;color:#9f9878}.best-card div>span{display:block;font-size:8px;letter-spacing:1.3px;color:#7e8877;font-weight:700}.best-card strong{font-size:24px;letter-spacing:2px;display:block;margin-top:4px;font-variant-numeric:tabular-nums}.local-tag{margin-left:auto;font-size:7px;letter-spacing:1px;border:1px solid #c8d0bd;padding:5px;border-radius:3px;color:#8a937f}.scene-label{position:absolute;top:35px;right:6%;font-size:9px;letter-spacing:1.4px;display:flex;gap:12px;align-items:center}.scene-label>span:last-child{color:#7e8f7b}.scene-note{position:absolute;bottom:37px;right:6%;display:flex;align-items:center;gap:14px;background:#f4f5e4b8;backdrop-filter:blur(10px);padding:17px 22px;border-radius:9px;border:1px solid #f9fced}.note-icon{font-size:31px;font-weight:300;color:#7e9a76}.scene-note strong{font-size:11px;font-weight:700}.scene-note p{font-size:10px;color:#7b8874;margin:6px 0 0}.field-label{position:absolute;left:63%;top:54%;font-size:8px;letter-spacing:1.4px;background:#f6f6eae6;padding:10px 12px;border-radius:4px;transform:rotate(-5deg);box-shadow:0 3px 8px #3d604b0c}.field-label span{position:absolute;left:8px;top:30px;font-size:21px;color:#4c705a}.control-bar{position:fixed;bottom:0;left:44px;right:44px;height:89px;display:flex;align-items:center;gap:30px;border-top:1px solid #a9b7a64d;z-index:4}.control{display:flex;align-items:center;gap:10px;font-size:10px;white-space:nowrap}.control small{display:block;font-size:8px;color:#8b9582;margin-top:5px}.key-group{display:flex;gap:3px}kbd{display:inline-grid;place-items:center;min-width:23px;height:26px;padding:0 5px;border:1px solid #b9c4ae;border-radius:4px;box-shadow:0 2px 0 #c7d0bf;background:#f5f6eb8c;font:9px Arial,sans-serif;color:#5b7258}.wide-key{padding:0 12px;font-size:8px;letter-spacing:.7px}.mouse-icon{display:block;width:18px;height:26px;border:1.5px solid #9aac91;border-radius:9px;position:relative}.mouse-icon:after{content:'';position:absolute;top:3px;left:7px;width:2px;height:7px;background:#78946f}.footer-note{margin-left:auto;font-size:8px;font-weight:700;letter-spacing:1px}.footer-note span{color:#8a9680;font-weight:400}.status-panel,.score-panel{position:fixed;top:116px;background:#f4f5e9ee;border:1px solid #faffec;border-radius:10px;box-shadow:0 6px 25px #2544370b;padding:19px 22px}.status-panel{left:44px;width:270px}.pilot-heading{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:1px;font-weight:800;margin-bottom:22px}.pilot-dot{background:#76b895;width:7px;height:7px;border-radius:50%}.pilot-heading>span:last-child{margin-left:auto;font-size:7px;letter-spacing:.7px;color:#69947b}.meter-label{display:flex;justify-content:space-between;font-size:8px;letter-spacing:1px;margin-bottom:7px}.meter-label strong{font-size:9px;letter-spacing:0}.meter{height:9px;border-radius:3px;background:#dce1d2;overflow:hidden}.meter i{display:block;width:100%;height:100%;background:#7ab69a;transition:width .12s}.stamina-label{margin-top:12px}.stamina{height:5px}.stamina i{background:#d4ac5e}.buffs{font-size:8px;color:#8e6d38;line-height:1.7;margin-top:8px}.score-panel{right:44px;width:180px;text-align:right}.score-panel>span{font-size:8px;letter-spacing:1.3px;color:#7f8b76}.score-panel>strong{display:block;font-size:32px;letter-spacing:2px;font-variant-numeric:tabular-nums;margin:7px 0 9px}.score-panel>div{display:flex;justify-content:space-between;font-size:12px;font-variant-numeric:tabular-nums}#combo{color:#d47f51;font-weight:bold}.score-panel small{display:block;font-size:8px;color:#8b947f;margin-top:14px;letter-spacing:1px}.elite-panel{position:fixed;top:112px;left:50%;transform:translateX(-50%);width:300px;text-align:center}.elite-panel>span{font-size:10px;letter-spacing:2px}.elite-panel .meter{margin-top:9px;height:7px}.elite-panel i{background:#d5647f}#minimap{position:fixed;right:44px;bottom:113px;width:130px;height:130px;border:5px solid #f6f6ea;border-radius:8px;box-shadow:0 3px 18px #28442f1a;opacity:.9}.overlay{position:fixed;inset:0;background:#243d354d;backdrop-filter:blur(8px);z-index:10;display:grid;place-items:center}.dialog{width:410px;max-width:90vw;border-radius:17px;padding:36px;background:var(--paper);box-shadow:0 25px 100px #17352e38}.dialog .eyebrow{color:#8a957e;font-size:8px}.dialog h2{font-size:42px;line-height:1.1;letter-spacing:-2px;margin:18px 0 8px}.dialog h2 span{color:var(--orange)}.dialog>p{font-size:12px;color:#86917a;line-height:1.7;margin-bottom:23px}.dialog .primary-button{width:100%;margin-top:24px}.dialog label{display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:15px 0;border-bottom:1px solid var(--line)}input[type=range]{width:140px;accent-color:#80ac8d}input[type=checkbox]{accent-color:#80ac8d;width:17px;height:17px}.text-button{border:0;background:transparent;color:#7a8a70;display:block;font-size:11px;margin:22px auto 0}.result-score{border-top:1px solid var(--line);padding-top:20px}.result-score span{font-size:9px;letter-spacing:2px}.result-score strong{display:block;font-size:54px;letter-spacing:-2px;margin:5px 0 20px}.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.result-grid span{display:block;font-size:10px;color:#8b927d;margin-bottom:6px}.result-grid b{font-size:19px}.toast{position:fixed;z-index:7;left:50%;top:25%;transform:translate(-50%,-10px);opacity:0;transition:.2s;background:#284337ed;color:#f7f1cf;border:1px solid #b2cda166;padding:14px 23px;border-radius:7px;font-size:12px;max-width:80vw;text-align:center;pointer-events:none}.toast.visible{opacity:1;transform:translate(-50%,0)}#popups{position:fixed;inset:0;pointer-events:none;z-index:6}.score-popup{position:absolute;top:0;left:0;font-size:14px;font-weight:800;white-space:nowrap;text-shadow:0 2px 2px #254432,1px 0 2px #254432}#hit-flash{position:fixed;inset:0;box-shadow:inset 0 0 100px #e2765a80;opacity:0;pointer-events:none;transition:opacity .12s;z-index:6}#hit-flash.active{opacity:1}#loading{position:fixed;inset:0;z-index:20;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;font-size:10px;letter-spacing:2px}.loader-tank{font-size:55px;color:#80b493;animation:pulse 1s infinite alternate}#error{position:fixed;inset:20%;background:var(--paper);padding:40px;z-index:30;border-radius:15px}#error p{line-height:1.8}body.playing .vignette{display:none}body.playing #game{cursor:url('./crosshair.png') 16 16,crosshair}body.playing .topbar{height:78px}body.playing .control-bar{height:75px}body.playing .field-label{display:none}@keyframes pulse{to{transform:translateX(15px)}}@media(min-height:900px){.intro{top:12%}.intro-description{margin:32px 0}.best-card{margin-top:32px}}@media(max-height:760px){.intro{top:5%}h1{font-size:73px;margin:20px 0 14px}.intro-description{margin:17px 0;font-size:12px}.play-note{margin:14px 0 18px}.best-card{padding:12px 0}.primary-button{padding:15px 20px}.scene-note{bottom:20px}}@media(max-width:1100px){.top-center{display:none}.intro{left:6%;width:310px}h1{font-size:77px}.control-bar{gap:20px}.footer-note{display:none}.field-label{left:68%}.scene-note{right:4%}.topbar{margin:0 30px}.control-bar{left:30px;right:30px}.eyebrow{font-size:8px;letter-spacing:1px}}@media(max-width:720px){.topbar{margin:0 20px;height:76px}.brand{font-size:11px}.brand-sub{font-size:7px}.intro{left:25px;top:25px}.menu-screen{top:76px}.intro h1{font-size:64px;letter-spacing:-3px}.intro-description{font-size:11px}.primary-button,.best-card{width:250px}.scene-label,.scene-note,.field-label{display:none}.vignette{background:linear-gradient(90deg,#edf0e4f5 0%,#edf0e4db 40%,#edf0e455 100%)}.control-bar{left:20px;right:20px;gap:18px;height:73px;flex-wrap:wrap;align-content:center;row-gap:12px}.control{font-size:8px}.control small{display:none}.control:last-of-type{display:none}.status-panel{left:15px;top:95px;width:205px;padding:14px}.score-panel{right:15px;top:95px;width:130px;padding:14px}.score-panel>strong{font-size:24px}.pilot-heading>span:last-child{font-size:6px}#minimap{right:15px;bottom:100px;width:95px;height:95px}.elite-panel{top:255px;width:240px}.dialog{padding:26px}#error{inset:15px}.top-actions{gap:5px}}
 
 /* Touch layout */
 body{overscroll-behavior:none}
@@ -118,7 +120,7 @@ body{overscroll-behavior:none}
   body.touch .status-panel{top:max(67px,calc(env(safe-area-inset-top) + 56px));left:max(12px,env(safe-area-inset-left));width:185px;padding:10px 12px;border-radius:8px}
   body.touch .pilot-heading{font-size:10px;margin-bottom:9px}.pilot-heading>span:last-child{font-size:7px}.meter-label{font-size:8px;margin-bottom:4px}.stamina-label{margin-top:7px}.buffs{margin-top:4px}
   body.touch .score-panel{top:max(67px,calc(env(safe-area-inset-top) + 56px));right:max(12px,env(safe-area-inset-right));width:128px;padding:10px 12px;border-radius:8px}.score-panel>strong{font-size:23px;margin:4px 0}.score-panel small{display:none}
-  body.touch .world-status{left:50%;bottom:auto;top:max(68px,calc(env(safe-area-inset-top) + 57px));transform:translateX(-50%);padding:9px 10px;font-size:7px}.world-status b{font-size:10px}
+  
   body.touch #minimap{display:none}.elite-panel{top:max(125px,calc(env(safe-area-inset-top) + 114px));width:min(240px,35vw)}
   body.touch .toast{top:29%;font-size:11px;padding:10px 16px;max-width:52vw}
   body.touch .dialog{max-height:calc(100dvh - 24px);overflow:auto;padding:24px}.dialog h2{font-size:34px;margin:12px 0 6px}.dialog>p{margin-bottom:12px}.dialog label{padding:10px 0}.dialog .primary-button{margin-top:16px}
@@ -139,7 +141,7 @@ body{overscroll-behavior:none}
 
 @media (pointer:coarse) and (orientation:landscape) and (max-height:430px){
   body.touch .topbar{height:50px}.brand-mark{width:32px;height:32px}.icon-button{width:42px;height:42px}
-  body.touch .status-panel,body.touch .score-panel{top:max(55px,calc(env(safe-area-inset-top) + 49px))}.world-status{top:max(56px,calc(env(safe-area-inset-top) + 50px))}
+  body.touch .status-panel,body.touch .score-panel{top:max(55px,calc(env(safe-area-inset-top) + 49px))}
   .touch-stick{width:100px;height:100px}.stick-knob{width:42px;height:42px;margin:-21px}.touch-stick:before{inset:24px}.dash-button{right:max(132px,calc(env(safe-area-inset-right) + 132px));width:60px;height:60px;bottom:max(37px,calc(env(safe-area-inset-bottom) + 29px))}
   .intro{top:0}.intro h1{font-size:45px}.intro-description{display:none}.best-card{display:none}
 }
@@ -161,21 +163,21 @@ body.night.playing #minimap{border-color:#d7e1d1}
 
 @media (pointer:coarse){
   body.touch .day-cycle{top:max(55px,calc(env(safe-area-inset-top) + 49px));min-width:124px;padding:7px 10px;gap:8px}.day-cycle>span{font-size:21px}.day-cycle b{font-size:10px}
-  body.touch .world-status{top:max(101px,calc(env(safe-area-inset-top) + 95px))}
+  
   body.touch .elite-panel{top:max(141px,calc(env(safe-area-inset-top) + 135px))}
 }
 @media (pointer:coarse) and (orientation:landscape) and (max-height:430px){
   body.touch .day-cycle{top:max(49px,calc(env(safe-area-inset-top) + 44px))}
-  body.touch .world-status{top:max(89px,calc(env(safe-area-inset-top) + 84px))}
+  
   body.touch .elite-panel{top:max(125px,calc(env(safe-area-inset-top) + 120px))}
 }
 
 /* Mobile HUD refinement */
 @media (pointer:coarse){
   body.touch #dash-status{display:none}
-  body.touch .world-status{min-width:68px;justify-content:center;gap:7px;padding:8px 9px;white-space:nowrap}
-  body.touch .world-status #world-status{display:none}
-  body.touch .world-status b{margin-left:0}
+  
+  
+  
   body.touch .toast{top:max(128px,calc(env(safe-area-inset-top) + 122px));width:max-content;max-width:min(52vw,440px);line-height:1.35}
   body.touch .dialog label{min-height:44px}
   body.touch .text-button{min-height:44px;padding:10px 14px;margin-top:12px}
@@ -197,7 +199,7 @@ body.night.playing #minimap{border-color:#d7e1d1}
 @media (pointer:coarse) and (orientation:landscape) and (max-height:350px){
   body.touch .status-panel,body.touch .score-panel{top:max(49px,calc(env(safe-area-inset-top) + 45px))}
   body.touch .day-cycle{top:max(45px,calc(env(safe-area-inset-top) + 41px));padding:5px 9px}
-  body.touch .world-status{top:max(82px,calc(env(safe-area-inset-top) + 78px));padding:6px 8px}
+  
   body.touch .toast{top:max(112px,calc(env(safe-area-inset-top) + 108px))}
   .touch-stick{bottom:max(20px,calc(env(safe-area-inset-bottom) + 14px))}
   .dash-button{bottom:max(31px,calc(env(safe-area-inset-bottom) + 25px))}
@@ -275,22 +277,22 @@ body.touch .score-panel{top:max(8px,env(safe-area-inset-top));right:max(8px,env(
 body.touch .score-panel>strong{font-size:16px;letter-spacing:1px}
 body.touch .score-panel>span{font-size:9px}
 .hud-center{position:fixed;z-index:5;top:18px;left:50%;transform:translateX(-50%);height:56px;display:flex;align-items:stretch;gap:8px}
-.hud-center .day-cycle,.hud-center .world-status{position:static;inset:auto;transform:none;height:56px;box-shadow:none;border:1px solid #faffec;border-radius:999px;background:#f4f5e9e8}
+.hud-center .day-cycle{position:static;inset:auto;transform:none;height:56px;box-shadow:none;border:1px solid #faffec;border-radius:999px;background:#f4f5e9e8}
 .hud-center .day-cycle{min-width:124px;padding:0 11px;gap:8px}
 .hud-center .day-cycle>span{font-size:20px}
 .hud-center .day-cycle.is-night{background:#233941e8;border-color:#5d7d76;color:#e8f2d8}
-.hud-center .world-status{min-width:146px;padding:0 12px;display:flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;font-size:7px;letter-spacing:.7px}
-.hud-center .world-status b{font-size:10px;margin-left:0}
+
+
 .elite-panel{top:82px}
 body.touch .hud-center{top:max(8px,env(safe-area-inset-top));height:50px;gap:6px}
-body.touch .hud-center .day-cycle,body.touch .hud-center .world-status{position:static;inset:auto;transform:none;height:50px}
+body.touch .hud-center .day-cycle{position:static;inset:auto;transform:none;height:50px}
 body.touch .hud-center .day-cycle{min-width:98px;padding:0 8px;gap:5px}
 body.touch .hud-center .day-cycle>span{font-size:18px}
 body.touch .hud-center .day-cycle small{font-size:6px;letter-spacing:.7px}
 body.touch .hud-center .day-cycle b{font-size:9px}
-body.touch .hud-center .world-status{min-width:122px;padding:0 8px;gap:5px;font-size:6px}
-body.touch .hud-center .world-status #world-status{display:inline}
-body.touch .hud-center .world-status b{font-size:9px}
+
+
+
 body.touch .elite-panel{top:max(66px,calc(env(safe-area-inset-top) + 58px))}
 
 /* Fullscreen control */
@@ -313,6 +315,26 @@ body.night.playing .fullscreen-button{color:#e7efdd;border-color:#a5b9ae77;backg
 
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#25483e"/><path fill="#ade0b8" d="M7 27h32v11H7zM13 18h20v14H13zM21 12h10v12H21zM28 13h16v6H28z"/><path stroke="#e8f2d1" stroke-width="3" d="M13 34h20"/></svg>
+```
+
+
+## site.webmanifest
+
+```json
+{
+  "id": "./",
+  "name": "Chibi Tank City: Endless",
+  "short_name": "Chibi Tank",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#e5ecdb",
+  "theme_color": "#e5ecdb",
+  "icons": [
+    { "src": "./apple-touch-icon.png", "sizes": "192x192", "type": "image/png" }
+  ]
+}
 ```
 
 
@@ -345,7 +367,7 @@ artifacts/
 ````markdown
 # CHIBI TANK CITY: ENDLESS
 
-Game xe tăng 3D sinh tồn, giao diện tiếng Việt, thành phố tự thay đổi trong cùng một trận. Bản đồ tập trung vào khu đô thị với nhà ở, cao tầng và dãy hàng quán; công trình bị bắn sập sẽ thành đống đổ nát mở lối mới. Ngày và đêm luân phiên mỗi 60 giây; ban đêm biến địch thành xe tăng zombie có lượng máu ×2. HTML/CSS/JavaScript ES Modules, Three.js **0.170.0** đóng gói tại `vendor/`. Không build, backend, tài khoản, CDN, model, texture hay audio tải ngoài. Âm thanh tổng hợp bằng Web Audio sau thao tác người chơi.
+Game xe tăng 3D sinh tồn, giao diện tiếng Việt, bản đồ ngẫu nhiên mỗi trận và không tái cấu trúc giữa trận. Bản đồ tập trung vào khu đô thị với nhà ở, cao tầng và dãy hàng quán; công trình bị bắn sập sẽ thành đống đổ nát mở lối mới. Ngày và đêm luân phiên mỗi 60 giây; ban đêm biến địch thành xe tăng zombie có lượng máu ×2. HTML/CSS/JavaScript ES Modules, Three.js **0.170.0** đóng gói tại `vendor/`. Không build, backend, tài khoản, CDN, model, texture hay audio tải ngoài. Nhạc và hiệu ứng âm thanh gốc được tổng hợp bằng Web Audio sau thao tác người chơi.
 
 ## Chạy tại máy
 
@@ -369,7 +391,11 @@ Mở **http://127.0.0.1:8000/**. Không mở `index.html` bằng `file://` vì E
 | Chơi lại sau khi bị hạ | R |
 | Toàn màn hình | Nút bốn góc ở góc phải; bấm lại hoặc dùng Esc để thoát |
 
-Thân xe xoay theo di chuyển; tháp pháo xoay riêng theo điểm chuột chiếu xuống mặt đất. Người chơi có thể giữ cò để bắn liên tục theo tốc độ bắn hiện tại, không có nhiệt nòng hoặc khóa cò. Dash có 0,12 giây bất tử trong 0,18 giây di chuyển. Nhận sát thương có 0,65 giây bảo vệ. Dùng vật cản để cắt đường đạn. Nút toàn màn hình hỗ trợ API chuẩn của Chrome, Edge và Safari mới, đồng thời có nhánh WebKit/Microsoft cho trình duyệt cũ; khi chơi bằng cảm ứng, game cũng thử khóa ngang màn hình. Safari trên iPhone không cung cấp fullscreen cho trang HTML tùy ý, vì vậy nút sẽ hướng dẫn dùng Chia sẻ → Thêm vào Màn hình chính. Mất focus hoặc đổi tab sẽ xóa phím đang giữ và tạm dừng; trở lại bằng Esc hoặc nút Tiếp tục.
+Thân xe xoay theo di chuyển; tháp pháo xoay riêng theo điểm chuột chiếu xuống mặt đất. Người chơi có thể giữ cò để bắn liên tục theo tốc độ bắn hiện tại, không có nhiệt nòng hoặc khóa cò. Đạn người chơi có lõi xanh sáng và viền tối, khác đạn hồng của địch. Tâm ngắm desktop dùng cursor gốc của trình duyệt, không còn bị giới hạn bởi nhịp cập nhật HUD 5 Hz; phép chiếu điểm ngắm không đọc layout mỗi tick. Dash có 0,12 giây bất tử trong 0,18 giây di chuyển. Nhận sát thương có 0,65 giây bảo vệ. Dùng vật cản để cắt đường đạn. Nút toàn màn hình hỗ trợ API chuẩn của Chrome, Edge và Safari mới, đồng thời có nhánh WebKit/Microsoft cho trình duyệt cũ; khi chơi bằng cảm ứng, game cũng thử khóa ngang màn hình. Mất focus hoặc đổi tab sẽ xóa phím đang giữ và tạm dừng; trở lại bằng Esc hoặc nút Tiếp tục.
+
+Nhạc theme ở menu và nhạc chiến đấu là hai bản gốc khác nhau, được tổng hợp một lần vào bộ nhớ rồi phát lặp bằng Web Audio; chuyển trạng thái có fade ngắn, tạm dừng thì nhạc dừng. Tiếng pháo gồm tiếng nổ đầu nòng, thân trầm và đuôi vang nhẹ; tiếng bắn của địch nhỏ dần theo khoảng cách và giới hạn tần suất để tránh chồng âm. Trình duyệt chỉ cho phát âm thanh sau thao tác đầu tiên, nên menu ban đầu im lặng cho đến khi người chơi chạm, bấm phím hoặc click.
+
+Trên iPhone, Safari trong tab không cho trang game gọi Fullscreen API. Game có manifest `display: standalone`, biểu tượng riêng và cấu hình Home Screen. Nếu đã thêm game, hãy **mở từ biểu tượng trên Màn hình chính**, không mở lại tab Safari; lúc đó game nhận biết chế độ ứng dụng và ẩn nút fullscreen vô tác dụng. Nếu biểu tượng cũ vẫn mở tab, hãy tạo lại biểu tượng và bật **Mở dưới dạng ứng dụng** khi iOS hiển thị tùy chọn đó. iOS có thể vẫn giữ thanh trạng thái/thanh điều hướng hệ thống; trang web không thể ép ẩn các phần này.
 
 ## Triển khai GitHub Pages
 
@@ -389,6 +415,9 @@ chibi-tank-city/
 ├── index.html              Màn chính, HUD, pause, Game Over, import map
 ├── style.css               Giao diện responsive tiếng Việt
 ├── favicon.svg
+├── crosshair.png           Cursor desktop tương phản cao
+├── apple-touch-icon.png    Biểu tượng ứng dụng iOS
+├── site.webmanifest        Home Screen ở chế độ standalone
 ├── .nojekyll
 ├── .gitignore
 ├── package.json            ES Modules; kiểm thử Node tùy chọn
@@ -403,10 +432,11 @@ chibi-tank-city/
 │   ├── player.js           Di chuyển, dash, stamina, sát thương
 │   ├── enemies.js          AI, director, spawn, elite
 │   ├── combat.js           Pool đạn, pháo cối, vật phẩm, nổ dây chuyền
-│   ├── world.js            Địa hình, cảnh báo, commit, instancing
+│   ├── world.js            Địa hình phá hủy được, bóng, instancing
 │   ├── models.js           Mô hình xe và thành phố từ geometry
 │   ├── effects.js          Pool particle/debris, shockwave, popup
-│   ├── audio.js            Web Audio tổng hợp
+│   ├── audio.js            Web Audio, chuyển nhạc và hiệu ứng chiến đấu
+│   ├── music.js            Hai vòng nhạc gốc được dựng một lần trong bộ nhớ
 │   └── ui.js               HUD tối giản, pause và hiển thị kỷ lục
 ├── vendor/
 │   ├── three.module.min.js Three.js 0.170.0, bản phân phối nguyên gốc
@@ -428,9 +458,6 @@ Chỉnh trực tiếp tại `src/config.js`; tải lại trang sau khi sửa.
 | --- | --- | --- |
 | `step` | 1/30 s | Bước mô phỏng cố định; delta mỗi frame giới hạn 0,1 s |
 | `world.size / cell` | 25 / 2,4 | Lưới nội bộ 25×25 dùng cho va chạm và tìm đường; hình phố không theo ô chunk cố định |
-| `world.shiftMin / shiftMax` | 35 / 50 s | Khoảng giữa các đợt tái cấu trúc |
-| `world.warning` | 2 s | Cảnh báo trước commit |
-| `world.protectRadius` | 5,5 | Vùng đệm bảo vệ người chơi quanh khu vực sắp đổi |
 | `world.phaseDuration` | 60 s | Thời lượng mỗi pha ngày hoặc đêm |
 | `player.hp / stamina` | 100 / 100 | Giáp và năng lượng tối đa |
 | `player.speed / radius` | 6 / 0,62 | Tốc độ, bán kính va chạm |
@@ -450,7 +477,7 @@ Chỉnh trực tiếp tại `src/config.js`; tải lại trang sau khi sửa.
 | `combat.comboWindow / maxCombo` | 4 s / ×5 | Combo hết khi quá hạn hoặc nhận sát thương |
 | `combat.survivalScore` | 5/giây | Điểm thời gian |
 | `combat.maxPickups` | 16 | Vật phẩm cùng lúc, tự hết sau 18 giây |
-| `effects.high / popups` | 96 / 16 | Pool particle/debris và popup gọn nhẹ |
+| `effects.high / popups` | 96 / 16 | Pool particle/debris và popup có giới hạn cố định |
 | `performance.softwareFPS / highFPS` | 24 / 60 | Trần khung hình cho SwiftShader và WebGL phần cứng; menu/pause chạy 4 FPS |
 | `colors` | Mint, trời, vàng, san hô | Bảng màu chính |
 | `ENEMIES` | Scout / Gunner / Heavy / Mortar / Elite | HP, tốc độ, silhouette, điểm và chu kỳ bắn từng loại |
@@ -459,26 +486,17 @@ Director tăng HP tối đa 70%, tốc độ đạn tối đa 45%, tăng tỷ tr
 
 Trên thiết bị cảm ứng, game vẫn dùng cấu hình đồ họa cao, phóng camera gần hơn và dùng trợ ngắm nhẹ trong một góc hẹp theo hướng kéo; vật cản vẫn chặn khóa mục tiêu. Giao diện yêu cầu xoay ngang để giữ đủ không gian cho hai cần điều khiển.
 
-Game dùng một cấu hình hình ảnh cao cố định. WebGL phần cứng dùng mật độ điểm ảnh `min(devicePixelRatio, 1.25)` và hướng tới 60 FPS; SwiftShader dùng độ phân giải native, 24 FPS và bỏ tone mapping nặng. MSAA, shadow map thời gian thực và nguồn sáng điểm động được tắt; vật liệu Lambert, bảng màu và silhouette giữ hình ảnh rõ với shader nhẹ. Bóng tiếp xúc mềm của công trình/xe được gộp trong hai `InstancedMesh`; quầng sáng xanh dưới xe người chơi chỉ hiện ban đêm. Hai texture radial 64×64 được tạo tại runtime, không tải tài nguyên ngoài. Mô phỏng chạy 30 tick/giây. Menu, pause và Game Over chỉ render 4 FPS; tab ẩn không render. Particle, đạn và pháo cối chỉ cập nhật các slot đang sống; AI quét tầm nhìn theo nhịp chia đều; minimap và vòng cập nhật canvas phụ đã được loại bỏ; cảnh báo địa hình dùng một `InstancedMesh`. Các animation trang trí ở địa hình, điểm spawn, vòng ngắm địch, độ giật nòng và HUD đã được bỏ.
+Game dùng một cấu hình hình ảnh cao cố định. WebGL phần cứng dùng mật độ điểm ảnh `min(devicePixelRatio, 1.25)` và hướng tới 60 FPS; SwiftShader dùng độ phân giải native, 24 FPS và bỏ tone mapping nặng. MSAA, shadow map thời gian thực và nguồn sáng điểm động được tắt; vật liệu Lambert, bảng màu và silhouette giữ hình ảnh rõ với shader nhẹ. Bóng tiếp xúc mềm của công trình/xe được gộp trong hai `InstancedMesh`; quầng sáng xanh dưới xe người chơi chỉ hiện ban đêm. Hai texture radial 64×64 được tạo tại runtime, không tải tài nguyên ngoài. Mô phỏng chạy 30 tick/giây. Menu, pause và Game Over chỉ render 4 FPS; tab ẩn không render. Particle, đạn và pháo cối chỉ cập nhật các slot đang sống; AI quét tầm nhìn theo nhịp chia đều. Tia lóe nòng, va chạm, bụi đổ nhà và vòng nổ đã rõ hơn; particle vẫn gộp trong một `InstancedMesh` tối đa 96 phần tử và vòng nổ tái dùng sáu mesh. Các animation trang trí ở địa hình, điểm spawn, vòng ngắm địch, độ giật nòng và HUD vẫn được bỏ.
 
-Hình xe tăng vẫn giữ bánh, xích, đèn, ăng-ten, tháp pháo và màu riêng của từng bộ phận. Nòng pháo được gộp vào mesh tháp pháo; các phần còn lại được ghép trước khi gửi sang GPU. Nhà cao tầng, hàng quán và cây giữ silhouette nhưng giảm chi tiết hình học nhỏ; bản sao trong suốt của nhà che khuất xe dùng silhouette gọn hơn. HUD chỉ còn hai vòng Giáp và Năng lượng; vòng nhiệt đã được loại bỏ. Khung điểm chỉ giữ điểm, combo và thời gian. Đồng hồ ngày–đêm cùng bộ đếm tái cấu trúc được rút gọn thành hai pill ở giữa; nút fullscreen nằm trước khung điểm. Thanh tên game, minimap và nút audio/settings không xuất hiện trong gameplay.
+Hình xe tăng vẫn giữ bánh, xích, đèn, ăng-ten, tháp pháo và màu riêng của từng bộ phận. Nòng pháo được gộp vào mesh tháp pháo; các phần còn lại được ghép trước khi gửi sang GPU. Nhà cao tầng, hàng quán và cây giữ silhouette nhưng giảm chi tiết hình học nhỏ; bản sao trong suốt của nhà che khuất xe dùng silhouette gọn hơn. HUD chỉ còn hai vòng Giáp và Năng lượng; vòng nhiệt đã được loại bỏ. Khung điểm chỉ giữ điểm, combo và thời gian. Đồng hồ ngày–đêm nằm giữa hàng trên; đồng hồ tái cấu trúc đã bỏ. Nút fullscreen nằm trước khung điểm. Thanh tên game, minimap và nút audio/settings không xuất hiện trong gameplay.
 
 Mỗi trận bắt đầu vào ban ngày. Sau 60 giây, ánh sáng chuyển dần sang đêm và mọi địch đang sống hoặc xuất hiện mới trở thành zombie: mắt xanh, gai xanh và vòng sáng xanh; `maxHP` tăng ×2 nhưng giữ nguyên phần trăm máu hiện tại. Sau 60 giây đêm, bình minh đưa chúng về chỉ số thường theo cùng nguyên tắc. Đồng hồ HUD luôn hiển thị thời gian còn lại của pha hiện tại.
 
-## Địa hình thay đổi như thế nào?
+## Địa hình được sinh và phá hủy như thế nào?
 
 Grid 25×25 chỉ là dữ liệu nội bộ cho va chạm và navigation. Mỗi seed tạo một lõi cao tầng gọn quanh trung tâm, có vành đường/quảng trường làm khoảng lùi trước khi chuyển sang hàng quán mặt phố và khu nhà thấp tầng. Các cụm cây nhỏ được đặt tách nhau và luôn tiếp giáp đường; nền đi lại dùng cùng bề mặt sáng, không còn ô cỏ kẻ vạch như lối dạo. Các điểm mốc ngẫu nhiên nối thành mạng phố có nhánh, vòng nối và bốn lối tiếp cận ngoài rìa; không còn mạng đại lộ lặp đều kiểu bàn cờ. Mỗi seed được flood-fill trước khi sử dụng nên mọi ô đi được đều nối với khu trung tâm.
 
-Tường gạch, thép, nhà, cây, cao tầng và hàng quán có HP riêng. Đạn và vụ nổ làm giảm HP; khi sập, công trình trở thành rubble có thể đi xuyên qua, collision và đường BFS cập nhật ngay trong cùng tick.
-
-1. Từ 2–3 điểm ngẫu nhiên, lan một vùng có biên bất quy tắc chiếm 10–18% bản đồ và tránh vùng bảo vệ quanh mọi entity.
-2. Sinh một mạng phố mới, lấy cấu trúc trong vùng đã chọn và chỉ chấp nhận ứng viên có ít nhất tám thay đổi đóng/mở lối đi. Flood-fill xác nhận toàn bộ đường vẫn liên thông.
-3. Vẽ đúng đường biên bất quy tắc bằng màu vàng trong hai giây và phát âm cảnh báo. Mô phỏng và trận chiến vẫn tiếp diễn.
-4. Ngay trước commit, ghép phần ngoài vùng cảnh báo từ địa hình hiện hành để giữ nguyên tường vừa bị phá và mọi diễn biến ở nơi khác.
-5. Nếu xe vừa tiến vào vùng cảnh báo, hệ thống giữ ô quanh xe và mở các lối an toàn trong vùng đó. Chu kỳ vẫn tạo thay đổi, không dịch chuyển xe và không gây sát thương bất ngờ.
-6. Cập nhật grid, collision, mesh và `version` trong cùng tick, rồi nâng các vật thể thay đổi từ nền trong 0,5 giây. AI thấy `version` mới sẽ bỏ đường cũ và tìm lại bằng BFS. Đạn luôn va chạm theo địa hình hiện hành.
-
-BFS phù hợp grid 625 ô, không cần physics engine. Mỗi chu kỳ thực sự mở hoặc đóng đường nhánh, đổi cover và đường đi. Nếu ứng viên đóng đường không còn an toàn, phương án dự phòng sẽ mở đường mới để lần tái cấu trúc đó vẫn xảy ra.
+Tường gạch, thép, nhà, cây, cao tầng và hàng quán có HP riêng. Đạn và vụ nổ làm giảm HP; khi sập, công trình trở thành rubble có thể đi xuyên qua, collision và đường BFS cập nhật ngay trong cùng tick. Bản đồ không tự dựng lại sau một khoảng thời gian; chỉ các công trình bị phá mới thay đổi địa hình. Mỗi lượt chơi mới lấy seed ngẫu nhiên, hoặc dùng `?seed=` để tái hiện cùng bố cục. BFS phù hợp grid 625 ô, không cần physics engine.
 
 ## Kiểm thử và đóng gói
 
@@ -506,7 +524,7 @@ Thêm `?debug` khi chạy local sẽ cung cấp `window.__game` để kiểm tra
 ````markdown
 # Kiểm thử bàn giao
 
-Thực chạy gần nhất ngày **17/09/2026** bằng Python 3.11 và Chrome headless, WebGL qua SwiftShader. Máy chủ HTTP bind loopback; URL thực kiểm tra là `http://127.0.0.1:8765/repository-name/?debug&seed=2026`.
+Thực chạy gần nhất ngày **18/09/2026** bằng Python 3.11 và Chrome headless, WebGL qua SwiftShader. Máy chủ HTTP bind loopback; URL thực kiểm tra là `http://127.0.0.1:8765/repository-name/?debug&seed=2026`.
 
 Lệnh thực chạy:
 
@@ -514,27 +532,28 @@ Lệnh thực chạy:
 python tests/browser_runner.py --soak
 ```
 
-Kết quả chức năng gần nhất: **exit code 0**, 11 bài core + 20 bài smoke + 18 bài integration đều đạt; kiểm tra resize desktop, mô phỏng cảm ứng landscape 844×390 và giao diện đêm đều đạt; không có JavaScript exception hay HTTP response từ 400 trở lên. JSON và ảnh gần nhất nằm trong `artifacts/`.
+Kết quả chức năng gần nhất: **exit code 0**, 9 bài core + 25 bài smoke + 20 bài integration đều đạt; kiểm tra resize desktop, mô phỏng cảm ứng landscape 844×390 và giao diện đêm đều đạt; không có JavaScript exception hay HTTP response từ 400 trở lên. JSON và ảnh gần nhất nằm trong `artifacts/`.
 
 ## Checklist đã chạy
 
 | Hạng mục | Kết quả và phạm vi |
 | --- | --- |
-| Đường dẫn `/repository-name/` | Đạt. HTML, CSS, module, Three.js, favicon tải bằng đường dẫn tương đối. Không cần CDN. |
+| Đường dẫn `/repository-name/` | Đạt. HTML, CSS, module, Three.js, favicon, cursor PNG, biểu tượng iOS và web manifest tải bằng đường dẫn tương đối. Không cần CDN. |
 | Sinh map theo seed | Đạt. Cùng seed cho cùng layout, seed khác cho layout khác. 100 seed có điểm bắt đầu trống, mật độ đường trong giới hạn, không có hàng/cột đi xuyên toàn bản đồ và mọi ô đi được liên thông. |
 | Khu đô thị | Đạt trên 40 seed. Mỗi seed có một cụm 7–9 cao tầng, khoảng lùi đi được quanh mặt ngoài cụm, tối thiểu mười hàng quán và các cụm cây nhỏ tách biệt. Nhà thấp tầng không nằm sát mặt cao ốc lộ ra đường; các ô cỏ kẻ vạch đã được bỏ khỏi hình ảnh và toàn bộ bề mặt đi được vẫn liên thông. |
 | WASD / phím mũi tên | Đạt. Gửi KeyboardEvent qua DOM; vector W và ↑ tương đương. Vector đi chéo dài 1. |
 | Dash | Đạt. Tốn 30 stamina, có invulnerability; kiểm tra di chuyển nhiều bước không vượt tường hoặc biên, vị trí cuối hợp lệ. |
-| Chuột, raycast, resize | Đạt ở 1440×1000 và 1024×768. Chiếu ngược điểm ngắm về đúng tọa độ chuột; hướng đạn khớp hướng tháp pháo. |
+| Chuột, raycast, resize | Đạt ở 1440×1000 và 1024×768. Chiếu ngược điểm ngắm về đúng tọa độ chuột; hướng đạn khớp hướng tháp pháo. Cursor tương phản cao do trình duyệt vẽ, không phụ thuộc HUD 5 Hz; raycast không gọi `getBoundingClientRect` mỗi tick. |
 | Cảm ứng landscape | Đạt ở viewport 844×390, DPR 2. Hai cần 100×100 CSS px và nút lướt 60×60 CSS px nằm trong màn hình; kéo cần trái tạo vector di chuyển, cần phải vừa ngắm vừa bắn. Cấu hình đồ họa luôn là High. |
-| Toàn màn hình | Đạt bằng click thật qua Chrome CDP: nút vào và thoát Fullscreen API thành công, cập nhật nhãn/biểu tượng. Kiểm thử adapter xác nhận các nhánh chuẩn Chrome/Edge, WebKit Safari mới/cũ và Microsoft cũ. Vùng chạm 44×44 px nằm trọn viewport desktop và mobile 667×375, không chồng bốn cụm HUD. |
+| Toàn màn hình | Đạt bằng click thật qua Chrome CDP: nút vào và thoát Fullscreen API thành công, cập nhật nhãn/biểu tượng. Kiểm thử adapter xác nhận các nhánh chuẩn Chrome/Edge, WebKit Safari mới/cũ và Microsoft cũ. Nhánh giả lập iPhone xác nhận nút bị ẩn khi đã chạy standalone, tab Safari hiện hướng dẫn mở từ biểu tượng đã cài; manifest và icon tải thành công. Vùng chạm 44×44 px nằm trọn viewport desktop và mobile 667×375, không chồng bốn cụm HUD. Chưa thử iPhone vật lý. |
 | Chu kỳ ngày–đêm | Đạt. Chuyển sang đêm tại 60 giây và trở lại ngày tại 120 giây gameplay. Pause vẫn đóng băng đồng hồ vì chu kỳ dùng `game.time`. |
 | Zombie ban đêm | Đạt. Địch đang sống và địch sinh mới đều có `maxHP = baseMaxHP × 2`, giữ phần trăm máu khi chuyển pha, hiện mắt/gai xanh và trở lại HP thường lúc bình minh. |
-| Bắn có chủ đích | Đạt. Bắt đầu trận không có đạn tự bắn; tạo đạn khi giữ trạng thái chuột trái. Listener pointerdown chỉ nằm trên canvas, tách khỏi nút UI. |
+| Bắn có chủ đích | Đạt. Bắt đầu trận không có đạn tự bắn; tạo đạn khi giữ trạng thái chuột trái. Listener pointerdown chỉ nằm trên canvas, tách khỏi nút UI. Đạn người chơi dùng hình có lõi xanh sáng và viền tối trong một draw call. |
+| Nhạc và tiếng pháo | Đạt. Click thật ở menu mở AudioContext và bắt đầu theme. Hai vòng nhạc khác nhau có tín hiệu âm rõ, chuyển theo menu/trận/tạm dừng/kết thúc. Tiếng pháo được trộn sẵn vào một buffer ngắn, có transient mạnh và đuôi tắt dần; địch giảm âm theo khoảng cách và giới hạn số tiếng bắn chồng. Chưa đánh giá bằng nghe thủ công trên nhiều loại loa. |
 | Va chạm đạn | Đạt. Segment/AABB và segment/circle; đạn bị chặn khi đầu nòng chạm cover; sau khi phá cover mới trúng địch phía sau. |
 | Tường và tìm đường | Đạt. Tường mất collision ngay; version tăng; đường BFS đổi và AI cập nhật cache theo version. |
-| Tái cấu trúc | Đạt. 10 seed × 12 commit = 120 lần ở core; mỗi vùng bất quy tắc chiếm 10–18% bản đồ, có ít nhất tám ô đổi trạng thái đi được/chặn, và bảo toàn địa hình ngoài vùng. |
-| An toàn địa hình | Đạt. Entity đi vào vùng cảnh báo làm ứng viên ban đầu mất hiệu lực; phương án mở đường an toàn vẫn commit trong cùng chu kỳ, không ghi đè vị trí xe. Flood-fill và free-space được kiểm tra lại. |
+| Địa hình cố định trong trận | Đạt. Bố cục không tự tái cấu trúc sau nhiều phút sinh tồn; chỉ những công trình bị phá mới chuyển thành rubble và cập nhật đường đi. Đồng hồ và vùng cảnh báo tái cấu trúc đã được gỡ. |
+| Hiệu ứng chiến đấu | Đạt. Tia lóe, bụi và lõi sáng của vụ nổ rõ hơn; vòng xung kích mờ dần. Hạt hiệu ứng vẫn dùng một `InstancedMesh` với trần 96 phần tử. |
 | Vật thể che xe | Đạt. Nhà/cây phía trước được thay bằng bản sao mờ 18% opacity, giữ `scale.y = 1` và vẫn giữ collision; trở lại mô hình đặc khi xe rời vùng che. |
 | Spawn | Đạt. Spawn đang cảnh báo bị hủy nếu người chơi tiến vào bán kính an toàn. Tổng địch và spawn chờ bị giới hạn. |
 | Chi phí chọn điểm spawn | Đạt. Mỗi lần chọn dùng một flood-fill chung cho mọi ô ứng viên, không gọi BFS đường đi riêng cho từng ô. |
@@ -546,35 +565,35 @@ Kết quả chức năng gần nhất: **exit code 0**, 11 bài core + 20 bài s
 | Vật phẩm | Đạt. Hồi HP, hồi stamina, buff tốc độ, buff bắn nhanh; buff hết sau thời hạn. |
 | Điểm / combo | Đạt. Mỗi địch chỉ thưởng một lần, combo tối đa ×5, reset khi hết thời gian hoặc nhận sát thương. |
 | HP / grace | Đạt. Hai lần trúng liên tiếp trong khoảng bảo vệ chỉ nhận sát thương một lần. |
-| Pause / mất focus | Đạt. Timer, spawn, thời gian đổi địa hình đóng băng khi pause; blur tự pause và xóa held input. Handler visibilitychange cùng cơ chế đã được kiểm tra mã nguồn; chưa tự động chuyển tab thật. |
+| Pause / mất focus | Đạt. Timer và spawn đóng băng khi pause; blur tự pause và xóa held input. Handler visibilitychange cùng cơ chế đã được kiểm tra mã nguồn; chưa tự động chuyển tab thật. |
 | Game Over / R / restart | Đạt. Hiện thống kê, phím R tạo trận mới. Năm restart liên tiếp không giữ enemy, projectile, pickup từ trận trước. Các listener và RAF chỉ được tạo trong constructor, không tạo ở restart. |
 | Pool | Đạt. 180 đạn, 12 pháo cối, 96 particle/debris và 16 popup; particle chết không còn được cập nhật mỗi tick. |
 | Ngân sách render | Đạt với 16 xe địch. 75 draw call ban ngày, 86 ban đêm; tối đa 48 enemy mesh và 96 particle instance. Shadow map tắt; bóng tiếp xúc instanced và quầng sáng đêm hoạt động. SwiftShader dùng pixel ratio 1 và 24 FPS, WebGL phần cứng hướng tới 60 FPS. |
-| HUD tối giản | Đạt. Không còn minimap, header tên game, nút audio/settings hay các điều khiển tương ứng trong DOM. Cụm status chỉ còn Giáp và Năng lượng, đo được 93×50 px ở viewport mobile 667×375. Khung điểm chỉ giữ điểm, combo, thời gian. Đồng hồ ngày–đêm, tái cấu trúc và nút fullscreen nằm cùng hàng, không giao nhau. |
+| HUD tối giản | Đạt. Không còn minimap, header tên game, nút audio/settings hay các điều khiển tương ứng trong DOM. Cụm status chỉ còn Giáp và Năng lượng, đo được 93×50 px ở viewport mobile 667×375. Khung điểm chỉ giữ điểm, combo, thời gian. Đồng hồ ngày–đêm và nút fullscreen nằm cùng hàng, không giao nhau. |
 
 ## Bài soak 600 giây mô phỏng
 
-Đây là **600 giây thời gian gameplay chạy tăng tốc**, không phải 10 phút đồng hồ thực hay chơi thủ công. Test dùng cùng `Game.step(1/30)`, world, combat, director và AI thật; đặt invulnerability cho xe người chơi trong test để tránh dừng ở Game Over. Tắt cập nhật DOM mỗi tick và render tại các mốc một phút để stress logic. Không thay tần suất spawn hoặc chu kỳ terrain.
+Đây là **600 giây thời gian gameplay chạy tăng tốc**, không phải 10 phút đồng hồ thực hay chơi thủ công. Test dùng cùng `Game.step(1/30)`, world, combat, director và AI thật; đặt invulnerability cho xe người chơi trong test để tránh dừng ở Game Over. Tắt cập nhật DOM mỗi tick và render tại các mốc một phút để stress logic. Không thay tần suất spawn.
 
 Kết quả của lần cuối:
 
 - Thời gian gameplay: 600,000000000112 giây (sai số cộng số thực).
-- **13 đợt tái cấu trúc đã commit**, **0 đợt bị bỏ qua**.
+- **54 ô vật cản bị phá**, không có lần tái cấu trúc định kỳ.
 - Đã có elite trong trận; tối đa **16 địch + điểm spawn đang chờ**.
-- Tối đa 15 đạn trực tiếp và 96 particle hoạt động trong kịch bản này; các pool luôn hữu hạn.
+- Tối đa 12 đạn trực tiếp và 96 particle hoạt động trong kịch bản này; các pool luôn hữu hạn.
 - **0** lần phát hiện player/enemy nằm trong ô cấm hoặc grid mất liên thông khi lấy mẫu mỗi giây.
-- Ở 10 mốc render: **25–27 geometries, 1–2 texture** trong `renderer.info.memory`; draw call dao động **92–112**. Hai texture nhỏ tạo bóng mềm và quầng sáng, không tải từ mạng; cảnh báo tái cấu trúc vẫn được gộp thành một lệnh vẽ.
-- JS heap tại các mốc dao động khoảng **49,2–72,8 MB**, cuối bài khoảng **60,1 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
-- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,50 giây** đồng hồ ở lượt test này, so với 7,82 giây của kiến trúc 60 Hz trước lượt tối ưu. Đây là phép so sánh logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
+- Ở 10 mốc render: **25–27 geometries, 1–2 texture** trong `renderer.info.memory`; draw call dao động **87–120**. Hai texture nhỏ tạo bóng mềm và quầng sáng, không tải từ mạng.
+- JS heap tại các mốc dao động khoảng **32,2–60,6 MB**, cuối bài khoảng **37,0 MB** trong lượt Chrome headless này; phép đo không chứng minh không thể rò bộ nhớ ở mọi kịch bản.
+- 600 giây gameplay tăng tốc hoàn thành trong khoảng **2,00 giây** đồng hồ ở lượt test này. Đây là thời gian chạy logic trong Chrome headless, không phải FPS trên phần cứng người dùng.
 
 ## Giới hạn và kiểm tra thủ công còn lại
 
 - Chưa đo FPS bằng GPU desktop phổ thông, chưa tuyên bố phần cứng đích luôn giữ đúng trần FPS. SwiftShader headless dùng để kiểm chứng chức năng và ngân sách render; không đại diện cho GPU thật.
 - Chưa chơi thủ công liên tục 10 phút đồng hồ thực; chưa nghe và đánh giá âm lượng trên loa/tai nghe. Chưa tự động kiểm tra chuyển tab thật, bật/tắt storage của trình duyệt hay mất WebGL context thực tế.
 - Chưa triển khai lên GitHub Pages thật. Đã xác minh static site dưới đường dẫn con tương đương bằng HTTP local.
-- Chưa kiểm tra Safari/Firefox hoặc điện thoại vật lý. Chrome emulation xác nhận layout, kích thước vùng chạm và Pointer Events; vẫn cần chơi thử trên iPhone/Android thật để đánh giá độ trễ, nhiệt và vùng safe-area theo từng máy.
-- Arena dùng lưới logic cố định 25×25. Đường phố và vùng thay đổi có hình bất quy tắc, không dùng chunk vuông cố định. Thay kích thước grid vẫn cần cập nhật generator và giới hạn camera cùng nhau.
-- Layout đảm bảo kết nối bằng mạng đường ngẫu nhiên được flood-fill, không giữ đại lộ cố định. Khi xe đi vào vùng cảnh báo, hệ thống chuyển sang mở đường an toàn và vẫn hoàn thành đợt biến đổi.
+- Chưa kiểm tra Safari/Firefox hoặc điện thoại vật lý. Chrome emulation xác nhận layout, kích thước vùng chạm, Pointer Events và nhánh nhận biết standalone giả lập; vẫn cần chơi thử trên iPhone/Android thật để đánh giá độ trễ, nhiệt và vùng safe-area theo từng máy. Safari tab trên iPhone không hỗ trợ Fullscreen API cho trang HTML; Home Screen standalone vẫn có thể hiện thanh hệ thống tùy bản iOS.
+- Arena dùng lưới logic cố định 25×25. Đường phố có hình bất quy tắc, không dùng chunk vuông cố định. Thay kích thước grid vẫn cần cập nhật generator và giới hạn camera cùng nhau.
+- Layout đảm bảo kết nối bằng mạng đường ngẫu nhiên được flood-fill, không giữ đại lộ cố định. Phá công trình mở thêm lối đi nhưng không tự dựng lại bản đồ.
 - Địa hình dùng collision bảo thủ theo ô 2,4 đơn vị; hình vẽ có khe trang trí nhỏ không phải lối đi. Nhà/cây tiền cảnh giữ nguyên chiều cao và tạm mờ để thấy xe; collision vẫn giữ nguyên.
 - Pathfinding BFS có steering tránh chồng xe, chưa có crowd solver phức tạp; nhóm địch có thể ùn tại nút thắt. Đây là một phần tình huống chiến đấu, không đổi vị trí xe để chữa kẹt.
 - High score lưu cục bộ; không đồng bộ nhiều máy và không có leaderboard online. Storage có try/catch để fallback an toàn.
@@ -582,7 +601,7 @@ Kết quả của lần cuối:
 
 ## Kiểm tra UI/UX di động bổ sung
 
-Lần kiểm tra giao diện di động gần nhất dùng Chrome 152 headless với mô phỏng cảm ứng và DPR 2. Kết quả đều đạt ở các trạng thái sau:
+Lần kiểm tra giao diện di động gần nhất dùng Chrome 153 headless với mô phỏng cảm ứng và DPR 2. Kết quả đều đạt ở các trạng thái sau:
 
 - Gameplay ngang 844×390 và 667×375: HUD, thông báo, hai cần điều khiển và nút lướt nằm trọn trong viewport, không chồng lấn; thao tác đi, ngắm và bắn hoạt động.
 - Cụm trạng thái 667×375: chỉ còn hai vòng Giáp và Năng lượng, rộng 93×50 px; không còn phần tử nhiệt nòng hay trạng thái khóa cò.
@@ -599,29 +618,217 @@ Bài integration xác nhận 20 lần bắn liên tục vẫn tạo đủ 20 vi�
 
 1. Chạy bằng HTTP, nhấn Chơi ngay; kiểm tra WASD, mũi tên, chuột và Space.
 2. Thử giữ bắn vào tường gạch, thép và thùng nhiên liệu; đạn không xuyên cover.
-3. Đi vào viền vàng trong cảnh báo; xác nhận xe không bị đè và địa hình vẫn thay đổi bằng cách mở lối an toàn.
+3. Bắn phá nhà và kiểm tra hiệu ứng nổ, bụi, vòng xung kích; xác nhận rubble đi được và đường đi cập nhật.
 4. Giữ phím rồi đổi tab; trở lại phải đang pause, không tự tiếp tục di chuyển.
 5. Nhấn Esc để tạm dừng và tiếp tục; xác nhận hộp pause không có tùy chọn audio, rung hay chất lượng đồ họa.
 6. Thua rồi bấm R nhiều lần; không còn entity trận trước, kỷ lục vẫn được giữ.
 7. Chơi 10 phút thực trên phần cứng đích, quan sát FPS/heap/GPU bằng DevTools trước khi công bố số liệu hiệu năng.
+8. Nghe nhạc menu, nhạc chiến đấu, tiếng pháo người chơi và địch trên loa điện thoại/tai nghe; kiểm tra mức âm khi bắn liên tục và khi tạm dừng.
 ````
 
 
 ## src/audio.js
 
 ```javascript
+import { musicSamples } from './music.js';
+
 export class Audio {
-  constructor(settings){this.settings=settings;this.context=null;this.active=0;}
-  unlock(){try{if(!this.context){this.context=new(window.AudioContext||window.webkitAudioContext)();this.master=this.context.createGain();this.master.connect(this.context.destination);}if(this.context.state==='suspended')this.context.resume().catch(()=>{});this.update();}catch{}}
-  update(){if(this.master)this.master.gain.value=this.settings.mute?0:this.settings.volume*.3;}
-  play(name){
-    if(!this.context||this.context.state!=='running'||this.settings.mute||this.active>24)return;
-    const presets={shot:[180,65,.09,'square'],hit:[120,40,.12,'sawtooth'],explosion:[85,18,.45,'sawtooth'],dash:[220,700,.15,'triangle'],pickup:[520,1100,.22,'sine'],warning:[600,360,.3,'triangle']};
-    const [from,to,duration,type]=presets[name]||presets.hit,c=this.context,osc=c.createOscillator(),gain=c.createGain();
-    osc.type=type;osc.frequency.setValueAtTime(from,c.currentTime);osc.frequency.exponentialRampToValueAtTime(to,c.currentTime+duration);
-    gain.gain.setValueAtTime(.45,c.currentTime);gain.gain.exponentialRampToValueAtTime(.001,c.currentTime+duration);
-    osc.connect(gain);gain.connect(this.master);osc.start();osc.stop(c.currentTime+duration);this.active++;
-    osc.onended=()=>{osc.disconnect();gain.disconnect();this.active--;};
+  constructor(settings) {
+    this.settings = settings;
+    this.context = null;
+    this.active = 0;
+    this.scene = 'menu';
+    this.musicVoice = null;
+    this.musicCache = new Map();
+    this.lastEnemyShot = -Infinity;
+  }
+
+  unlock() {
+    try {
+      if (!this.context) {
+        const Context = window.AudioContext || window.webkitAudioContext;
+        if (!Context) return;
+        const c = this.context = new Context();
+        this.master = c.createGain();
+        this.musicBus = c.createGain();
+        this.effectsBus = c.createGain();
+        this.musicBus.gain.value = .23;
+        this.effectsBus.gain.value = .8;
+        this.musicBus.connect(this.master);
+        this.effectsBus.connect(this.master);
+        this.master.connect(c.destination);
+        this.makeNoise();
+        this.makeShot();
+      }
+      this.update();
+      if (this.context.state === 'suspended') this.context.resume().then(() => this.syncMusic()).catch(() => {});
+      else this.syncMusic();
+    } catch {}
+  }
+
+  update() {
+    if (this.master) this.master.gain.value = this.settings.mute ? 0 : this.settings.volume;
+  }
+
+  makeNoise() {
+    const c = this.context, length = Math.round(c.sampleRate * .6);
+    const buffer = c.createBuffer(1, length, c.sampleRate), data = buffer.getChannelData(0);
+    let seed = 0x654a21;
+    for (let i = 0; i < length; i++) {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      data[i] = seed / 2147483648 - 1;
+    }
+    this.noiseBuffer = buffer;
+  }
+
+  makeShot() {
+    const c = this.context, rate = c.sampleRate, length = Math.round(rate * .42);
+    const buffer = c.createBuffer(1, length, rate), data = buffer.getChannelData(0);
+    const noise = this.noiseBuffer.getChannelData(0);
+    const crackAlpha = 1 - Math.exp(-2 * Math.PI * 1550 / rate);
+    const bodyAlpha = 1 - Math.exp(-2 * Math.PI * 520 / rate);
+    const tailAlpha = 1 - Math.exp(-2 * Math.PI * 360 / rate);
+    let crackLow = 0, bodyLow = 0, tailLow = 0, phase = 0;
+    for (let i = 0; i < length; i++) {
+      const time = i / rate, raw = noise[i], delayed = noise[(i + 9001) % noise.length];
+      crackLow += (raw - crackLow) * crackAlpha;
+      bodyLow += (raw - bodyLow) * bodyAlpha;
+      tailLow += (delayed - tailLow) * tailAlpha;
+      phase += 2 * Math.PI * (48 + 107 * Math.exp(-time * 24)) / rate;
+      const crack = (raw - crackLow) * Math.exp(-time * 55) * .58;
+      const body = bodyLow * Math.exp(-time * 17) * .42;
+      const thump = Math.sin(phase) * Math.exp(-time * 15) * .53;
+      const echo = time > .055 ? tailLow * Math.exp(-(time - .055) * 11) * .16 : 0;
+      const click = time > .095 ? (raw - crackLow) * Math.exp(-(time - .095) * 75) * .1 : 0;
+      data[i] = (crack + body + thump + echo + click) * Math.min(1, time / .002);
+    }
+    const dry = data.slice(), delay = Math.round(rate * .074);
+    for (let i = delay; i < length; i++) data[i] += dry[i - delay] * .11;
+    let peak = 0;
+    for (const value of data) peak = Math.max(peak, Math.abs(value));
+    const scale = peak > .85 ? .85 / peak : 1;
+    for (let i = 0; i < length; i++) data[i] *= scale * Math.min(1, (length - 1 - i) / 110);
+    this.shotBuffer = buffer;
+  }
+
+  musicBuffer(track) {
+    if (!this.musicCache.has(track)) {
+      const { samples, sampleRate } = musicSamples(track);
+      const buffer = this.context.createBuffer(1, samples.length, sampleRate);
+      buffer.getChannelData(0).set(samples);
+      this.musicCache.set(track, buffer);
+    }
+    return this.musicCache.get(track);
+  }
+
+  setScene(scene) {
+    this.scene = scene;
+    this.syncMusic();
+  }
+
+  syncMusic() {
+    const c = this.context;
+    if (!c || c.state !== 'running') return;
+    const track = this.scene === 'playing' ? 'battle' : this.scene === 'menu' || this.scene === 'over' ? 'theme' : null;
+    const target = this.scene === 'over' ? .5 : 1;
+    const now = c.currentTime, old = this.musicVoice;
+    if (old?.track === track) {
+      old.gain.gain.cancelScheduledValues(now);
+      old.gain.gain.setTargetAtTime(target, now, .12);
+      return;
+    }
+    if (old) {
+      old.gain.gain.cancelScheduledValues(now);
+      old.gain.gain.setValueAtTime(old.gain.gain.value, now);
+      old.gain.gain.linearRampToValueAtTime(0, now + .32);
+      old.source.stop(now + .34);
+      this.musicVoice = null;
+    }
+    if (!track) return;
+    const source = c.createBufferSource(), gain = c.createGain();
+    source.buffer = this.musicBuffer(track);
+    source.loop = true;
+    source.connect(gain);
+    gain.connect(this.musicBus);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(target, now + .42);
+    source.onended = () => { source.disconnect(); gain.disconnect(); };
+    source.start(now);
+    this.musicVoice = { source, gain, track };
+  }
+
+  noise(at, duration, level, frequency, filterType = 'lowpass') {
+    const c = this.context, source = c.createBufferSource(), filter = c.createBiquadFilter(), gain = c.createGain();
+    source.buffer = this.noiseBuffer;
+    filter.type = filterType;
+    filter.frequency.value = frequency;
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.effectsBus);
+    gain.gain.setValueAtTime(.0001, at);
+    gain.gain.linearRampToValueAtTime(level, at + .003);
+    gain.gain.exponentialRampToValueAtTime(.0001, at + duration);
+    source.onended = () => { source.disconnect(); filter.disconnect(); gain.disconnect(); };
+    const offset = Math.random() * Math.max(0, this.noiseBuffer.duration - duration - .01);
+    source.start(at, offset, duration);
+    return source;
+  }
+
+  tone(at, duration, from, to, level, type = 'sine') {
+    const c = this.context, oscillator = c.createOscillator(), gain = c.createGain();
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(from, at);
+    oscillator.frequency.exponentialRampToValueAtTime(to, at + duration);
+    gain.gain.setValueAtTime(level, at);
+    gain.gain.exponentialRampToValueAtTime(.0001, at + duration);
+    oscillator.connect(gain);
+    gain.connect(this.effectsBus);
+    oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
+    oscillator.start(at);
+    oscillator.stop(at + duration);
+    return oscillator;
+  }
+
+  shot(volume, enemy) {
+    const c = this.context, source = c.createBufferSource(), gain = c.createGain();
+    source.buffer = this.shotBuffer;
+    source.playbackRate.value = enemy ? .84 + Math.random() * .12 : .96 + Math.random() * .08;
+    gain.gain.value = volume;
+    source.connect(gain);
+    gain.connect(this.effectsBus);
+    source.onended = () => { source.disconnect(); gain.disconnect(); this.active--; };
+    source.start();
+  }
+
+  play(name, distance = 0) {
+    const c = this.context;
+    if (!c || c.state !== 'running' || this.settings.mute || this.active >= 24) return;
+    const now = c.currentTime;
+    if (name === 'enemyShot') {
+      if (now - this.lastEnemyShot < .12 || distance > 29) return;
+      this.lastEnemyShot = now;
+    }
+    this.active++;
+    let end;
+    if (name === 'shot' || name === 'enemyShot') {
+      const volume = name === 'shot' ? 1 : .4 * Math.max(.18, 1 - distance / 32);
+      this.shot(volume, name === 'enemyShot');
+      return;
+    } else if (name === 'explosion') {
+      this.noise(now, .22, .52, 1300);
+      this.tone(now, .42, 105, 29, .58, 'sine');
+      end = this.noise(now + .05, .5, .32, 300);
+    } else {
+      const presets = {
+        hit: [160, 48, .16, 'sawtooth', .22],
+        dash: [220, 700, .15, 'triangle', .22],
+        pickup: [520, 1100, .22, 'sine', .18],
+        warning: [600, 360, .3, 'triangle', .15]
+      };
+      const [from, to, duration, type, level] = presets[name] || presets.hit;
+      end = this.tone(now, duration, from, to, level, type);
+    }
+    end.addEventListener('ended', () => { this.active--; }, { once: true });
   }
 }
 ```
@@ -634,17 +841,25 @@ import * as THREE from 'three';
 import { CONFIG } from './config.js';
 import { TILE, dist, segmentCircle } from './core.js';
 import { part, ring, material } from './models.js';
+function playerRoundGeometry(){
+  const positions=[],colors=[],color=new THREE.Color();
+  for(const [tint,sx,sy,sz,y,z] of [[0x06354b,.3,.3,.86,0,0],[0x31eaff,.19,.075,.65,.15,0],[0xf4ffff,.12,.08,.16,.16,.32]]){
+    const shape=new THREE.SphereGeometry(.5,10,6).toNonIndexed();shape.scale(sx,sy,sz);shape.translate(0,y,z);color.setHex(tint);
+    const points=shape.getAttribute('position');for(let i=0;i<points.count;i++){positions.push(points.getX(i),points.getY(i),points.getZ(i));colors.push(color.r,color.g,color.b);}shape.dispose();
+  }
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeBoundingSphere();return geometry;
+}
 export class Combat {
-  constructor(game){this.game=game;this.bullets=Array.from({length:CONFIG.combat.maxBullets},()=>{const mesh=part(game.scene,'sphere',0xffd36c,0,0,0,.17,.17,.65);mesh.visible=false;return {mesh,active:false};});this.shells=Array.from({length:CONFIG.combat.maxMortars},()=>{const marker=ring(game.scene,0xef6867,2.6),mesh=part(game.scene,'sphere',0xf17963,0,0,0,.4);marker.visible=mesh.visible=false;return {marker,mesh,active:false};});this.activeBullets=new Set();this.activeShells=new Set();this.pickups=[];this.tip=new THREE.Vector3();}
+  constructor(game){this.game=game;this.playerRoundGeometry=playerRoundGeometry();this.playerRoundMaterial=new THREE.MeshBasicMaterial({vertexColors:true,toneMapped:false});this.bullets=Array.from({length:CONFIG.combat.maxBullets},()=>{const mesh=part(game.scene,'sphere',0xf05b72,0,0,0,.17,.17,.65);mesh.visible=false;return {mesh,active:false};});this.enemyRoundGeometry=this.bullets[0].mesh.geometry;this.shells=Array.from({length:CONFIG.combat.maxMortars},()=>{const marker=ring(game.scene,0xef6867,2.6),mesh=part(game.scene,'sphere',0xf17963,0,0,0,.4);marker.visible=mesh.visible=false;return {marker,mesh,active:false};});this.activeBullets=new Set();this.activeShells=new Set();this.pickups=[];this.tip=new THREE.Vector3();}
   shoot(owner,team,damage,offset=0){
     const b=this.bullets.find(b=>!b.active);if(!b)return false;
     const g=this.game,m=owner.model;m.root.position.set(owner.x,0,owner.z);m.turret.rotation.y=owner.aim;m.root.updateMatrixWorld(true);m.tip.getWorldPosition(this.tip);
     const angle=owner.aim+offset,speed=team==='player'?CONFIG.combat.bulletSpeed:CONFIG.combat.enemyBulletSpeed*(1+Math.min(.45,g.time/700));
     // Check the breech-to-muzzle segment too: a muzzle can overlap a wall while the hull cannot.
     const obstruction=g.world.grid.trace(owner.x,owner.z,this.tip.x,this.tip.z,.1);
-    if(obstruction){g.world.damage(obstruction.i,damage,g);m.flashTime=.065;g.effects.emit(this.tip.x,.8,this.tip.z,0xffd790,3,.2);if(team==='player')g.audio.play('shot');return true;}
-    Object.assign(b,{active:true,x:this.tip.x,y:this.tip.y,z:this.tip.z,vx:Math.sin(angle)*speed,vz:Math.cos(angle)*speed,team,damage,life:3.5});this.activeBullets.add(b);b.mesh.position.set(b.x,b.y,b.z);b.mesh.rotation.y=angle;b.mesh.material=material(team==='player'?0xffcf65:0xf05b72,true);b.mesh.visible=true;
-    m.flashTime=.065;g.effects.emit(b.x,.9,b.z,0xffe5a0,3,.12);if(team==='player')g.audio.play('shot');return true;
+    if(obstruction){g.world.damage(obstruction.i,damage,g);m.flashTime=.1;g.effects.emit(this.tip.x,.8,this.tip.z,team==='player'?0x59efff:0xffd790,6,.22,1.25);g.audio.play(team==='player'?'shot':'enemyShot',team==='player'?0:dist(owner,g.player));return true;}
+    Object.assign(b,{active:true,x:this.tip.x,y:this.tip.y,z:this.tip.z,vx:Math.sin(angle)*speed,vz:Math.cos(angle)*speed,team,damage,life:3.5});this.activeBullets.add(b);b.mesh.position.set(b.x,b.y,b.z);b.mesh.rotation.y=angle;b.mesh.geometry=team==='player'?this.playerRoundGeometry:this.enemyRoundGeometry;b.mesh.scale.set(team==='player'?1:.17,team==='player'?1:.17,team==='player'?1:.65);b.mesh.material=team==='player'?this.playerRoundMaterial:material(0xf05b72,true);b.mesh.visible=true;
+    m.flashTime=.1;g.effects.emit(b.x,.9,b.z,team==='player'?0x63f1ff:0xffd19b,6,.18,1.3);g.audio.play(team==='player'?'shot':'enemyShot',team==='player'?0:dist(owner,g.player));return true;
   }
   mortar(owner,x,z){const s=this.shells.find(s=>!s.active);if(!s)return;Object.assign(s,{active:true,x,z,startX:owner.x,startZ:owner.z,life:1.65,max:1.65,damage:owner.damage});this.activeShells.add(s);s.marker.visible=s.mesh.visible=true;s.marker.position.set(x,.12,z);s.marker.scale.setScalar(2.6);this.game.audio.play('warning');}
   explode(x,z,radius,damage,team){
@@ -658,7 +873,7 @@ export class Combat {
   update(dt){const g=this.game,grid=g.world.grid;
     for(const b of this.activeBullets){const nx=b.x+b.vx*dt,nz=b.z+b.vz*dt,wall=grid.trace(b.x,b.z,nx,nz,.1);let best=wall?wall.t:Infinity,target=null;
       for(const e of b.team==='player'?g.enemies.list:[g.player]){if(e.dead||e.hp<=0)continue;const t=segmentCircle(b.x,b.z,nx,nz,e.x,e.z,e.radius+.11);if(t!==null&&t<best){best=t;target=e;}}
-      if(best!==Infinity){const x=b.x+(nx-b.x)*best,z=b.z+(nz-b.z)*best;g.effects.emit(x,.7,z,0xffdc9e,5,.35);if(target){if(b.team==='player')g.enemies.hurt(target,b.damage);else target.hurt(b.damage,g);}else g.world.damage(wall.i,b.damage,g);b.active=false;}
+      if(best!==Infinity){const x=b.x+(nx-b.x)*best,z=b.z+(nz-b.z)*best;g.effects.emit(x,.7,z,b.team==='player'?0x72f2ff:0xffcc9e,7,.3,1.3);if(target){if(b.team==='player')g.enemies.hurt(target,b.damage);else target.hurt(b.damage,g);}else{g.effects.emit(x,.3,z,0xc9bdac,5,.5,1.5);g.world.damage(wall.i,b.damage,g);}b.active=false;}
       b.x=nx;b.z=nz;b.life-=dt;if(b.life<=0||Math.abs(nx)>grid.half||Math.abs(nz)>grid.half)b.active=false;b.mesh.visible=b.active;b.mesh.position.set(nx,b.y,nz);if(!b.active)this.activeBullets.delete(b);
     }
     for(const s of this.activeShells){s.life-=dt;const t=1-s.life/s.max;s.mesh.position.set(s.startX+(s.x-s.startX)*t,1+Math.sin(t*Math.PI)*8,s.startZ+(s.z-s.startZ)*t);if(s.life<=0){s.active=false;this.activeShells.delete(s);s.mesh.visible=s.marker.visible=false;this.explode(s.x,s.z,2.6,s.damage,'enemy');}}
@@ -675,7 +890,7 @@ export class Combat {
 ```javascript
 export const CONFIG = {
   step: 1 / 30,
-  world: { size: 25, cell: 2.4, shiftMin: 35, shiftMax: 50, warning: 2, protectRadius: 5.5, phaseDuration: 60 },
+  world: { size: 25, cell: 2.4, phaseDuration: 60 },
   player: { hp: 100, stamina: 100, speed: 6, radius: .62, fireInterval: .25, damage: 28,
     dashCost: 30, dashDuration: .18, dashInvulnerability: .12, dashSpeed: 22, dashCooldown: .5, staminaRegen: 23, hurtGrace: .65 },
   director: { maxEnemies: 16, spawnStart: 4.2, spawnMin: 1.35, spawnWarning: 1.5, safeRadius: 11, eliteEvery: 90, assaultFirst: 24, assaultBase: 38, assaultMin: 28, assaultGap: .6 },
@@ -875,63 +1090,6 @@ export class Grid {
       if(t!==null&&(!hit||t<hit.t))hit={i,t};
     }return hit;
   }
-  protectedMask(entities,padding=0) {
-    const mask=new Uint8Array(this.tiles.length);
-    for(let i=0;i<mask.length;i++){const p=this.center(i);if(entities.some((e,j)=>dist(p,e)<(j===0?CONFIG.world.protectRadius:e.radius+1.6)+padding))mask[i]=1;}
-    return mask;
-  }
-  growRegion(blocked,target) {
-    const selected=new Uint8Array(this.tiles.length),available=[];
-    for(let i=0;i<blocked.length;i++)if(!blocked[i])available.push(i);
-    if(!available.length)return [];
-    const seeds=2+Math.floor(this.random()*2),frontier=[];
-    for(let n=0;n<seeds;n++){const seed=available[Math.floor(this.random()*available.length)];if(!selected[seed]){selected[seed]=1;frontier.push(seed);}}
-    let count=frontier.length,guard=this.tiles.length*8;
-    while(count<target&&frontier.length&&guard-->0){const from=frontier[Math.floor(this.random()*frontier.length)],choices=this.neighbors(from).filter(i=>!blocked[i]&&!selected[i]);if(!choices.length){frontier.splice(frontier.indexOf(from),1);continue;}const next=choices[Math.floor(this.random()*choices.length)];selected[next]=1;frontier.push(next);count++;}
-    return Array.from(selected.keys()).filter(i=>selected[i]);
-  }
-  candidate(entities) {
-    const blocked=this.protectedMask(entities,.7),min=Math.ceil(this.tiles.length*.10),max=Math.floor(this.tiles.length*.18);
-    for(let attempt=0;attempt<12;attempt++){
-      const source=this.makeLayout(),indices=this.growRegion(blocked,min+Math.floor(this.random()*(max-min+1)));
-      if(indices.length<min)continue;
-      const tiles=this.tiles.slice();for(const i of indices)tiles[i]=source[i];
-      const changed=indices.filter(i=>tiles[i]!==this.tiles[i]),topology=changed.filter(i=>walkable(tiles[i])!==walkable(this.tiles[i]));
-      const proposal={tiles,indices};
-      if(changed.length>=Math.floor(min*.45)&&topology.length>=8&&this.safeCandidate(proposal,entities))return proposal;
-    }
-    return this.openingCandidate(entities);
-  }
-  safeCandidate(candidate,entities) {
-    if(!this.connected(candidate.tiles))return false;
-    const selected=new Set(candidate.indices);return entities.every(e=>this.free(e.x,e.z,e.radius,candidate.tiles)&&!selected.has(this.at(e.x,e.z)));
-  }
-  openingCandidate(entities,preferred=null) {
-    const blocked=this.protectedMask(entities,.35),tiles=this.tiles.slice(),indices=preferred?.filter(i=>!blocked[i])||this.growRegion(blocked,Math.ceil(this.tiles.length*.10));
-    const selected=new Set(indices),frontier=indices.filter(i=>!blocked[i]&&!walkable(tiles[i])&&this.neighbors(i).some(n=>walkable(tiles[n])));
-    if(!frontier.length){
-      const global=[];for(let i=0;i<tiles.length;i++)if(!blocked[i]&&!walkable(tiles[i])&&this.neighbors(i).some(n=>walkable(tiles[n])))global.push(i);
-      if(global.length){const seed=global[Math.floor(this.random()*global.length)];frontier.push(seed);if(!selected.has(seed)){selected.add(seed);indices.push(seed);}}
-    }
-    for(let opened=0;opened<14&&frontier.length;opened++){
-      const at=Math.floor(this.random()*frontier.length),i=frontier.splice(at,1)[0];tiles[i]=this.random()<.7?TILE.ROAD:TILE.GRASS;
-      for(const n of this.neighbors(i))if(selected.has(n)&&!blocked[n]&&!walkable(tiles[n])&&!frontier.includes(n))frontier.push(n);
-    }
-    // The fallback still visibly rebuilds the warned district, while opening
-    // lanes guarantees it cannot disconnect the existing road network.
-    for(const i of indices)if(!blocked[i]&&!walkable(tiles[i])&&this.random()<.28)tiles[i]=this.obstacleTile(tiles,this.coords(i).x,this.coords(i).z);
-    let proposal={tiles,indices};if(tiles.some((t,i)=>t!==this.tiles[i])&&this.safeCandidate(proposal,entities))return proposal;
-    // With a very crowded arena, a collision-equivalent structure swap is the
-    // final deterministic fallback. It still rebuilds the city this cycle and
-    // never places a new collider over a vehicle.
-    const equivalent=new Set([TILE.BRICK,TILE.STEEL,TILE.HOUSE,TILE.TREE,TILE.HIGHRISE,TILE.SHOP]);
-    for(let i=0;i<tiles.length;i++)if(!blocked[i]&&equivalent.has(this.tiles[i])){tiles.set(this.tiles);tiles[i]=this.tiles[i]===TILE.HOUSE?TILE.STEEL:TILE.HOUSE;proposal={tiles,indices:[i]};if(this.safeCandidate(proposal,entities))return proposal;}
-    return null;
-  }
-  commit(candidate) {
-    const changed=[]; for(let i=0;i<this.tiles.length;i++)if(this.tiles[i]!==candidate.tiles[i]){this.tiles[i]=candidate.tiles[i];this.hp[i]=this.tileHP(this.tiles[i]);changed.push(i);}
-    if(changed.length)this.version++;return changed;
-  }
   damage(i,amount) { if(i<0||!Number.isFinite(this.hp[i]))return false;const destroyed=this.tiles[i];this.hp[i]-=amount;if(this.hp[i]>0)return false;this.tiles[i]=destroyed===TILE.TREE||destroyed===TILE.BARREL?TILE.GRASS:TILE.RUBBLE;this.hp[i]=Infinity;this.version++;return true; }
 }
 export function readStorage(key,fallback) { try { const value=localStorage.getItem(key); return value===null?fallback:JSON.parse(value); } catch { return fallback; } }
@@ -951,18 +1109,18 @@ export class Effects {
     this.geometry=new THREE.IcosahedronGeometry(1,0);this.material=new THREE.MeshBasicMaterial({vertexColors:false,transparent:true,opacity:.85,depthWrite:false});
     this.mesh=new THREE.InstancedMesh(this.geometry,this.material,CONFIG.effects.high);this.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);this.mesh.frustumCulled=false;scene.add(this.mesh);this.dummy=new THREE.Object3D();this.color=new THREE.Color();this.limit=CONFIG.effects.high;
     for(let i=0;i<CONFIG.effects.high;i++){this.particles.push({life:0});this.dummy.scale.setScalar(0);this.dummy.updateMatrix();this.mesh.setMatrixAt(i,this.dummy.matrix);this.mesh.setColorAt(i,this.color);}
-    this.rings=Array.from({length:6},()=>{const m=ring(scene,0xffdf9c);m.visible=false;return {mesh:m,life:0};});
+    this.rings=Array.from({length:6},()=>{const m=ring(scene,0xffdf9c);m.material=m.material.clone();m.material.transparent=true;m.material.depthWrite=false;m.material.toneMapped=false;m.visible=false;return {mesh:m,life:0,max:.38};});
     this.popups=Array.from({length:CONFIG.effects.popups},()=>{const element=document.createElement('span');element.className='score-popup';element.hidden=true;document.getElementById('popups').append(element);return {element,life:0};});
     this.project=new THREE.Vector3();
   }
-  emit(x,y,z,color,count=8,life=.6){const limit=this.limit;
-    for(let i=0;i<count;i++){this.cursor=(this.cursor+1)%limit;const p=this.particles[this.cursor];Object.assign(p,{x,y,z,vx:(Math.random()-.5)*5,vy:1+Math.random()*4,vz:(Math.random()-.5)*5,life,max:life,size:.05+Math.random()*.15,color});this.active.add(this.cursor);this.mesh.setColorAt(this.cursor,this.color.setHex(color));}this.mesh.instanceColor.needsUpdate=true;
+  emit(x,y,z,color,count=8,life=.6,size=1){const limit=this.limit;
+    for(let i=0;i<count;i++){this.cursor=(this.cursor+1)%limit;const p=this.particles[this.cursor];Object.assign(p,{x,y,z,vx:(Math.random()-.5)*5,vy:1+Math.random()*4,vz:(Math.random()-.5)*5,life,max:life,size:(.05+Math.random()*.15)*size,color});this.active.add(this.cursor);this.mesh.setColorAt(this.cursor,this.color.setHex(color));}this.mesh.instanceColor.needsUpdate=true;
   }
   setQuality(){this.limit=CONFIG.effects.high;this.mesh.count=this.limit;}
-  explosion(x,z,size=1){this.emit(x,.7,z,0xfff1b1,6*size,.22);this.emit(x,.5,z,0xf6a45e,8*size,.5);this.emit(x,.2,z,0x9a8975,5*size,.8);const r=this.rings.find(r=>r.life<=0)||this.rings[0];r.life=.3;r.mesh.position.set(x,.1,z);r.mesh.visible=true;r.size=size;this.shake=Math.max(this.shake,.1*size);}
+  explosion(x,z,size=1){this.emit(x,.7,z,0xffffff,Math.round(7*size),.16,1.6);this.emit(x,.5,z,0xffaa68,Math.round(10*size),.42,1.25);this.emit(x,.2,z,0x8f9490,Math.round(7*size),.78,1.45);const r=this.rings.find(r=>r.life<=0)||this.rings[0];r.life=r.max;r.mesh.material.opacity=.8;r.mesh.position.set(x,.1,z);r.mesh.visible=true;r.size=size;this.shake=Math.max(this.shake,.1*size);}
   popup(x,z,text,color='#fff9d5'){const p=this.popups.find(p=>p.life<=0)||this.popups[0];Object.assign(p,{x,z,life:1.2});p.element.textContent=text;p.element.style.color=color;p.element.hidden=false;}
   update(dt){this.shake=Math.max(0,this.shake-dt);let changed=false;for(const i of this.active){const p=this.particles[i];p.life=Math.max(0,p.life-dt);if(p.life>0){p.x+=p.vx*dt;p.y+=p.vy*dt;p.z+=p.vz*dt;p.vy-=6*dt;this.dummy.position.set(p.x,Math.max(.07,p.y),p.z);this.dummy.rotation.set(0,0,0);this.dummy.scale.setScalar(p.size*Math.min(1,p.life*4));}else{this.dummy.scale.setScalar(0);this.active.delete(i);}this.dummy.updateMatrix();this.mesh.setMatrixAt(i,this.dummy.matrix);changed=true;}if(changed)this.mesh.instanceMatrix.needsUpdate=true;
-    for(const r of this.rings)if(r.life>0){r.life-=dt;r.mesh.visible=r.life>0;r.mesh.scale.setScalar((.3-r.life)*7*r.size);}
+    for(const r of this.rings)if(r.life>0){r.life=Math.max(0,r.life-dt);r.mesh.visible=r.life>0;r.mesh.scale.setScalar((r.max-r.life)*8*r.size);r.mesh.material.opacity=.8*r.life/r.max;}
     for(const p of this.popups)if(p.life>0){p.life-=dt;p.element.hidden=p.life<=0;}
   }
   render(){for(const p of this.popups)if(p.life>0){this.project.set(p.x,2+(1.2-p.life),p.z).project(this.camera);p.element.style.transform=`translate(${(this.project.x*.5+.5)*innerWidth}px,${(-this.project.y*.5+.5)*innerHeight}px) translate(-50%,-50%)`;p.element.style.opacity=Math.min(1,p.life*3);}}
@@ -1030,7 +1188,7 @@ export class Enemies {
     if(g.world.grid.trace(e.x,e.z,g.player.x,g.player.z))return;
     g.combat.shoot(e,'enemy',e.damage);if(e.type==='gunner'){e.burst=2;e.burstTimer=.18;}
   }
-  hurt(e,damage){if(e.dead)return;e.hp-=damage;e.flash=.12;const g=this.game;g.effects.emit(e.x,.8,e.z,0xfff0c2,3,.2);if(e.hp<=0){e.dead=true;this.dirty=true;e.model.root.removeFromParent();g.effects.explosion(e.x,e.z,e.type==='elite'?2:1);g.audio.play('explosion');g.onKill(e);g.combat.drop(e.x,e.z);}}
+  hurt(e,damage){if(e.dead)return;e.hp-=damage;e.flash=.12;const g=this.game;g.effects.emit(e.x,.8,e.z,0xffefb8,5,.23,1.2);if(e.hp<=0){e.dead=true;this.dirty=true;e.model.root.removeFromParent();g.effects.explosion(e.x,e.z,e.type==='elite'?2:1);g.audio.play('explosion');g.onKill(e);g.combat.drop(e.x,e.z);}}
   clear(){for(const e of this.list)e.model.root.removeFromParent();for(const p of this.pending)p.marker.removeFromParent();this.list=[];this.pending=[];this.dirty=false;}
 }
 ```
@@ -1079,7 +1237,7 @@ export class Input {
   }
   clear(){this.keys.clear();this.firing=false;this.dash=false;this.touchMove.x=this.touchMove.y=this.touchAim.x=this.touchAim.y=0;document.querySelectorAll('.stick-knob').forEach(el=>el.style.transform='translate(0,0)');document.querySelectorAll('.touch-stick').forEach(el=>el.classList.remove('active'));}
   movement(){const x=this.touchMove.x||Number(this.keys.has('KeyD')||this.keys.has('ArrowRight'))-Number(this.keys.has('KeyA')||this.keys.has('ArrowLeft')),y=this.touchMove.y||Number(this.keys.has('KeyS')||this.keys.has('ArrowDown'))-Number(this.keys.has('KeyW')||this.keys.has('ArrowUp'));return screenDirection(x,y);}
-  aim(camera,origin){if(this.touchAim.x||this.touchAim.y){const d=screenDirection(this.touchAim.x,this.touchAim.y);this.target.set((origin?.x||0)+d.x*20,0,(origin?.z||0)+d.z*20);}else if(this.pointerKnown){const r=this.canvas.getBoundingClientRect();this.mouse.set((this.clientX-r.left)/r.width*2-1,-(this.clientY-r.top)/r.height*2+1);this.ray.setFromCamera(this.mouse,camera);this.ray.ray.intersectPlane(this.plane,this.target);}return this.target;}
+  aim(camera,origin){if(this.touchAim.x||this.touchAim.y){const d=screenDirection(this.touchAim.x,this.touchAim.y);this.target.set((origin?.x||0)+d.x*20,0,(origin?.z||0)+d.z*20);}else if(this.pointerKnown){this.mouse.set(this.clientX/innerWidth*2-1,-this.clientY/innerHeight*2+1);this.ray.setFromCamera(this.mouse,camera);this.ray.ray.intersectPlane(this.plane,this.target);}return this.target;}
 }
 ```
 
@@ -1108,21 +1266,21 @@ export class Game {
     this.scene=new THREE.Scene();this.scene.background=new THREE.Color(0xe5ecdb);this.scene.fog=new THREE.Fog(0xe5ecdb,75,145);this.daySky=new THREE.Color(0xe5ecdb);this.nightSky=new THREE.Color(0x243844);this.dayHemi=new THREE.Color(0xfff6dd);this.nightHemi=new THREE.Color(0x7792bd);this.daySun=new THREE.Color(0xfff0da);this.nightSun=new THREE.Color(0x9db9dc);
     this.camera=new THREE.OrthographicCamera(-24,24,18,-18,.1,180);this.focus=new THREE.Vector3();this.cameraTarget=new THREE.Vector3();this.labelPosition=new THREE.Vector3();this.cameraOffset=new THREE.Vector3(38,48,38);this.camera.position.copy(this.cameraOffset);this.camera.lookAt(this.focus);
     this.hemi=new THREE.HemisphereLight(0xfff6dd,0x91b3a0,2.6);this.scene.add(this.hemi);this.sun=new THREE.DirectionalLight(0xfff0da,3.2);this.sun.position.set(-20,40,20);this.sun.castShadow=false;this.scene.add(this.sun);
-    this.audio=new Audio(this.settings);this.input=new Input(this.renderer.domElement,force=>this.togglePause(force),()=>{if(this.state==='over')this.start();});
+    this.audio=new Audio(this.settings);const unlockAudio=e=>{if(e.target?.closest?.('#play'))this.audio.setScene('playing');this.audio.unlock();window.removeEventListener('pointerdown',unlockAudio);window.removeEventListener('keydown',unlockAudio);};window.addEventListener('pointerdown',unlockAudio);window.addEventListener('keydown',unlockAudio);this.input=new Input(this.renderer.domElement,force=>this.togglePause(force),()=>{if(this.state==='over')this.start();});
     this.effects=new Effects(this.scene,this.camera,this.settings);this.world=null;this.enemies=new Enemies(this);this.combat=new Combat(this);this.reset(1709);this.ui=new UI(this);this.previewTanks=[];this.makePreview();this.setQuality();this.resize();
-    window.addEventListener('resize',()=>this.resize());this.accumulator=0;this.last=performance.now();this.renderLast=0;this.uiAccumulator=0;this.frameCount=0;
+    window.addEventListener('resize',()=>this.resize());document.addEventListener('visibilitychange',()=>{if(document.hidden){if(this.audio.context)this.audio.context.suspend().catch(()=>{});}else if(this.audio.context)this.audio.unlock();});this.accumulator=0;this.last=performance.now();this.renderLast=0;this.uiAccumulator=0;this.frameCount=0;
     this.renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();this.togglePause(true);document.getElementById('error').hidden=false;document.getElementById('error-message').textContent='WebGL đã mất kết nối. Tải lại trang để khởi động lại.';});
     document.getElementById('loading').hidden=true;this.frame=this.frame.bind(this);this.frameId=requestAnimationFrame(this.frame);
   }
   makePreview(){for(const [x,z,color,type] of [[12,0,0xe8836d,'scout'],[0,-12,0xe2ae59,'mortar'],[-12,12,0xb68abf,'heavy']]){const m=tankModel(color,type);m.root.position.set(x,0,z);m.turret.rotation.y=Math.PI*.7;m.body.rotation.y=Math.PI*.65;this.scene.add(m.root);this.previewTanks.push(m);}this.player.aim=-1.1;this.player.angle=-.6;this.player.sync(0);}
   removePreview(){for(const m of this.previewTanks)m.root.removeFromParent();this.previewTanks=[];}
   reset(seed){this.input.clear();this.enemies.clear();this.combat.clear();this.effects.clear();this.player?.dispose();this.world?.dispose();this.world=new World(this.scene,seed);this.player=new Player(this.scene);this.time=0;this.score=0;this.kills=0;this.combo=0;this.maxCombo=1;this.comboTime=0;this.newBest=false;this.milestones=new Set();this.enemies.spawnTimer=3;this.enemies.eliteTimer=CONFIG.director.eliteEvery;this.enemies.assaultTimer=CONFIG.director.assaultFirst;this.enemies.assaultRemaining=0;this.enemies.serial=0;this.accumulator=0;this.uiAccumulator=0;this.focus.set(0,0,0);this.setNight(false,true,true);this.ui?.clear();}
-  start(){this.audio.unlock();this.removePreview();const seed=new URLSearchParams(location.search).get('seed');this.reset(seed!==null?Number(seed)>>>0:crypto.getRandomValues(new Uint32Array(1))[0]);this.state='playing';this.ui.show(this.state);this.last=performance.now();this.resize();this.ui.toast(this.input.touchCapable?'Kéo trái để đi · Kéo phải để ngắm và bắn':'Giữ chuột để bắn · Space để lướt né');document.activeElement?.blur();}
-  home(){this.input.clear();this.removePreview();this.reset(1709);this.state='menu';this.makePreview();this.ui.show('menu');this.resize();}
-  togglePause(force=false){if(force&&this.state!=='playing')return;if(this.state==='over'||this.state==='menu')return;this.state=this.state==='playing'?'paused':'playing';this.input.clear();this.accumulator=0;this.last=performance.now();this.ui.show(this.state);if(this.state==='playing'){this.audio.unlock();document.activeElement?.blur();}}
-  end(){if(this.state!=='playing')return;this.state='over';this.input.clear();this.effects.explosion(this.player.x,this.player.z,2);this.audio.play('explosion');const score=Math.floor(this.score);this.newBest=score>this.best;this.best=Math.max(this.best,score);writeStorage('chibi-best',this.best);this.ui.show('over');}
+  start(){this.audio.setScene('playing');this.audio.unlock();this.removePreview();const seed=new URLSearchParams(location.search).get('seed');this.reset(seed!==null?Number(seed)>>>0:crypto.getRandomValues(new Uint32Array(1))[0]);this.state='playing';this.ui.show(this.state);this.last=performance.now();this.resize();this.ui.toast(this.input.touchCapable?'Kéo trái để đi · Kéo phải để ngắm và bắn':'Giữ chuột để bắn · Space để lướt né');document.activeElement?.blur();}
+  home(){this.input.clear();this.removePreview();this.reset(1709);this.state='menu';this.audio.setScene('menu');this.makePreview();this.ui.show('menu');this.resize();}
+  togglePause(force=false){if(force&&this.state!=='playing')return;if(this.state==='over'||this.state==='menu')return;this.state=this.state==='playing'?'paused':'playing';this.audio.setScene(this.state);this.input.clear();this.accumulator=0;this.last=performance.now();this.ui.show(this.state);if(this.state==='playing'){this.audio.unlock();document.activeElement?.blur();}}
+  end(){if(this.state!=='playing')return;this.state='over';this.input.clear();this.effects.explosion(this.player.x,this.player.z,2);this.audio.play('explosion');this.audio.setScene('over');const score=Math.floor(this.score);this.newBest=score>this.best;this.best=Math.max(this.best,score);writeStorage('chibi-best',this.best);this.ui.show('over');}
   onKill(e){this.combo=this.comboTime>0?Math.min(CONFIG.combat.maxCombo,this.combo+1):1;this.comboTime=CONFIG.combat.comboWindow;this.maxCombo=Math.max(this.maxCombo,this.combo);const points=e.points*this.combo;this.score+=points;this.kills++;this.effects.popup(e.x,e.z,`+${points}${this.combo>1?' ×'+this.combo:''}`);}
-  step(dt){if(this.state!=='playing')return;const before=this.time;this.time+=dt;this.score+=CONFIG.combat.survivalScore*dt;this.comboTime-=dt;if(this.comboTime<=0)this.combo=0;this.world.update(dt,this);this.player.update(dt,this);this.enemies.update(dt);this.combat.update(dt);this.effects.update(dt);for(const milestone of [30,60,120])if(before<milestone&&this.time>=milestone&&!this.milestones.has(milestone)){this.milestones.add(milestone);this.score+=milestone*2;this.ui.toast(`SỐNG SÓT ${milestone} GIÂY · +${milestone*2} ĐIỂM`);this.audio.play('pickup');}const night=Math.floor(this.time/CONFIG.world.phaseDuration)%2===1;if(night!==this.isNight)this.setNight(night);this.uiAccumulator+=dt;if(this.uiAccumulator>=1/CONFIG.performance.uiFPS){this.ui.update(this.uiAccumulator);this.uiAccumulator=0;}}
+  step(dt){if(this.state!=='playing')return;const before=this.time;this.time+=dt;this.score+=CONFIG.combat.survivalScore*dt;this.comboTime-=dt;if(this.comboTime<=0)this.combo=0;this.player.update(dt,this);this.enemies.update(dt);this.combat.update(dt);this.effects.update(dt);for(const milestone of [30,60,120])if(before<milestone&&this.time>=milestone&&!this.milestones.has(milestone)){this.milestones.add(milestone);this.score+=milestone*2;this.ui.toast(`SỐNG SÓT ${milestone} GIÂY · +${milestone*2} ĐIỂM`);this.audio.play('pickup');}const night=Math.floor(this.time/CONFIG.world.phaseDuration)%2===1;if(night!==this.isNight)this.setNight(night);this.uiAccumulator+=dt;if(this.uiAccumulator>=1/CONFIG.performance.uiFPS){this.ui.update(this.uiAccumulator);this.uiAccumulator=0;}}
   setNight(night,silent=false,instant=false){const changed=this.isNight!==night;this.isNight=night;document.body.classList.toggle('night',night);this.enemies.setNight(night);if(changed&&!silent&&this.ui){this.ui.toast(night?'ĐÊM XUỐNG · XE TĂNG ZOMBIE ×2 MÁU':'BÌNH MINH · XE TĂNG TRỞ LẠI BÌNH THƯỜNG');this.audio.play('warning');}this.updateDayLighting(99);this.world.updateGroundEffects(this.player,this.enemies.list,night);}
   updateDayLighting(dt){const targetSky=this.isNight?this.nightSky:this.daySky,targetHemi=this.isNight?this.nightHemi:this.dayHemi,targetSun=this.isNight?this.nightSun:this.daySun,f=dt>10?1:1-Math.exp(-dt*1.15);this.scene.background.lerp(targetSky,f);this.scene.fog.color.copy(this.scene.background);this.hemi.color.lerp(targetHemi,f);this.sun.color.lerp(targetSun,f);this.hemi.intensity+=((this.isNight?1.15:2.6)-this.hemi.intensity)*f;this.sun.intensity+=((this.isNight?1.25:3.2)-this.sun.intensity)*f;this.renderer.toneMappingExposure+=((this.isNight?0.82:1.2)-this.renderer.toneMappingExposure)*f;}
   updateCamera(dt){const menu=this.state==='menu';this.cameraTarget.set(menu?-6:clamp(this.player.x,-17,17),0,menu?6:clamp(this.player.z,-17,17));this.focus.lerp(this.cameraTarget,1-Math.exp(-dt*5));this.camera.position.copy(this.focus).add(this.cameraOffset);if(this.settings.shake&&this.state==='playing'&&this.effects.shake>0){const n=this.effects.shake;this.camera.position.x+=(Math.random()-.5)*n;this.camera.position.z+=(Math.random()-.5)*n;}this.camera.lookAt(this.focus);if(menu){this.camera.setViewOffset(innerWidth,innerHeight,-innerWidth*.17,0,innerWidth,innerHeight);}else this.camera.clearViewOffset();this.camera.updateMatrixWorld();if(menu){this.labelPosition.set(this.player.x,2,this.player.z).project(this.camera);const label=document.querySelector('.field-label');label.style.left=`${(this.labelPosition.x*.5+.5)*innerWidth+15}px`;label.style.top=`${(-this.labelPosition.y*.5+.5)*innerHeight-130}px`;}}
@@ -1230,6 +1388,130 @@ export function disposeShared() { Object.values(geometries).forEach(g=>g.dispose
 ```
 
 
+## src/music.js
+
+```javascript
+// Original, tiny procedural loops. They are rendered once into an AudioBuffer;
+// playback uses one looping source instead of scheduling notes during combat.
+const SAMPLE_RATE = 22050;
+const TAU = Math.PI * 2;
+const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
+
+export function musicSamples(track) {
+  const battle = track === 'battle';
+  const beat = 60 / (battle ? 136 : 112);
+  const length = Math.round(16 * beat * SAMPLE_RATE);
+  const samples = new Float32Array(length);
+  let seed = battle ? 0x51b1e : 0x70a7;
+  const random = () => ((seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296) * 2 - 1;
+  const add = (index, value) => { samples[index % length] += value; };
+
+  function note(at, beats, midi, level, voice) {
+    if (midi == null) return;
+    const start = Math.round(at * beat * SAMPLE_RATE);
+    const held = beats * beat;
+    const tail = voice === 'pad' ? .3 : voice === 'pluck' ? .18 : .1;
+    const count = Math.round((held + tail) * SAMPLE_RATE);
+    const hz = frequency(midi);
+    for (let i = 0; i < count; i++) {
+      const time = i / SAMPLE_RATE;
+      const release = time <= held ? 1 : Math.max(0, 1 - (time - held) / tail);
+      let envelope, wave;
+      const phase = TAU * hz * time;
+      if (voice === 'pad') {
+        envelope = Math.min(1, time / .085) * release;
+        wave = .58 * Math.sin(phase) + .24 * Math.sin(phase * 1.004) + .18 * Math.sin(phase * 2);
+      } else if (voice === 'pluck') {
+        envelope = Math.min(1, time / .005) * Math.exp(-time * 3.2) * release;
+        wave = .7 * Math.sin(phase) + .23 * Math.sin(phase * 2) + .07 * Math.sin(phase * 3);
+      } else if (voice === 'bass') {
+        envelope = Math.min(1, time / .008) * Math.exp(-time * .85) * release;
+        wave = .8 * Math.sin(phase) + .18 * Math.sin(phase * 2) + .07 * Math.sin(phase * 3);
+      } else {
+        envelope = Math.min(1, time / .012) * Math.exp(-time * .9) * release;
+        wave = .64 * Math.sin(phase) + .25 * Math.sin(phase * 2) + .11 * Math.sin(phase * 3);
+      }
+      add(start + i, wave * envelope * level);
+    }
+  }
+
+  function drum(at, kind, level) {
+    const start = Math.round(at * beat * SAMPLE_RATE);
+    const seconds = kind === 'kick' ? .31 : kind === 'snare' ? .2 : .075;
+    const count = Math.round(seconds * SAMPLE_RATE);
+    let phase = 0, previous = 0;
+    for (let i = 0; i < count; i++) {
+      const time = i / SAMPLE_RATE;
+      const noise = random();
+      let value;
+      if (kind === 'kick') {
+        phase += TAU * (50 + 100 * Math.exp(-time * 25)) / SAMPLE_RATE;
+        value = Math.sin(phase) * Math.exp(-time * 14) + noise * .06 * Math.exp(-time * 90);
+      } else if (kind === 'snare') {
+        value = (noise - previous * .72) * Math.exp(-time * 23) + Math.sin(TAU * 185 * time) * .22 * Math.exp(-time * 22);
+      } else {
+        value = (noise - previous * .9) * Math.exp(-time * 65);
+      }
+      previous = noise;
+      add(start + i, value * level);
+    }
+  }
+
+  const chords = battle
+    ? [[52, 55, 59], [48, 52, 55], [50, 54, 57], [47, 51, 54]]
+    : [[50, 53, 57], [46, 50, 53], [48, 52, 55], [45, 49, 52]];
+  const melody = battle
+    ? [76, 71, 67, 71, 76, 79, 76, 71, 74, 71, 67, 71, 74, 76, 74, 71,
+       72, 67, 64, 67, 72, 76, 72, 67, 71, 75, 78, 75, 71, 66, 68, 71]
+    : [74, null, 69, 65, 69, null, 72, 69, 70, null, 74, 72, 69, null, 65, 64,
+       67, null, 72, 69, 67, null, 64, 67, 76, null, 73, 69, 73, null, 69, 64];
+
+  for (let bar = 0; bar < 4; bar++) {
+    const chord = chords[bar];
+    for (const pitch of chord) note(bar * 4, 3.85, pitch, battle ? .055 : .085, 'pad');
+    if (battle) {
+      for (let eighth = 0; eighth < 8; eighth++) {
+        const pitch = eighth % 4 === 3 ? chord[0] + 12 : chord[0] - 12;
+        note(bar * 4 + eighth * .5, .43, pitch, .15, 'bass');
+      }
+    } else {
+      note(bar * 4, 1.7, chord[0] - 12, .14, 'bass');
+      note(bar * 4 + 2, 1.7, chord[0] - 12, .12, 'bass');
+    }
+  }
+  for (let i = 0; i < melody.length; i++) {
+    if (battle) note(i * .5, .43, melody[i], i % 4 === 0 ? .13 : .095, 'lead');
+    else note(i * .5, .75, melody[i], .18, 'pluck');
+  }
+  for (let i = 0; i < 16; i++) {
+    if (battle) {
+      drum(i, 'kick', .24);
+      if (i % 4 === 1 || i % 4 === 3) drum(i, 'snare', .13);
+      drum(i, 'hat', .035);
+      drum(i + .5, 'hat', .027);
+    } else {
+      if (i % 4 === 0 || i % 4 === 2) drum(i, 'kick', .075);
+      if (i % 4 === 3) drum(i, 'hat', .025);
+    }
+  }
+
+  // A quiet, wrapped delay gives the synthetic instruments a little room.
+  const delay = Math.round(.19 * SAMPLE_RATE);
+  const dry = samples.slice();
+  for (let i = 0; i < length; i++) samples[(i + delay) % length] += dry[i] * (battle ? .1 : .16);
+  let peak = 0;
+  for (const sample of samples) peak = Math.max(peak, Math.abs(sample));
+  const scale = peak > .78 ? .78 / peak : 1;
+  const edge = Math.round(.008 * SAMPLE_RATE);
+  for (let i = 0; i < length; i++) {
+    const fade = Math.min(1, i / edge, (length - 1 - i) / edge);
+    samples[i] *= scale * fade;
+  }
+  return { samples, sampleRate: SAMPLE_RATE };
+}
+```
+
+
 ## src/player.js
 
 ```javascript
@@ -1275,13 +1557,15 @@ export class UI {
   fullscreenElement(){return document.fullscreenElement||document.webkitFullscreenElement||document.msFullscreenElement;}
   fullscreenRequest(root=document.documentElement){return root.requestFullscreen||root.webkitRequestFullscreen||root.webkitRequestFullScreen||root.msRequestFullscreen;}
   fullscreenExit(){return document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen;}
-  syncFullscreen(){const active=!!this.fullscreenElement(),button=$('fullscreen-button');button.classList.toggle('is-fullscreen',active);button.setAttribute('aria-label',active?'Thoát toàn màn hình':'Bật toàn màn hình');button.title=active?'Thoát toàn màn hình':'Toàn màn hình';}
+  standalone(){return navigator.standalone===true||matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches;}
+  iphone(){return /iPhone|iPod/.test(navigator.userAgent);}
+  syncFullscreen(){const active=!!this.fullscreenElement(),button=$('fullscreen-button');button.hidden=this.iphone()&&this.standalone();button.classList.toggle('is-fullscreen',active);button.setAttribute('aria-label',active?'Thoát toàn màn hình':'Bật toàn màn hình');button.title=active?'Thoát toàn màn hình':'Toàn màn hình';}
   async toggleFullscreen(){
     try{
       if(this.fullscreenElement()){
         const exit=this.fullscreenExit();if(exit)await exit.call(document);screen.orientation?.unlock?.();
       }else{
-        const root=document.documentElement,enter=this.fullscreenRequest(root);if(!enter){this.toast(/iPhone|iPod/.test(navigator.userAgent)?'iPhone: chọn Chia sẻ · Thêm vào Màn hình chính':'Trình duyệt này chưa hỗ trợ toàn màn hình');return;}
+        const root=document.documentElement,enter=this.fullscreenRequest(root);if(!enter){this.toast(this.iphone()?this.standalone()?'Game đã mở dạng ứng dụng; iOS vẫn giữ thanh trạng thái.':'Mở game từ biểu tượng trên Màn hình chính; tab iPhone không thể vào toàn màn hình.':'Trình duyệt này chưa hỗ trợ toàn màn hình');return;}
         await enter.call(root);if(this.game.touchDevice&&this.game.state==='playing')try{await screen.orientation?.lock?.('landscape');}catch{}
       }
     }catch{this.toast('Không thể bật toàn màn hình trên trình duyệt này');}
@@ -1294,8 +1578,6 @@ export class UI {
     const hp=Math.round(Math.max(0,p.hp/CONFIG.player.hp)*100),stamina=Math.round(p.stamina/CONFIG.player.stamina*100);$('hp-value').textContent=Math.ceil(p.hp);$('hp-ring').style.setProperty('--angle',`${hp*3.6}deg`);$('stamina-value').textContent=Math.floor(p.stamina);$('stamina-ring').style.setProperty('--angle',`${stamina*3.6}deg`);const dashReady=p.stamina>=CONFIG.player.dashCost&&p.dashCooldown<=0;$('dash-button').disabled=!dashReady;$('dash-button').classList.toggle('ready',dashReady);$('score').textContent=String(Math.floor(g.score)).padStart(6,'0');$('combo').textContent=`×${Math.max(1,g.combo)}`;$('time').textContent=formatTime(g.time);
     const elite=g.enemies.list.find(e=>e.type==='elite');$('elite').hidden=!elite;if(elite){const value=Math.round(Math.max(0,elite.hp/elite.maxHP)*100);$('elite-ring').style.setProperty('--angle',`${value*3.6}deg`);$('elite-value').textContent=`${value}%`;}
     const phaseRemaining=CONFIG.world.phaseDuration-g.time%CONFIG.world.phaseDuration;$('day-icon').textContent=g.isNight?'☾':'☀';$('day-label').textContent=g.isNight?'ĐÊM ZOMBIE':'BAN NGÀY';$('day-timer').textContent=formatTime(Math.ceil(phaseRemaining));$('day-cycle').classList.toggle('is-night',g.isNight);
-    $('world-status').textContent=g.world.pending?'SẮP ĐỔI':'TÁI CẤU TRÚC';$('shift-timer').textContent=formatTime(Math.ceil(g.world.pending?.remaining??g.world.nextShift));
-    const i=g.input;$('crosshair').hidden=!i.pointerKnown||i.touchCapable;if(i.pointerKnown&&!i.touchCapable){$('crosshair').style.left=`${i.clientX}px`;$('crosshair').style.top=`${i.clientY}px`;}
   }
   clear(){this.toastLife=this.hitLife=0;$('toast').classList.remove('visible');$('hit-flash').classList.remove('active');}
 }
@@ -1308,21 +1590,18 @@ export class UI {
 import * as THREE from 'three';
 import { CONFIG } from './config.js';
 import { Grid, TILE, clamp } from './core.js';
-import { part, tileModel, material } from './models.js';
-const warningGeometry=new THREE.BoxGeometry(1,1,1),warningMaterial=material(0xf5b343,true),warningMatrix=new THREE.Matrix4();
+import { part, tileModel } from './models.js';
 function radialTexture(inner,outer){const canvas=document.createElement('canvas');canvas.width=canvas.height=64;const context=canvas.getContext('2d'),gradient=context.createRadialGradient(32,32,2,32,32,32);gradient.addColorStop(0,inner);gradient.addColorStop(.5,inner);gradient.addColorStop(1,outer);context.fillStyle=gradient;context.fillRect(0,0,64,64);const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;return texture;}
 export class World {
   constructor(scene,seed) {
-    this.grid=new Grid(seed);this.root=new THREE.Group();scene.add(this.root);this.tiles=[];this.pending=null;this.shifts=0;this.skipped=0;this.batchRoot=new THREE.Group();this.root.add(this.batchRoot);this.batchDirty=true;
+    this.grid=new Grid(seed);this.root=new THREE.Group();scene.add(this.root);this.tiles=[];this.batchRoot=new THREE.Group();this.root.add(this.batchRoot);this.batchDirty=true;
     this.ghosts=new Map();this.ghostMaterials=new Map();this.hiddenTiles=new Set();this.hiddenMatrix=new THREE.Matrix4().makeScale(0,0,0);this.fadeX=Infinity;this.fadeZ=Infinity;
     const width=this.grid.half*2;
     part(this.root,'box',0xadc4b1,0,-.62,0,width+1.3,1.2,width+1.3);
     part(this.root,'box',CONFIG.colors.road,0,-.05,0,width,.1,width);
     for(let i=0;i<this.grid.tiles.length;i++)this.rebuild(i);
     this.owned=[];this.groundFxGeometry=new THREE.PlaneGeometry(2,2);this.shadowTexture=radialTexture('rgba(32,48,43,.82)','rgba(32,48,43,0)');this.glowTexture=radialTexture('rgba(255,255,255,.8)','rgba(255,255,255,0)');this.shadowMaterial=new THREE.MeshBasicMaterial({map:this.shadowTexture,color:0x42564f,transparent:true,opacity:.36,depthWrite:false});this.glowMaterial=new THREE.MeshBasicMaterial({map:this.glowTexture,color:0x8dffc1,transparent:true,opacity:.26,depthWrite:false,blending:THREE.AdditiveBlending});this.structureShadows=new THREE.InstancedMesh(this.groundFxGeometry,this.shadowMaterial,this.grid.tiles.length);this.vehicleShadows=new THREE.InstancedMesh(this.groundFxGeometry,this.shadowMaterial,CONFIG.director.maxEnemies+1);this.structureShadows.frustumCulled=this.vehicleShadows.frustumCulled=false;this.structureShadows.renderOrder=this.vehicleShadows.renderOrder=1;this.root.add(this.structureShadows,this.vehicleShadows);this.playerLight=new THREE.Mesh(this.groundFxGeometry,this.glowMaterial);this.playerLight.rotation.x=-Math.PI/2;this.playerLight.position.y=.095;this.playerLight.visible=false;this.playerLight.renderOrder=1;this.root.add(this.playerLight);this.groundFxDummy=new THREE.Object3D();this.owned.push(this.groundFxGeometry,this.shadowMaterial,this.glowMaterial,this.shadowTexture,this.glowTexture);
-    this.warnings=new THREE.Group();this.root.add(this.warnings);this.nextShift=this.interval();
   }
-  interval(){return CONFIG.world.shiftMin+this.grid.random()*(CONFIG.world.shiftMax-CONFIG.world.shiftMin);}
   rebuild(i){this.removeGhost(i);if(this.tiles[i])this.tiles[i].removeFromParent();const mesh=tileModel(this.grid.tiles[i],i),p=this.grid.center(i);mesh.position.set(p.x,0,p.z);mesh.visible=false;mesh.traverse(part=>{if(part.isMesh)part.userData.tileIndex=i;});this.root.add(mesh);this.tiles[i]=mesh;this.batchDirty=true;}
   rebatch(){
     for(const mesh of this.batchRoot.children)mesh.dispose();this.batchRoot.clear();
@@ -1345,36 +1624,7 @@ export class World {
     ghost.position.copy(source.position);this.root.add(ghost);this.ghosts.set(i,ghost);this.hiddenTiles.add(i);this.transformsDirty=true;
   }
   removeGhost(i){const ghost=this.ghosts.get(i);if(!ghost)return;ghost.removeFromParent();this.ghosts.delete(i);this.hiddenTiles.delete(i);this.transformsDirty=true;}
-  showWarning(candidate){
-    const selected=new Set(candidate.indices),cell=this.grid.cell,boundary=[];
-    for(const i of candidate.indices){const {x,z}=this.grid.coords(i),p=this.grid.center(i),sides=[[x-1,z,-cell/2,0,.07,cell],[x+1,z,cell/2,0,.07,cell],[x,z-1,0,-cell/2,cell,.07],[x,z+1,0,cell/2,cell,.07]];
-      for(const [nx,nz,ox,oz,sx,sz] of sides){const outside=nx<0||nz<0||nx>=this.grid.size||nz>=this.grid.size||!selected.has(this.grid.index(nx,nz));if(outside)boundary.push([p.x+ox,.09,p.z+oz,sx,.08,sz]);}
-    }
-    const mesh=new THREE.InstancedMesh(warningGeometry,warningMaterial,boundary.length);boundary.forEach(([x,y,z,sx,sy,sz],i)=>mesh.setMatrixAt(i,warningMatrix.makeScale(sx,sy,sz).setPosition(x,y,z)));mesh.frustumCulled=false;this.warnings.add(mesh);
-  }
-  damage(i,amount,game){const type=this.grid.tiles[i],p=this.grid.center(i);if(!this.grid.damage(i,amount))return false;this.rebuild(i);const large=type===TILE.HIGHRISE?2:type===TILE.HOUSE||type===TILE.SHOP?1.35:1;game.effects.explosion(p.x,p.z,large);game.effects.emit(p.x,.7,p.z,type===TILE.BARREL?0xffba67:type===TILE.TREE?0x77a46b:0xc58b70,Math.round(12*large),1);if(type===TILE.BARREL)game.combat.explode(p.x,p.z,3.8,42,'neutral');return true;}
-  entities(game){return [game.player,...game.enemies.list.filter(e=>!e.dead),...game.enemies.pending.map(p=>({...p,radius:1})),...game.combat.pickups.map(p=>({...p,radius:.4}))];}
-  update(dt,game){
-    if(this.pending){
-      this.pending.remaining-=dt;
-      if(this.pending.remaining<=0){
-        // Rebase the warned cells on live terrain. Damage elsewhere during the
-        // warning is preserved. If a vehicle entered the region, open safe lanes
-        // around it instead of cancelling the whole reconstruction.
-        const live=this.grid.tiles.slice();for(const i of this.pending.indices)live[i]=this.pending.tiles[i];this.pending.tiles=live;
-        let proposal=this.grid.safeCandidate(this.pending,this.entities(game))?this.pending:this.grid.openingCandidate(this.entities(game),this.pending.indices);
-        if(!proposal)proposal=this.grid.openingCandidate(this.entities(game));
-        if(proposal){const changed=this.grid.commit(proposal);changed.forEach(i=>this.rebuild(i));this.shifts++;game.ui.toast('Địa hình đã đổi. Đường mới đã mở!');}
-        this.pending=null;this.warnings.clear();this.nextShift=this.interval();
-      }return;
-    }
-    this.nextShift-=dt;if(this.nextShift>0)return;
-    const candidate=this.grid.candidate(this.entities(game));
-    if(!candidate){this.nextShift=.25;return;}
-    this.pending={...candidate,remaining:CONFIG.world.warning};
-    this.showWarning(candidate);
-    game.ui.toast('CHÚ Ý · Vùng viền vàng sẽ đổi địa hình sau 2 giây');game.audio.play('warning');
-  }
+  damage(i,amount,game){const type=this.grid.tiles[i],p=this.grid.center(i);if(!this.grid.damage(i,amount))return false;this.rebuild(i);const large=type===TILE.HIGHRISE?2:type===TILE.HOUSE||type===TILE.SHOP?1.35:1;game.effects.explosion(p.x,p.z,large);game.effects.emit(p.x,.7,p.z,type===TILE.BARREL?0xffba67:type===TILE.TREE?0x77a46b:0xc58b70,Math.round(12*large),.9,1.45);if(type===TILE.BARREL)game.combat.explode(p.x,p.z,3.8,42,'neutral');return true;}
   fadeOccluders(player){
     // Keep each house and tree full height. Only its rendering changes: replace
     // nearby foreground instances with faint copies so the tank stays visible.
@@ -1457,6 +1707,16 @@ def screenshot(name):
     data = call('Page.captureScreenshot', {'format': 'png'})['data']
     (ART / name).write_bytes(base64.b64decode(data))
 
+def navigate_game(touch=False):
+    url = 'http://127.0.0.1:8765/repository-name/?debug&seed=2026'
+    for _ in range(2):
+        call('Page.navigate', {'url':url})
+        for _ in range(150):
+            if evaluate('Boolean(window.__game' + (' && document.body.classList.contains("touch")' if touch else '') + ')'):
+                return True
+            time.sleep(.1)
+    return False
+
 try:
     for _ in range(100):
         try:
@@ -1474,12 +1734,7 @@ try:
     call('Network.enable')
     call('Network.setCacheDisabled', {'cacheDisabled': True})
     call('Emulation.setDeviceMetricsOverride', {'width':1440,'height':1000,'deviceScaleFactor':1,'mobile':False})
-    call('Page.navigate', {'url':'http://127.0.0.1:8765/repository-name/?debug&seed=2026'})
-    for _ in range(300):
-        ready = evaluate('Boolean(window.__game)')
-        if ready:
-            break
-        time.sleep(.1)
+    ready = navigate_game()
     if not ready:
         print(json.dumps(events[-30:]), flush=True)
         screenshot('startup-error.png')
@@ -1490,6 +1745,7 @@ try:
     call('Input.dispatchMouseEvent', {'type':'mousePressed','x':fullscreen_rect['x'],'y':fullscreen_rect['y'],'button':'left','clickCount':1})
     call('Input.dispatchMouseEvent', {'type':'mouseReleased','x':fullscreen_rect['x'],'y':fullscreen_rect['y'],'button':'left','clickCount':1})
     time.sleep(.25)
+    evaluate("window.__menuMusicAudit={scene:__game.audio.scene,track:__game.audio.musicVoice?.track,context:__game.audio.context?.state}")
     entered_fullscreen = evaluate("Boolean(document.fullscreenElement||document.webkitFullscreenElement)")
     if entered_fullscreen:
         evaluate("(document.exitFullscreen||document.webkitExitFullscreen).call(document)")
@@ -1501,6 +1757,7 @@ try:
     smoke = evaluate("""(async()=>{
       const g=window.__game,results=[];cancelAnimationFrame(g.frameId);
       const check=(name,condition,data)=>results.push({name,pass:!!condition,...(data?{data}: {})});
+      check('First user gesture starts menu theme',window.__menuMusicAudit?.scene==='menu'&&window.__menuMusicAudit?.track==='theme'&&window.__menuMusicAudit?.context==='running',window.__menuMusicAudit);
       document.getElementById('play').click();cancelAnimationFrame(g.frameId);
       check('Start button enters live game',g.state==='playing');
       check('No automatic fire',g.combat.bullets.every(b=>!b.active));
@@ -1510,18 +1767,27 @@ try:
       down('KeyW');const wasd=g.input.movement();up('KeyW');down('ArrowUp');const arrow=g.input.movement();up('ArrowUp');check('W and up arrow equivalent',wasd.x===arrow.x&&wasd.z===arrow.z);
       down('KeyW');down('KeyD');check('Diagonal normalized',Math.abs(Math.hypot(g.input.movement().x,g.input.movement().z)-1)<1e-8);g.input.clear();
       down('Space');g.step(1/60);up('Space');check('Dash consumes stamina, grants invulnerability',g.player.stamina===70&&g.player.invulnerable>0);for(let i=0;i<20;i++)g.step(1/60);check('Dash stays outside solids',g.world.grid.free(g.player.x,g.player.z,g.player.radius));
-      const oldTime=g.time,oldSpawn=g.enemies.spawnTimer,oldShift=g.world.nextShift;down('Escape');up('Escape');g.step(10);check('Pause freezes simulation',g.time===oldTime&&g.enemies.spawnTimer===oldSpawn&&g.world.nextShift===oldShift);down('Escape');up('Escape');
+      const oldTime=g.time,oldSpawn=g.enemies.spawnTimer;down('Escape');up('Escape');g.step(10);check('Pause freezes simulation',g.time===oldTime&&g.enemies.spawnTimer===oldSpawn);down('Escape');up('Escape');
       down('KeyW');g.input.firing=true;window.dispatchEvent(new Event('blur'));check('Blur pauses and clears held input',g.state==='paused'&&!g.input.keys.size&&!g.input.firing);g.togglePause();
       g.player.x=0;g.player.z=0;g.player.sync(0);g.updateCamera(1);g.input.clientX=innerWidth*.61;g.input.clientY=innerHeight*.45;g.input.pointerKnown=true;
       const target=g.input.aim(g.camera).clone().project(g.camera);check('Raycast maps cursor to ground',Math.abs(target.x-(.61*2-1))<1e-6&&Math.abs(target.y-(-.45*2+1))<1e-6);
+      const oldRect=g.input.canvas.getBoundingClientRect;let rectReads=0;g.input.canvas.getBoundingClientRect=()=>{rectReads++;return oldRect.call(g.input.canvas);};g.input.aim(g.camera);g.input.canvas.getBoundingClientRect=oldRect;
+      check('Native crosshair follows mouse without slow HUD polling or layout reads',!document.getElementById('crosshair')&&getComputedStyle(g.input.canvas).cursor.includes('crosshair.png')&&rectReads===0);
       g.input.firing=true;g.player.fire=0;g.step(1/60);g.input.firing=false;const bullet=g.combat.bullets.find(b=>b.active);check('Player firing uses muzzle direction',bullet&&Math.abs(Math.atan2(bullet.vx,bullet.vz)-g.player.aim)<1e-6);
+      check('Player bullets have bright blue core and dark outline in one draw call',bullet?.mesh.geometry===g.combat.playerRoundGeometry&&bullet?.mesh.material===g.combat.playerRoundMaterial&&bullet.mesh.geometry.getAttribute('color').count>0&&bullet.mesh.children.length===0);
       const hp=g.player.hp;g.player.invulnerable=0;g.player.hurt(10,g);g.player.hurt(10,g);check('Damage grace prevents stacked hits',g.player.hp===hp-10);
       g.enemies.spawn({type:'scout',x:12,z:0});let e=g.enemies.list.at(-1);const kills=g.kills,score=g.score;g.enemies.hurt(e,999);g.enemies.hurt(e,999);check('Kill rewarded exactly once',g.kills===kills+1&&g.score===score+100);
       g.player.invulnerable=0;g.player.hurt(999,g);check('Game over captures run stats',g.state==='over'&&!document.getElementById('results').hidden);down('KeyR');up('KeyR');check('R starts clean new run',g.state==='playing'&&g.time===0&&g.kills===0&&g.player.hp===100&&g.combat.bullets.every(b=>!b.active));
       for(let i=0;i<5;i++){g.start();cancelAnimationFrame(g.frameId);}check('Repeated restart clears entities',g.enemies.list.length===0&&g.enemies.pending.length===0&&g.combat.pickups.length===0&&g.effects.popups.length===16);
       check('Fixed pool caps',g.combat.bullets.length===180&&g.combat.shells.length===12&&g.effects.particles.length===96&&g.effects.popups.length===16);
       const statusPanel=document.querySelector('.status-panel').getBoundingClientRect(),scorePanel=document.querySelector('.score-panel').getBoundingClientRect();check('Minimal HUD removes minimap, game header, audio and settings controls',!document.getElementById('minimap')&&!document.querySelector('.topbar')&&!document.getElementById('mute')&&!document.getElementById('pause-button')&&!document.getElementById('volume')&&!document.getElementById('shake')&&!document.getElementById('best')&&statusPanel.width<=160&&scorePanel.width<=190&&scorePanel.height<=60);
+      check('Stable city removes reconstruction timer and warning UI',!document.getElementById('world-status')&&!document.getElementById('shift-timer')&&!g.world.pending&&!('nextShift' in g.world)&&!('candidate' in g.world.grid));
       const fullscreen=document.getElementById('fullscreen-button'),fullscreenRect=fullscreen.getBoundingClientRect(),standard=()=>1,webkit=()=>2,webkitOld=()=>3,ms=()=>4,compat=g.ui.fullscreenRequest({requestFullscreen:standard})===standard&&g.ui.fullscreenRequest({webkitRequestFullscreen:webkit})===webkit&&g.ui.fullscreenRequest({webkitRequestFullScreen:webkitOld})===webkitOld&&g.ui.fullscreenRequest({msRequestFullscreen:ms})===ms;check('Fullscreen adapters cover Chrome, Edge and Safari',typeof g.ui.toggleFullscreen==='function'&&compat&&fullscreenRect.width>=44&&fullscreenRect.height>=44&&fullscreen.getAttribute('aria-label')==='Bật toàn màn hình');
+      const appManifest=await fetch('./site.webmanifest').then(r=>r.json()),homeIcon=await fetch('./apple-touch-icon.png'),oldIphone=g.ui.iphone,oldStandalone=g.ui.standalone,oldRequest=g.ui.fullscreenRequest;
+      g.ui.iphone=()=>true;g.ui.standalone=()=>true;g.ui.syncFullscreen();const installedHidden=fullscreen.hidden;
+      g.ui.standalone=()=>false;g.ui.syncFullscreen();const browserVisible=!fullscreen.hidden;g.ui.fullscreenRequest=()=>undefined;await g.ui.toggleFullscreen();const browserHint=document.getElementById('toast').textContent;
+      g.ui.iphone=oldIphone;g.ui.standalone=oldStandalone;g.ui.fullscreenRequest=oldRequest;g.ui.syncFullscreen();g.ui.clear();
+      check('iPhone standalone avoids repeated install prompt',appManifest.display==='standalone'&&appManifest.start_url==='./'&&homeIcon.ok&&installedHidden&&browserVisible&&browserHint.includes('biểu tượng trên Màn hình chính')&&!browserHint.includes('Thêm vào Màn hình chính'));
       g.ui.update(0);g.updateCamera(1);g.world.fadeOccluders(g.player);g.world.updateGroundEffects(g.player,g.enemies.list,g.isNight);g.renderer.render(g.scene,g.camera);check('Lightweight contact shadows render without shadow maps',g.world.structureShadows.count>0&&g.world.vehicleShadows.count>=1&&!g.renderer.shadowMap.enabled);return results;
     })()""")
     smoke.append(fullscreen_result)
@@ -1547,14 +1813,14 @@ try:
         # session alive and teleports nowhere; survival mechanics are covered above.
         soak = evaluate("""(async()=>{
           const g=__game;g.start();cancelAnimationFrame(g.frameId);g.setQuality();
-          const updateUI=g.ui.update.bind(g.ui);g.ui.update=()=>{};const samples=[],started=performance.now();let maxEnemies=0,maxBullets=0,maxParticles=0,invalid=0,eliteSeen=false;
+          const updateUI=g.ui.update.bind(g.ui);g.ui.update=()=>{};const samples=[],started=performance.now(),initialTerrainVersion=g.world.grid.version;let maxEnemies=0,maxBullets=0,maxParticles=0,invalid=0,eliteSeen=false;
           for(let second=0;second<600;second++){
             for(let f=0;f<30;f++){g.player.invulnerable=2;g.step(1/30);maxEnemies=Math.max(maxEnemies,g.enemies.list.length+g.enemies.pending.length);maxBullets=Math.max(maxBullets,g.combat.activeBullets.size);maxParticles=Math.max(maxParticles,g.effects.active.size);}
             if(!g.world.grid.connected()||!g.world.grid.free(g.player.x,g.player.z,g.player.radius)||g.enemies.list.some(e=>!g.world.grid.free(e.x,e.z,e.radius)))invalid++;if(g.enemies.list.some(e=>e.type==='elite'))eliteSeen=true;
-            if(second%60===59){g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);samples.push({second:second+1,geometries:g.renderer.info.memory.geometries,textures:g.renderer.info.memory.textures,drawCalls:g.renderer.info.render.calls,enemies:g.enemies.list.length,shifts:g.world.shifts,heap:performance.memory?.usedJSHeapSize});await new Promise(r=>setTimeout(r,0));}
+            if(second%60===59){g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);samples.push({second:second+1,geometries:g.renderer.info.memory.geometries,textures:g.renderer.info.memory.textures,drawCalls:g.renderer.info.render.calls,enemies:g.enemies.list.length,terrainChanges:g.world.grid.version-initialTerrainVersion,heap:performance.memory?.usedJSHeapSize});await new Promise(r=>setTimeout(r,0));}
           }
           g.ui.update=updateUI;g.ui.update(0);g.renderer.render(g.scene,g.camera);
-          return {pass:invalid===0&&eliteSeen&&g.world.shifts>=10&&maxEnemies<=16&&maxBullets<=180&&maxParticles<=96,time:g.time,elapsedMs:performance.now()-started,shifts:g.world.shifts,skipped:g.world.skipped,maxEnemies,maxBullets,maxParticles,eliteSeen,invalid,samples};
+          return {pass:invalid===0&&eliteSeen&&maxEnemies<=16&&maxBullets<=180&&maxParticles<=96,time:g.time,elapsedMs:performance.now()-started,terrainChanges:g.world.grid.version-initialTerrainVersion,maxEnemies,maxBullets,maxParticles,eliteSeen,invalid,samples};
         })()""", timeout=300)
         print('Soak: '+json.dumps(soak), flush=True)
         (ART / 'soak-results.json').write_text(json.dumps(soak, indent=2), encoding='utf-8')
@@ -1562,11 +1828,9 @@ try:
     evaluate("localStorage.removeItem('chibi-settings')")
     call('Emulation.setDeviceMetricsOverride', {'width':844,'height':390,'deviceScaleFactor':2,'mobile':True,'screenOrientation':{'type':'landscapePrimary','angle':90}})
     call('Emulation.setTouchEmulationEnabled', {'enabled':True,'maxTouchPoints':5})
-    call('Page.navigate', {'url':'http://127.0.0.1:8765/repository-name/?debug&seed=2026'})
-    for _ in range(300):
-        if evaluate('Boolean(window.__game && document.body.classList.contains("touch"))'):
-            break
-        time.sleep(.1)
+    if not navigate_game(touch=True):
+        screenshot('mobile-startup-error.png')
+        raise RuntimeError('Mobile game did not load after two navigation attempts')
     screenshot('mobile-menu.png')
     mobile = evaluate("""(()=>{
       const g=__game;g.start();cancelAnimationFrame(g.frameId);g.ui.update(0);g.updateCamera(1);
@@ -1588,11 +1852,11 @@ try:
     compact = evaluate("""(()=>{const g=__game;g.setNight(false,true,true);g.resize();g.ui.update(0);g.renderer.render(g.scene,g.camera);
       const rect=id=>{const r=document.getElementById(id).getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};
       const overlap=(a,b)=>a.x<b.right&&a.right>b.x&&a.y<b.bottom&&a.bottom>b.y;
-      const status=rect('hp-ring'),panel=document.querySelector('.status-panel').getBoundingClientRect(),score=document.querySelector('.score-panel').getBoundingClientRect(),day=rect('day-cycle'),world=document.querySelector('.world-status').getBoundingClientRect(),full=rect('fullscreen-button'),toast=rect('toast'),move=rect('move-stick'),aim=rect('aim-stick'),dash=rect('dash-button');
+      const status=rect('hp-ring'),panel=document.querySelector('.status-panel').getBoundingClientRect(),score=document.querySelector('.score-panel').getBoundingClientRect(),day=rect('day-cycle'),full=rect('fullscreen-button'),toast=rect('toast'),move=rect('move-stick'),aim=rect('aim-stick'),dash=rect('dash-button');
       const inside=r=>r.x>=0&&r.y>=0&&r.right<=innerWidth&&r.bottom<=innerHeight;
-      const topRects=[panel,score,day,world,full,toast],controls=[move,aim,dash];
-      const aligned=[panel.top,score.top,day.y,world.top].every(y=>Math.abs(y-panel.top)<=2);
-      return {pass:status.w>=40&&Math.abs(status.w-status.h)<=3&&panel.width<=145&&aligned&&topRects.every(inside)&&full.w>=44&&full.h>=44&&controls.every(inside)&&controls.every(r=>r.w>=44&&r.h>=44)&&!overlap(panel,day)&&!overlap(panel,world)&&!overlap(score,day)&&!overlap(score,world)&&!overlap(day,world)&&!overlap(full,panel)&&!overlap(full,score)&&!overlap(full,day)&&!overlap(full,world)&&!overlap(panel,toast)&&!overlap(score,toast)&&!overlap(world,toast)&&!controls.some(r=>overlap(r,toast)),viewport:[innerWidth,innerHeight],aligned,status,panel,score,day,world,full,toast,move,aim,dash};})()""")
+      const topRects=[panel,score,day,full,toast],controls=[move,aim,dash];
+      const aligned=[panel.top,score.top,day.y].every(y=>Math.abs(y-panel.top)<=2);
+      return {pass:status.w>=40&&Math.abs(status.w-status.h)<=3&&panel.width<=145&&aligned&&topRects.every(inside)&&full.w>=44&&full.h>=44&&controls.every(inside)&&controls.every(r=>r.w>=44&&r.h>=44)&&!overlap(panel,day)&&!overlap(score,day)&&!overlap(full,panel)&&!overlap(full,score)&&!overlap(full,day)&&!overlap(panel,toast)&&!overlap(score,toast)&&!controls.some(r=>overlap(r,toast)),viewport:[innerWidth,innerHeight],aligned,status,panel,score,day,full,toast,move,aim,dash};})()""")
     print('Mobile compact: '+json.dumps(compact), flush=True)
     (ART / 'mobile-compact-results.json').write_text(json.dumps(compact, indent=2), encoding='utf-8')
     screenshot('mobile-compact.png')
@@ -1663,8 +1927,6 @@ export function runCoreTests(){
   test('Dash substeps cannot tunnel through wall or world boundary',()=>{const g=new Grid(4);g.tiles.fill(TILE.ROAD);g.tiles[g.index(13,12)]=TILE.STEEL;const p={x:0,z:0,radius:.62};g.move(p,20,0);assert(p.x<.59);assert(g.free(p.x,p.z,p.radius));g.move(p,-200,0);assert(p.x>=-g.half+p.radius);});
   test('Destroyed wall becomes traversable rubble and updates navigation immediately',()=>{const g=new Grid(8);g.tiles.fill(TILE.ROAD);const i=g.index(13,12);g.tiles[i]=TILE.BRICK;g.hp[i]=g.tileHP(TILE.BRICK);const old=g.version;assert(g.trace(0,0,6,0)?.i===i);assert(!g.damage(i,28));assert(g.damage(i,28));assert(g.version===old+1&&g.tiles[i]===TILE.RUBBLE);assert(g.trace(0,0,6,0)===null);assert(g.path(g.index(12,12),g.index(14,12)).includes(i));assert(!g.damage(i,100));});
   test('Urban structures have durability and collapse into walkable terrain',()=>{const g=new Grid(9);for(const type of [TILE.STEEL,TILE.HOUSE,TILE.TREE,TILE.HIGHRISE,TILE.SHOP]){const i=g.tiles.findIndex(t=>t===type);assert(i>=0,`Missing type ${type}`);const hp=g.tileHP(type);assert(Number.isFinite(hp)&&hp>0);g.hp[i]=hp;assert(g.damage(i,hp));assert(walkable(g.tiles[i]));}});
-  test('Moving entity invalidates its warned terrain cell',()=>{const g=new Grid(74),p={x:0,z:0,radius:.62},c=g.candidate([p]);assert(c,'No valid candidate');const point=g.center(c.indices[Math.floor(c.indices.length/2)]),e={...point,radius:.62};assert(!g.safeCandidate(c,[p,e]));});
-  test('10 seeds × 12 irregular changes always alter topology and stay connected',()=>{for(let seed=0;seed<10;seed++){const g=new Grid(seed),p={x:0,z:0,radius:.62};for(let count=0;count<12;count++){const c=g.candidate([p]);assert(c,`No candidate ${seed}/${count}`);const before=g.tiles.slice(),version=g.version,selected=new Set(c.indices),changed=c.indices.filter(i=>before[i]!==c.tiles[i]),topology=changed.filter(i=>walkable(before[i])!==walkable(c.tiles[i]));assert(c.indices.length>=Math.ceil(g.tiles.length*.10)&&c.indices.length<=Math.floor(g.tiles.length*.18),`Bad region ${seed}/${count}: ${c.indices.length}`);assert(topology.length>=8,`Too little topology ${seed}/${count}: ${topology.length}`);const committed=g.commit(c);assert(committed.length>0,`No commit ${seed}/${count}`);assert(g.connected(),`Disconnected ${seed}/${count}`);assert(g.free(p.x,p.z,p.radius),`Player blocked ${seed}/${count}`);assert(g.version===version+1,`Version unchanged ${seed}/${count}`);for(let i=0;i<before.length;i++)if(!selected.has(i))assert(before[i]===g.tiles[i],`Changed outside region ${seed}/${count}`);}}});
   test('Pathfinding changes route after topology changes',()=>{const g=new Grid(1);g.tiles.fill(TILE.ROAD);const start=g.index(10,12),end=g.index(14,12),block=g.index(12,12);assert(g.path(start,end).includes(block));g.tiles[block]=TILE.STEEL;g.version++;const path=g.path(start,end);assert(!path.includes(block));assert(path.length>4);});
   return results;
 }
@@ -1684,7 +1946,7 @@ for(const result of runCoreTests())test(result.name,()=>assert.ok(result.pass,re
 ## tests/integration-suite.js
 
 ```javascript
-import { TILE, walkable } from '../src/core.js';
+import { TILE } from '../src/core.js';
 import { CONFIG } from '../src/config.js';
 export function runIntegrationTests(g){
   const results=[];
@@ -1742,14 +2004,31 @@ export function runIntegrationTests(g){
   test('All four pickup effects apply and expire',()=>{
     const random=g.world.grid.random;for(let type=0;type<4;type++){let count=0;g.world.grid.random=()=>count++===0?0:(type+.1)/4;g.combat.drop(0,0);g.player.hp=50;g.player.stamina=20;g.combat.update(1/60);if(type===0)assert(g.player.hp===80);if(type===1)assert(g.player.stamina===100);if(type===2)assert(g.player.speedBuff===8);if(type===3)assert(g.player.fireBuff===8);}g.world.grid.random=random;g.input.clear();for(let i=0;i<481;i++)g.player.update(1/60,g);assert(g.player.speedBuff===0&&g.player.fireBuff===0&&g.combat.pickups.length===0);
   });
-  test('Terrain warning commits real topology and preserves unrelated destroyed cover',()=>{
-    g.start();const grid=g.world.grid;let candidate;for(let i=0;i<50&&!candidate;i++)candidate=grid.candidate([g.player]);assert(candidate);
-    const selected=new Set(candidate.indices),brick=grid.tiles.findIndex((t,i)=>t===TILE.BRICK&&!selected.has(i)&&grid.neighbors(i).some(n=>grid.tiles[n]===TILE.ROAD));assert(brick>=0);g.world.pending={...candidate,remaining:CONFIG.world.warning};
-    g.world.damage(brick,100,g);const before=grid.tiles.slice(),hp=g.player.hp,score=g.score;g.world.update(1,g);assert(g.world.shifts===0);g.world.update(1.01,g);assert(g.world.shifts===1);assert(grid.tiles[brick]===TILE.RUBBLE);assert(grid.tiles.some((v,i)=>v!==before[i]));assert(g.player.hp===hp&&g.score===score&&grid.connected());
+  test('City layout stays fixed through long survival and still reacts to destruction',()=>{
+    const grid=g.world.grid,i=grid.index(13,12);grid.tiles[i]=TILE.BRICK;grid.hp[i]=grid.tileHP(TILE.BRICK);g.world.rebuild(i);
+    const before=grid.tiles.slice(),version=grid.version;g.time=40;g.step(1/30);g.time=600;g.step(1/30);
+    assert(grid.version===version&&grid.tiles.every((tile,i)=>tile===before[i]),'Map changed without damage');
+    g.world.damage(i,grid.hp[i],g);assert(grid.tiles[i]===TILE.RUBBLE&&grid.version===version+1&&grid.connected(),'Destroyed roadside cover did not open a connected tile');
   });
-  test('A reconstruction still commits if a vehicle enters the warned region',()=>{
-    g.start();const grid=g.world.grid,candidate=grid.candidate([g.player]);assert(candidate);const occupied=candidate.indices.find(i=>walkable(grid.tiles[i]));assert(occupied!==undefined);const point=grid.center(occupied);g.player.x=point.x;g.player.z=point.z;
-    const before=grid.tiles.slice();g.world.pending={...candidate,remaining:.01};g.world.update(.02,g);assert(g.world.shifts===1);assert(grid.tiles.some((t,i)=>t!==before[i]));assert(grid.connected());assert(grid.free(g.player.x,g.player.z,g.player.radius));
+  test('Brighter explosions fade while instanced particles stay capped',()=>{
+    g.effects.explosion(0,0,2);const ring=g.effects.rings.find(r=>r.mesh.visible);assert(ring&&ring.mesh.material.opacity===.8);
+    for(let i=0;i<20;i++)g.effects.explosion(i*.2,0,2);
+    assert(g.effects.mesh.count===CONFIG.effects.high&&g.effects.active.size<=CONFIG.effects.high);
+    g.effects.update(.19);assert(ring.mesh.material.opacity<.8);
+  });
+  test('Theme and battle music are distinct loops that follow game state',()=>{
+    const audio=g.audio,theme=audio.musicBuffer('theme'),battle=audio.musicBuffer('battle');
+    const energy=buffer=>{const samples=buffer.getChannelData(0);let total=0;for(let i=0;i<samples.length;i+=17)total+=samples[i]*samples[i];return Math.sqrt(total/Math.ceil(samples.length/17));};
+    assert(theme.length>100000&&battle.length>100000&&theme.length!==battle.length&&energy(theme)>.025&&energy(battle)>.025);
+    assert(audio.scene==='playing');g.togglePause();assert(audio.scene==='paused'&&!audio.musicVoice);g.togglePause();assert(audio.scene==='playing');
+    g.end();assert(audio.scene==='over');g.home();assert(audio.scene==='menu');
+    if(audio.context.state==='running')assert(audio.musicVoice?.track==='theme');
+  });
+  test('Buffered cannon shot has a strong transient and decaying tail',()=>{
+    const buffer=g.audio.shotBuffer,data=buffer.getChannelData(0),rate=buffer.sampleRate;
+    const rms=(start,end)=>{let energy=0,count=0;for(let i=Math.floor(start*rate);i<Math.floor(end*rate);i++){energy+=data[i]*data[i];count++;}return Math.sqrt(energy/count);};
+    const crack=rms(.005,.065),tail=rms(.27,.38);
+    assert(buffer.length>rate*.35&&crack>.035&&tail<crack*.6,`Unexpected cannon envelope: ${crack}, ${tail}`);
   });
   test('Active enemies invalidate cached paths after topology changes',()=>{
     g.enemies.spawn({type:'scout',x:19.2,z:0});const e=g.enemies.list[0];g.enemies.spawnTimer=100;g.enemies.update(1/60);assert(e.pathVersion===g.world.grid.version);const i=g.world.grid.index(19,12);g.world.grid.tiles[i]=TILE.BRICK;g.world.grid.hp[i]=1;g.world.damage(i,2,g);g.enemies.update(1/60);assert(e.pathVersion===g.world.grid.version);
@@ -1775,14 +2054,14 @@ import json
 import zipfile
 
 root = Path(__file__).resolve().parents[1]
-top = ['index.html', 'style.css', 'favicon.svg', '.nojekyll', '.gitignore', 'package.json', 'README.md', 'TESTING.md']
+top = ['index.html', 'style.css', 'favicon.svg', 'crosshair.png', 'apple-touch-icon.png', 'site.webmanifest', '.nojekyll', '.gitignore', 'package.json', 'README.md', 'TESTING.md']
 files = [root / name for name in top]
 for directory in ['src', 'vendor', 'tests', 'tools']:
     files.extend(p for p in sorted((root / directory).rglob('*')) if p.is_file() and '__pycache__' not in p.parts)
-language = {'.js':'javascript','.html':'html','.css':'css','.svg':'xml','.json':'json','.py':'python','.md':'markdown'}
+language = {'.js':'javascript','.html':'html','.css':'css','.svg':'xml','.json':'json','.webmanifest':'json','.py':'python','.md':'markdown'}
 listing = ['# Mã nguồn CHIBI TANK CITY: ENDLESS\n', 'Toàn bộ mã nguồn tự viết, theo đường dẫn. Bản Three.js 0.170.0 nguyên gốc và giấy phép nằm tại `vendor/` trong ZIP; không lặp thư viện minify trong tài liệu này.\n']
 for p in files:
-    if 'vendor' in p.relative_to(root).parts or 'results' in p.relative_to(root).parts:
+    if 'vendor' in p.relative_to(root).parts or 'results' in p.relative_to(root).parts or p.suffix == '.png':
         continue
     fence = '````' if p.suffix == '.md' else '```'
     listing.append('\n## '+p.relative_to(root).as_posix()+'\n\n'+fence+language.get(p.suffix,'text')+'\n'+p.read_text(encoding='utf-8').rstrip()+'\n'+fence+'\n')

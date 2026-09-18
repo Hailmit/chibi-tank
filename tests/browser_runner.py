@@ -65,6 +65,16 @@ def screenshot(name):
     data = call('Page.captureScreenshot', {'format': 'png'})['data']
     (ART / name).write_bytes(base64.b64decode(data))
 
+def navigate_game(touch=False):
+    url = 'http://127.0.0.1:8765/repository-name/?debug&seed=2026'
+    for _ in range(2):
+        call('Page.navigate', {'url':url})
+        for _ in range(150):
+            if evaluate('Boolean(window.__game' + (' && document.body.classList.contains("touch")' if touch else '') + ')'):
+                return True
+            time.sleep(.1)
+    return False
+
 try:
     for _ in range(100):
         try:
@@ -82,12 +92,7 @@ try:
     call('Network.enable')
     call('Network.setCacheDisabled', {'cacheDisabled': True})
     call('Emulation.setDeviceMetricsOverride', {'width':1440,'height':1000,'deviceScaleFactor':1,'mobile':False})
-    call('Page.navigate', {'url':'http://127.0.0.1:8765/repository-name/?debug&seed=2026'})
-    for _ in range(300):
-        ready = evaluate('Boolean(window.__game)')
-        if ready:
-            break
-        time.sleep(.1)
+    ready = navigate_game()
     if not ready:
         print(json.dumps(events[-30:]), flush=True)
         screenshot('startup-error.png')
@@ -98,6 +103,7 @@ try:
     call('Input.dispatchMouseEvent', {'type':'mousePressed','x':fullscreen_rect['x'],'y':fullscreen_rect['y'],'button':'left','clickCount':1})
     call('Input.dispatchMouseEvent', {'type':'mouseReleased','x':fullscreen_rect['x'],'y':fullscreen_rect['y'],'button':'left','clickCount':1})
     time.sleep(.25)
+    evaluate("window.__menuMusicAudit={scene:__game.audio.scene,track:__game.audio.musicVoice?.track,context:__game.audio.context?.state}")
     entered_fullscreen = evaluate("Boolean(document.fullscreenElement||document.webkitFullscreenElement)")
     if entered_fullscreen:
         evaluate("(document.exitFullscreen||document.webkitExitFullscreen).call(document)")
@@ -109,6 +115,7 @@ try:
     smoke = evaluate("""(async()=>{
       const g=window.__game,results=[];cancelAnimationFrame(g.frameId);
       const check=(name,condition,data)=>results.push({name,pass:!!condition,...(data?{data}: {})});
+      check('First user gesture starts menu theme',window.__menuMusicAudit?.scene==='menu'&&window.__menuMusicAudit?.track==='theme'&&window.__menuMusicAudit?.context==='running',window.__menuMusicAudit);
       document.getElementById('play').click();cancelAnimationFrame(g.frameId);
       check('Start button enters live game',g.state==='playing');
       check('No automatic fire',g.combat.bullets.every(b=>!b.active));
@@ -118,18 +125,27 @@ try:
       down('KeyW');const wasd=g.input.movement();up('KeyW');down('ArrowUp');const arrow=g.input.movement();up('ArrowUp');check('W and up arrow equivalent',wasd.x===arrow.x&&wasd.z===arrow.z);
       down('KeyW');down('KeyD');check('Diagonal normalized',Math.abs(Math.hypot(g.input.movement().x,g.input.movement().z)-1)<1e-8);g.input.clear();
       down('Space');g.step(1/60);up('Space');check('Dash consumes stamina, grants invulnerability',g.player.stamina===70&&g.player.invulnerable>0);for(let i=0;i<20;i++)g.step(1/60);check('Dash stays outside solids',g.world.grid.free(g.player.x,g.player.z,g.player.radius));
-      const oldTime=g.time,oldSpawn=g.enemies.spawnTimer,oldShift=g.world.nextShift;down('Escape');up('Escape');g.step(10);check('Pause freezes simulation',g.time===oldTime&&g.enemies.spawnTimer===oldSpawn&&g.world.nextShift===oldShift);down('Escape');up('Escape');
+      const oldTime=g.time,oldSpawn=g.enemies.spawnTimer;down('Escape');up('Escape');g.step(10);check('Pause freezes simulation',g.time===oldTime&&g.enemies.spawnTimer===oldSpawn);down('Escape');up('Escape');
       down('KeyW');g.input.firing=true;window.dispatchEvent(new Event('blur'));check('Blur pauses and clears held input',g.state==='paused'&&!g.input.keys.size&&!g.input.firing);g.togglePause();
       g.player.x=0;g.player.z=0;g.player.sync(0);g.updateCamera(1);g.input.clientX=innerWidth*.61;g.input.clientY=innerHeight*.45;g.input.pointerKnown=true;
       const target=g.input.aim(g.camera).clone().project(g.camera);check('Raycast maps cursor to ground',Math.abs(target.x-(.61*2-1))<1e-6&&Math.abs(target.y-(-.45*2+1))<1e-6);
+      const oldRect=g.input.canvas.getBoundingClientRect;let rectReads=0;g.input.canvas.getBoundingClientRect=()=>{rectReads++;return oldRect.call(g.input.canvas);};g.input.aim(g.camera);g.input.canvas.getBoundingClientRect=oldRect;
+      check('Native crosshair follows mouse without slow HUD polling or layout reads',!document.getElementById('crosshair')&&getComputedStyle(g.input.canvas).cursor.includes('crosshair.png')&&rectReads===0);
       g.input.firing=true;g.player.fire=0;g.step(1/60);g.input.firing=false;const bullet=g.combat.bullets.find(b=>b.active);check('Player firing uses muzzle direction',bullet&&Math.abs(Math.atan2(bullet.vx,bullet.vz)-g.player.aim)<1e-6);
+      check('Player bullets have bright blue core and dark outline in one draw call',bullet?.mesh.geometry===g.combat.playerRoundGeometry&&bullet?.mesh.material===g.combat.playerRoundMaterial&&bullet.mesh.geometry.getAttribute('color').count>0&&bullet.mesh.children.length===0);
       const hp=g.player.hp;g.player.invulnerable=0;g.player.hurt(10,g);g.player.hurt(10,g);check('Damage grace prevents stacked hits',g.player.hp===hp-10);
       g.enemies.spawn({type:'scout',x:12,z:0});let e=g.enemies.list.at(-1);const kills=g.kills,score=g.score;g.enemies.hurt(e,999);g.enemies.hurt(e,999);check('Kill rewarded exactly once',g.kills===kills+1&&g.score===score+100);
       g.player.invulnerable=0;g.player.hurt(999,g);check('Game over captures run stats',g.state==='over'&&!document.getElementById('results').hidden);down('KeyR');up('KeyR');check('R starts clean new run',g.state==='playing'&&g.time===0&&g.kills===0&&g.player.hp===100&&g.combat.bullets.every(b=>!b.active));
       for(let i=0;i<5;i++){g.start();cancelAnimationFrame(g.frameId);}check('Repeated restart clears entities',g.enemies.list.length===0&&g.enemies.pending.length===0&&g.combat.pickups.length===0&&g.effects.popups.length===16);
       check('Fixed pool caps',g.combat.bullets.length===180&&g.combat.shells.length===12&&g.effects.particles.length===96&&g.effects.popups.length===16);
       const statusPanel=document.querySelector('.status-panel').getBoundingClientRect(),scorePanel=document.querySelector('.score-panel').getBoundingClientRect();check('Minimal HUD removes minimap, game header, audio and settings controls',!document.getElementById('minimap')&&!document.querySelector('.topbar')&&!document.getElementById('mute')&&!document.getElementById('pause-button')&&!document.getElementById('volume')&&!document.getElementById('shake')&&!document.getElementById('best')&&statusPanel.width<=160&&scorePanel.width<=190&&scorePanel.height<=60);
+      check('Stable city removes reconstruction timer and warning UI',!document.getElementById('world-status')&&!document.getElementById('shift-timer')&&!g.world.pending&&!('nextShift' in g.world)&&!('candidate' in g.world.grid));
       const fullscreen=document.getElementById('fullscreen-button'),fullscreenRect=fullscreen.getBoundingClientRect(),standard=()=>1,webkit=()=>2,webkitOld=()=>3,ms=()=>4,compat=g.ui.fullscreenRequest({requestFullscreen:standard})===standard&&g.ui.fullscreenRequest({webkitRequestFullscreen:webkit})===webkit&&g.ui.fullscreenRequest({webkitRequestFullScreen:webkitOld})===webkitOld&&g.ui.fullscreenRequest({msRequestFullscreen:ms})===ms;check('Fullscreen adapters cover Chrome, Edge and Safari',typeof g.ui.toggleFullscreen==='function'&&compat&&fullscreenRect.width>=44&&fullscreenRect.height>=44&&fullscreen.getAttribute('aria-label')==='Bật toàn màn hình');
+      const appManifest=await fetch('./site.webmanifest').then(r=>r.json()),homeIcon=await fetch('./apple-touch-icon.png'),oldIphone=g.ui.iphone,oldStandalone=g.ui.standalone,oldRequest=g.ui.fullscreenRequest;
+      g.ui.iphone=()=>true;g.ui.standalone=()=>true;g.ui.syncFullscreen();const installedHidden=fullscreen.hidden;
+      g.ui.standalone=()=>false;g.ui.syncFullscreen();const browserVisible=!fullscreen.hidden;g.ui.fullscreenRequest=()=>undefined;await g.ui.toggleFullscreen();const browserHint=document.getElementById('toast').textContent;
+      g.ui.iphone=oldIphone;g.ui.standalone=oldStandalone;g.ui.fullscreenRequest=oldRequest;g.ui.syncFullscreen();g.ui.clear();
+      check('iPhone standalone avoids repeated install prompt',appManifest.display==='standalone'&&appManifest.start_url==='./'&&homeIcon.ok&&installedHidden&&browserVisible&&browserHint.includes('biểu tượng trên Màn hình chính')&&!browserHint.includes('Thêm vào Màn hình chính'));
       g.ui.update(0);g.updateCamera(1);g.world.fadeOccluders(g.player);g.world.updateGroundEffects(g.player,g.enemies.list,g.isNight);g.renderer.render(g.scene,g.camera);check('Lightweight contact shadows render without shadow maps',g.world.structureShadows.count>0&&g.world.vehicleShadows.count>=1&&!g.renderer.shadowMap.enabled);return results;
     })()""")
     smoke.append(fullscreen_result)
@@ -155,14 +171,14 @@ try:
         # session alive and teleports nowhere; survival mechanics are covered above.
         soak = evaluate("""(async()=>{
           const g=__game;g.start();cancelAnimationFrame(g.frameId);g.setQuality();
-          const updateUI=g.ui.update.bind(g.ui);g.ui.update=()=>{};const samples=[],started=performance.now();let maxEnemies=0,maxBullets=0,maxParticles=0,invalid=0,eliteSeen=false;
+          const updateUI=g.ui.update.bind(g.ui);g.ui.update=()=>{};const samples=[],started=performance.now(),initialTerrainVersion=g.world.grid.version;let maxEnemies=0,maxBullets=0,maxParticles=0,invalid=0,eliteSeen=false;
           for(let second=0;second<600;second++){
             for(let f=0;f<30;f++){g.player.invulnerable=2;g.step(1/30);maxEnemies=Math.max(maxEnemies,g.enemies.list.length+g.enemies.pending.length);maxBullets=Math.max(maxBullets,g.combat.activeBullets.size);maxParticles=Math.max(maxParticles,g.effects.active.size);}
             if(!g.world.grid.connected()||!g.world.grid.free(g.player.x,g.player.z,g.player.radius)||g.enemies.list.some(e=>!g.world.grid.free(e.x,e.z,e.radius)))invalid++;if(g.enemies.list.some(e=>e.type==='elite'))eliteSeen=true;
-            if(second%60===59){g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);samples.push({second:second+1,geometries:g.renderer.info.memory.geometries,textures:g.renderer.info.memory.textures,drawCalls:g.renderer.info.render.calls,enemies:g.enemies.list.length,shifts:g.world.shifts,heap:performance.memory?.usedJSHeapSize});await new Promise(r=>setTimeout(r,0));}
+            if(second%60===59){g.updateCamera(1);g.world.fadeOccluders(g.player);g.renderer.render(g.scene,g.camera);samples.push({second:second+1,geometries:g.renderer.info.memory.geometries,textures:g.renderer.info.memory.textures,drawCalls:g.renderer.info.render.calls,enemies:g.enemies.list.length,terrainChanges:g.world.grid.version-initialTerrainVersion,heap:performance.memory?.usedJSHeapSize});await new Promise(r=>setTimeout(r,0));}
           }
           g.ui.update=updateUI;g.ui.update(0);g.renderer.render(g.scene,g.camera);
-          return {pass:invalid===0&&eliteSeen&&g.world.shifts>=10&&maxEnemies<=16&&maxBullets<=180&&maxParticles<=96,time:g.time,elapsedMs:performance.now()-started,shifts:g.world.shifts,skipped:g.world.skipped,maxEnemies,maxBullets,maxParticles,eliteSeen,invalid,samples};
+          return {pass:invalid===0&&eliteSeen&&maxEnemies<=16&&maxBullets<=180&&maxParticles<=96,time:g.time,elapsedMs:performance.now()-started,terrainChanges:g.world.grid.version-initialTerrainVersion,maxEnemies,maxBullets,maxParticles,eliteSeen,invalid,samples};
         })()""", timeout=300)
         print('Soak: '+json.dumps(soak), flush=True)
         (ART / 'soak-results.json').write_text(json.dumps(soak, indent=2), encoding='utf-8')
@@ -170,11 +186,9 @@ try:
     evaluate("localStorage.removeItem('chibi-settings')")
     call('Emulation.setDeviceMetricsOverride', {'width':844,'height':390,'deviceScaleFactor':2,'mobile':True,'screenOrientation':{'type':'landscapePrimary','angle':90}})
     call('Emulation.setTouchEmulationEnabled', {'enabled':True,'maxTouchPoints':5})
-    call('Page.navigate', {'url':'http://127.0.0.1:8765/repository-name/?debug&seed=2026'})
-    for _ in range(300):
-        if evaluate('Boolean(window.__game && document.body.classList.contains("touch"))'):
-            break
-        time.sleep(.1)
+    if not navigate_game(touch=True):
+        screenshot('mobile-startup-error.png')
+        raise RuntimeError('Mobile game did not load after two navigation attempts')
     screenshot('mobile-menu.png')
     mobile = evaluate("""(()=>{
       const g=__game;g.start();cancelAnimationFrame(g.frameId);g.ui.update(0);g.updateCamera(1);
@@ -196,11 +210,11 @@ try:
     compact = evaluate("""(()=>{const g=__game;g.setNight(false,true,true);g.resize();g.ui.update(0);g.renderer.render(g.scene,g.camera);
       const rect=id=>{const r=document.getElementById(id).getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};
       const overlap=(a,b)=>a.x<b.right&&a.right>b.x&&a.y<b.bottom&&a.bottom>b.y;
-      const status=rect('hp-ring'),panel=document.querySelector('.status-panel').getBoundingClientRect(),score=document.querySelector('.score-panel').getBoundingClientRect(),day=rect('day-cycle'),world=document.querySelector('.world-status').getBoundingClientRect(),full=rect('fullscreen-button'),toast=rect('toast'),move=rect('move-stick'),aim=rect('aim-stick'),dash=rect('dash-button');
+      const status=rect('hp-ring'),panel=document.querySelector('.status-panel').getBoundingClientRect(),score=document.querySelector('.score-panel').getBoundingClientRect(),day=rect('day-cycle'),full=rect('fullscreen-button'),toast=rect('toast'),move=rect('move-stick'),aim=rect('aim-stick'),dash=rect('dash-button');
       const inside=r=>r.x>=0&&r.y>=0&&r.right<=innerWidth&&r.bottom<=innerHeight;
-      const topRects=[panel,score,day,world,full,toast],controls=[move,aim,dash];
-      const aligned=[panel.top,score.top,day.y,world.top].every(y=>Math.abs(y-panel.top)<=2);
-      return {pass:status.w>=40&&Math.abs(status.w-status.h)<=3&&panel.width<=145&&aligned&&topRects.every(inside)&&full.w>=44&&full.h>=44&&controls.every(inside)&&controls.every(r=>r.w>=44&&r.h>=44)&&!overlap(panel,day)&&!overlap(panel,world)&&!overlap(score,day)&&!overlap(score,world)&&!overlap(day,world)&&!overlap(full,panel)&&!overlap(full,score)&&!overlap(full,day)&&!overlap(full,world)&&!overlap(panel,toast)&&!overlap(score,toast)&&!overlap(world,toast)&&!controls.some(r=>overlap(r,toast)),viewport:[innerWidth,innerHeight],aligned,status,panel,score,day,world,full,toast,move,aim,dash};})()""")
+      const topRects=[panel,score,day,full,toast],controls=[move,aim,dash];
+      const aligned=[panel.top,score.top,day.y].every(y=>Math.abs(y-panel.top)<=2);
+      return {pass:status.w>=40&&Math.abs(status.w-status.h)<=3&&panel.width<=145&&aligned&&topRects.every(inside)&&full.w>=44&&full.h>=44&&controls.every(inside)&&controls.every(r=>r.w>=44&&r.h>=44)&&!overlap(panel,day)&&!overlap(score,day)&&!overlap(full,panel)&&!overlap(full,score)&&!overlap(full,day)&&!overlap(panel,toast)&&!overlap(score,toast)&&!controls.some(r=>overlap(r,toast)),viewport:[innerWidth,innerHeight],aligned,status,panel,score,day,full,toast,move,aim,dash};})()""")
     print('Mobile compact: '+json.dumps(compact), flush=True)
     (ART / 'mobile-compact-results.json').write_text(json.dumps(compact, indent=2), encoding='utf-8')
     screenshot('mobile-compact.png')

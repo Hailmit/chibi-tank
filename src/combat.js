@@ -2,17 +2,25 @@ import * as THREE from 'three';
 import { CONFIG } from './config.js';
 import { TILE, dist, segmentCircle } from './core.js';
 import { part, ring, material } from './models.js';
+function playerRoundGeometry(){
+  const positions=[],colors=[],color=new THREE.Color();
+  for(const [tint,sx,sy,sz,y,z] of [[0x06354b,.3,.3,.86,0,0],[0x31eaff,.19,.075,.65,.15,0],[0xf4ffff,.12,.08,.16,.16,.32]]){
+    const shape=new THREE.SphereGeometry(.5,10,6).toNonIndexed();shape.scale(sx,sy,sz);shape.translate(0,y,z);color.setHex(tint);
+    const points=shape.getAttribute('position');for(let i=0;i<points.count;i++){positions.push(points.getX(i),points.getY(i),points.getZ(i));colors.push(color.r,color.g,color.b);}shape.dispose();
+  }
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeBoundingSphere();return geometry;
+}
 export class Combat {
-  constructor(game){this.game=game;this.bullets=Array.from({length:CONFIG.combat.maxBullets},()=>{const mesh=part(game.scene,'sphere',0xffd36c,0,0,0,.17,.17,.65);mesh.visible=false;return {mesh,active:false};});this.shells=Array.from({length:CONFIG.combat.maxMortars},()=>{const marker=ring(game.scene,0xef6867,2.6),mesh=part(game.scene,'sphere',0xf17963,0,0,0,.4);marker.visible=mesh.visible=false;return {marker,mesh,active:false};});this.activeBullets=new Set();this.activeShells=new Set();this.pickups=[];this.tip=new THREE.Vector3();}
+  constructor(game){this.game=game;this.playerRoundGeometry=playerRoundGeometry();this.playerRoundMaterial=new THREE.MeshBasicMaterial({vertexColors:true,toneMapped:false});this.bullets=Array.from({length:CONFIG.combat.maxBullets},()=>{const mesh=part(game.scene,'sphere',0xf05b72,0,0,0,.17,.17,.65);mesh.visible=false;return {mesh,active:false};});this.enemyRoundGeometry=this.bullets[0].mesh.geometry;this.shells=Array.from({length:CONFIG.combat.maxMortars},()=>{const marker=ring(game.scene,0xef6867,2.6),mesh=part(game.scene,'sphere',0xf17963,0,0,0,.4);marker.visible=mesh.visible=false;return {marker,mesh,active:false};});this.activeBullets=new Set();this.activeShells=new Set();this.pickups=[];this.tip=new THREE.Vector3();}
   shoot(owner,team,damage,offset=0){
     const b=this.bullets.find(b=>!b.active);if(!b)return false;
     const g=this.game,m=owner.model;m.root.position.set(owner.x,0,owner.z);m.turret.rotation.y=owner.aim;m.root.updateMatrixWorld(true);m.tip.getWorldPosition(this.tip);
     const angle=owner.aim+offset,speed=team==='player'?CONFIG.combat.bulletSpeed:CONFIG.combat.enemyBulletSpeed*(1+Math.min(.45,g.time/700));
     // Check the breech-to-muzzle segment too: a muzzle can overlap a wall while the hull cannot.
     const obstruction=g.world.grid.trace(owner.x,owner.z,this.tip.x,this.tip.z,.1);
-    if(obstruction){g.world.damage(obstruction.i,damage,g);m.flashTime=.065;g.effects.emit(this.tip.x,.8,this.tip.z,0xffd790,3,.2);if(team==='player')g.audio.play('shot');return true;}
-    Object.assign(b,{active:true,x:this.tip.x,y:this.tip.y,z:this.tip.z,vx:Math.sin(angle)*speed,vz:Math.cos(angle)*speed,team,damage,life:3.5});this.activeBullets.add(b);b.mesh.position.set(b.x,b.y,b.z);b.mesh.rotation.y=angle;b.mesh.material=material(team==='player'?0xffcf65:0xf05b72,true);b.mesh.visible=true;
-    m.flashTime=.065;g.effects.emit(b.x,.9,b.z,0xffe5a0,3,.12);if(team==='player')g.audio.play('shot');return true;
+    if(obstruction){g.world.damage(obstruction.i,damage,g);m.flashTime=.1;g.effects.emit(this.tip.x,.8,this.tip.z,team==='player'?0x59efff:0xffd790,6,.22,1.25);g.audio.play(team==='player'?'shot':'enemyShot',team==='player'?0:dist(owner,g.player));return true;}
+    Object.assign(b,{active:true,x:this.tip.x,y:this.tip.y,z:this.tip.z,vx:Math.sin(angle)*speed,vz:Math.cos(angle)*speed,team,damage,life:3.5});this.activeBullets.add(b);b.mesh.position.set(b.x,b.y,b.z);b.mesh.rotation.y=angle;b.mesh.geometry=team==='player'?this.playerRoundGeometry:this.enemyRoundGeometry;b.mesh.scale.set(team==='player'?1:.17,team==='player'?1:.17,team==='player'?1:.65);b.mesh.material=team==='player'?this.playerRoundMaterial:material(0xf05b72,true);b.mesh.visible=true;
+    m.flashTime=.1;g.effects.emit(b.x,.9,b.z,team==='player'?0x63f1ff:0xffd19b,6,.18,1.3);g.audio.play(team==='player'?'shot':'enemyShot',team==='player'?0:dist(owner,g.player));return true;
   }
   mortar(owner,x,z){const s=this.shells.find(s=>!s.active);if(!s)return;Object.assign(s,{active:true,x,z,startX:owner.x,startZ:owner.z,life:1.65,max:1.65,damage:owner.damage});this.activeShells.add(s);s.marker.visible=s.mesh.visible=true;s.marker.position.set(x,.12,z);s.marker.scale.setScalar(2.6);this.game.audio.play('warning');}
   explode(x,z,radius,damage,team){
@@ -26,7 +34,7 @@ export class Combat {
   update(dt){const g=this.game,grid=g.world.grid;
     for(const b of this.activeBullets){const nx=b.x+b.vx*dt,nz=b.z+b.vz*dt,wall=grid.trace(b.x,b.z,nx,nz,.1);let best=wall?wall.t:Infinity,target=null;
       for(const e of b.team==='player'?g.enemies.list:[g.player]){if(e.dead||e.hp<=0)continue;const t=segmentCircle(b.x,b.z,nx,nz,e.x,e.z,e.radius+.11);if(t!==null&&t<best){best=t;target=e;}}
-      if(best!==Infinity){const x=b.x+(nx-b.x)*best,z=b.z+(nz-b.z)*best;g.effects.emit(x,.7,z,0xffdc9e,5,.35);if(target){if(b.team==='player')g.enemies.hurt(target,b.damage);else target.hurt(b.damage,g);}else g.world.damage(wall.i,b.damage,g);b.active=false;}
+      if(best!==Infinity){const x=b.x+(nx-b.x)*best,z=b.z+(nz-b.z)*best;g.effects.emit(x,.7,z,b.team==='player'?0x72f2ff:0xffcc9e,7,.3,1.3);if(target){if(b.team==='player')g.enemies.hurt(target,b.damage);else target.hurt(b.damage,g);}else{g.effects.emit(x,.3,z,0xc9bdac,5,.5,1.5);g.world.damage(wall.i,b.damage,g);}b.active=false;}
       b.x=nx;b.z=nz;b.life-=dt;if(b.life<=0||Math.abs(nx)>grid.half||Math.abs(nz)>grid.half)b.active=false;b.mesh.visible=b.active;b.mesh.position.set(nx,b.y,nz);if(!b.active)this.activeBullets.delete(b);
     }
     for(const s of this.activeShells){s.life-=dt;const t=1-s.life/s.max;s.mesh.position.set(s.startX+(s.x-s.startX)*t,1+Math.sin(t*Math.PI)*8,s.startZ+(s.z-s.startZ)*t);if(s.life<=0){s.active=false;this.activeShells.delete(s);s.mesh.visible=s.marker.visible=false;this.explode(s.x,s.z,2.6,s.damage,'enemy');}}

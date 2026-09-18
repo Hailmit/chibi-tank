@@ -1,5 +1,14 @@
 [
   {
+    "name": "First user gesture starts menu theme",
+    "pass": true,
+    "data": {
+      "scene": "menu",
+      "track": "theme",
+      "context": "running"
+    }
+  },
+  {
     "name": "Start button enters live game",
     "pass": true
   },
@@ -36,7 +45,15 @@
     "pass": true
   },
   {
+    "name": "Native crosshair follows mouse without slow HUD polling or layout reads",
+    "pass": true
+  },
+  {
     "name": "Player firing uses muzzle direction",
+    "pass": true
+  },
+  {
+    "name": "Player bullets have bright blue core and dark outline in one draw call",
     "pass": true
   },
   {
@@ -68,7 +85,15 @@
     "pass": true
   },
   {
+    "name": "Stable city removes reconstruction timer and warning UI",
+    "pass": true
+  },
+  {
     "name": "Fullscreen adapters cover Chrome, Edge and Safari",
+    "pass": true
+  },
+  {
+    "name": "iPhone standalone avoids repeated install prompt",
     "pass": true
   },
   {

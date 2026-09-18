@@ -176,63 +176,6 @@ export class Grid {
       if(t!==null&&(!hit||t<hit.t))hit={i,t};
     }return hit;
   }
-  protectedMask(entities,padding=0) {
-    const mask=new Uint8Array(this.tiles.length);
-    for(let i=0;i<mask.length;i++){const p=this.center(i);if(entities.some((e,j)=>dist(p,e)<(j===0?CONFIG.world.protectRadius:e.radius+1.6)+padding))mask[i]=1;}
-    return mask;
-  }
-  growRegion(blocked,target) {
-    const selected=new Uint8Array(this.tiles.length),available=[];
-    for(let i=0;i<blocked.length;i++)if(!blocked[i])available.push(i);
-    if(!available.length)return [];
-    const seeds=2+Math.floor(this.random()*2),frontier=[];
-    for(let n=0;n<seeds;n++){const seed=available[Math.floor(this.random()*available.length)];if(!selected[seed]){selected[seed]=1;frontier.push(seed);}}
-    let count=frontier.length,guard=this.tiles.length*8;
-    while(count<target&&frontier.length&&guard-->0){const from=frontier[Math.floor(this.random()*frontier.length)],choices=this.neighbors(from).filter(i=>!blocked[i]&&!selected[i]);if(!choices.length){frontier.splice(frontier.indexOf(from),1);continue;}const next=choices[Math.floor(this.random()*choices.length)];selected[next]=1;frontier.push(next);count++;}
-    return Array.from(selected.keys()).filter(i=>selected[i]);
-  }
-  candidate(entities) {
-    const blocked=this.protectedMask(entities,.7),min=Math.ceil(this.tiles.length*.10),max=Math.floor(this.tiles.length*.18);
-    for(let attempt=0;attempt<12;attempt++){
-      const source=this.makeLayout(),indices=this.growRegion(blocked,min+Math.floor(this.random()*(max-min+1)));
-      if(indices.length<min)continue;
-      const tiles=this.tiles.slice();for(const i of indices)tiles[i]=source[i];
-      const changed=indices.filter(i=>tiles[i]!==this.tiles[i]),topology=changed.filter(i=>walkable(tiles[i])!==walkable(this.tiles[i]));
-      const proposal={tiles,indices};
-      if(changed.length>=Math.floor(min*.45)&&topology.length>=8&&this.safeCandidate(proposal,entities))return proposal;
-    }
-    return this.openingCandidate(entities);
-  }
-  safeCandidate(candidate,entities) {
-    if(!this.connected(candidate.tiles))return false;
-    const selected=new Set(candidate.indices);return entities.every(e=>this.free(e.x,e.z,e.radius,candidate.tiles)&&!selected.has(this.at(e.x,e.z)));
-  }
-  openingCandidate(entities,preferred=null) {
-    const blocked=this.protectedMask(entities,.35),tiles=this.tiles.slice(),indices=preferred?.filter(i=>!blocked[i])||this.growRegion(blocked,Math.ceil(this.tiles.length*.10));
-    const selected=new Set(indices),frontier=indices.filter(i=>!blocked[i]&&!walkable(tiles[i])&&this.neighbors(i).some(n=>walkable(tiles[n])));
-    if(!frontier.length){
-      const global=[];for(let i=0;i<tiles.length;i++)if(!blocked[i]&&!walkable(tiles[i])&&this.neighbors(i).some(n=>walkable(tiles[n])))global.push(i);
-      if(global.length){const seed=global[Math.floor(this.random()*global.length)];frontier.push(seed);if(!selected.has(seed)){selected.add(seed);indices.push(seed);}}
-    }
-    for(let opened=0;opened<14&&frontier.length;opened++){
-      const at=Math.floor(this.random()*frontier.length),i=frontier.splice(at,1)[0];tiles[i]=this.random()<.7?TILE.ROAD:TILE.GRASS;
-      for(const n of this.neighbors(i))if(selected.has(n)&&!blocked[n]&&!walkable(tiles[n])&&!frontier.includes(n))frontier.push(n);
-    }
-    // The fallback still visibly rebuilds the warned district, while opening
-    // lanes guarantees it cannot disconnect the existing road network.
-    for(const i of indices)if(!blocked[i]&&!walkable(tiles[i])&&this.random()<.28)tiles[i]=this.obstacleTile(tiles,this.coords(i).x,this.coords(i).z);
-    let proposal={tiles,indices};if(tiles.some((t,i)=>t!==this.tiles[i])&&this.safeCandidate(proposal,entities))return proposal;
-    // With a very crowded arena, a collision-equivalent structure swap is the
-    // final deterministic fallback. It still rebuilds the city this cycle and
-    // never places a new collider over a vehicle.
-    const equivalent=new Set([TILE.BRICK,TILE.STEEL,TILE.HOUSE,TILE.TREE,TILE.HIGHRISE,TILE.SHOP]);
-    for(let i=0;i<tiles.length;i++)if(!blocked[i]&&equivalent.has(this.tiles[i])){tiles.set(this.tiles);tiles[i]=this.tiles[i]===TILE.HOUSE?TILE.STEEL:TILE.HOUSE;proposal={tiles,indices:[i]};if(this.safeCandidate(proposal,entities))return proposal;}
-    return null;
-  }
-  commit(candidate) {
-    const changed=[]; for(let i=0;i<this.tiles.length;i++)if(this.tiles[i]!==candidate.tiles[i]){this.tiles[i]=candidate.tiles[i];this.hp[i]=this.tileHP(this.tiles[i]);changed.push(i);}
-    if(changed.length)this.version++;return changed;
-  }
   damage(i,amount) { if(i<0||!Number.isFinite(this.hp[i]))return false;const destroyed=this.tiles[i];this.hp[i]-=amount;if(this.hp[i]>0)return false;this.tiles[i]=destroyed===TILE.TREE||destroyed===TILE.BARREL?TILE.GRASS:TILE.RUBBLE;this.hp[i]=Infinity;this.version++;return true; }
 }
 export function readStorage(key,fallback) { try { const value=localStorage.getItem(key); return value===null?fallback:JSON.parse(value); } catch { return fallback; } }
